@@ -1,0 +1,20 @@
+Package: entrydatar
+Type: Package
+Title: Download and process data of firm entry
+Version: 0.1
+Date: 2015-11-15
+Authors@R: person("Erik", "Loualiche", email = "erikl@mit.edu", role = c("aut", "cre"))
+Description: The package downloads and aggregate the qcew from the BLS. Perhaps
+    extend to other sources from other countries.
+License: MIT
+LazyData: TRUE
+Depends: 
+    R (>= 3.2.2)
+Imports: 
+    plyr       (>= 1.8.3),
+    dplyr      (>= 0.4.3),
+    data.table (>= 1.9.6),
+    functional (>= 0.6),
+    bit64      (>= 0.9)
+RoxygenNote: 5.0.1
+Suggests: testthat
