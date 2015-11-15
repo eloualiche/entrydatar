@@ -7,8 +7,11 @@
 #' more convenient to merge the individual files using an external command line
 #' tool like cat
 
-
-
+devtools::use_package("dplyr")
+devtools::use_package("plyr")
+devtools::use_package("data.table")
+devtools::use_package("functional")
+devtools::use_package("bit64")
 
 #' Download QCEW dataset from directly from the BLS website
 #'
