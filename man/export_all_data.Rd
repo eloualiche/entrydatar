@@ -2,6 +2,7 @@
 % Please edit documentation in R/get_qcew_data.R
 \name{export_all_data}
 \alias{export_all_data}
+\title{Export a dataset we are directly reading.}
 \usage{
 export_all_data(target_year)
 }
@@ -10,6 +11,9 @@ export_all_data(target_year)
 }
 \value{
 NIL. Exports the data using the helper function export_named_df.
+}
+\description{
+Export a dataset we are directly reading.
 }
 \note{
 assumes that file is at "./$target_year.q1_q4.singlefile.csv". This is the expected

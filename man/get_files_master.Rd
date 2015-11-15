@@ -2,6 +2,7 @@
 % Please edit documentation in R/get_qcew_data.R
 \name{get_files_master}
 \alias{get_files_master}
+\title{Master code: for selected years, download and export the data.}
 \usage{
 get_files_master(year_start = 1990, year_end = 2013)
 }
@@ -13,5 +14,8 @@ get_files_master(year_start = 1990, year_end = 2013)
 \value{
 NIL. Gets data for all years in range, splits the data, and then
   exports it into the appropriate files
+}
+\description{
+Master code: for selected years, download and export the data.
 }
 

@@ -2,6 +2,7 @@
 % Please edit documentation in R/get_qcew_data.R
 \name{export_named_df}
 \alias{export_named_df}
+\title{Export the downloaded table into a csv file.}
 \usage{
 export_named_df(year, named_df)
 }
@@ -14,6 +15,9 @@ corresponding to this data is}
 }
 \value{
 NIL. Exports csv file "./singlefile/$agglvl_code/$year.csv"
+}
+\description{
+Export the downloaded table into a csv file.
 }
 \note{
 generates the appropriate directory if it does not already exist.

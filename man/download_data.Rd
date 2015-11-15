@@ -2,6 +2,7 @@
 % Please edit documentation in R/get_qcew_data.R
 \name{download_data}
 \alias{download_data}
+\title{Group all the functions}
 \usage{
 download_data(target_year)
 }
@@ -11,6 +12,9 @@ download_data(target_year)
 \value{
 NIL. Downloads the file to the current directory and unzips it.
 }
+\description{
+Group all the functions
+}
 \note{
 downloads data from the Quarterly Census for Employment and Wages
   program, for desired years, splitting data by the aggregation level codes
@@ -19,5 +23,6 @@ downloads data from the Quarterly Census for Employment and Wages
 : we intend to have a single file for each aggregation level, but it is
 more convenient to merge the individual files using an external command line
 tool like cat
+Download QCEW dataset from directly from the BLS website
 }
 

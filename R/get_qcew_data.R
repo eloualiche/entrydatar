@@ -1,3 +1,5 @@
+#' Group all the functions
+#'
 #' @note downloads data from the Quarterly Census for Employment and Wages
 #'   program, for desired years, splitting data by the aggregation level codes
 #'   and exporting them into separate files sorted by year and aggregation level
@@ -79,6 +81,7 @@ export_all_data = function (target_year)
 #' @param year_end: end year for which we want data
 #' @return NIL. Gets data for all years in range, splits the data, and then
 #'   exports it into the appropriate files
+#' @export
 get_files_master = function (
   year_start = 1990,
   year_end = 2013
