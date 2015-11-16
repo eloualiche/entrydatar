@@ -4,9 +4,11 @@
 \alias{export_all_data}
 \title{Export a dataset we are directly reading.}
 \usage{
-export_all_data(target_year)
+export_all_data(target_year, path_data = "./")
 }
 \arguments{
+\item{path_data:}{where does the download happen: default current directory}
+
 \item{target_year:}{year for which we want to export the data}
 }
 \value{

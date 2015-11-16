@@ -4,10 +4,12 @@
 \alias{download_data}
 \title{Group all the functions}
 \usage{
-download_data(target_year)
+download_data(target_year, path_data = "./")
 }
 \arguments{
 \item{target_year:}{year for which we want to download the data}
+
+\item{path_data:}{where does the download happen: default current directory}
 }
 \value{
 NIL. Downloads the file to the current directory and unzips it.
@@ -23,6 +25,7 @@ downloads data from the Quarterly Census for Employment and Wages
 : we intend to have a single file for each aggregation level, but it is
 more convenient to merge the individual files using an external command line
 tool like cat
+
 Download QCEW dataset from directly from the BLS website
 }
 

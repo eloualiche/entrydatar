@@ -2,6 +2,8 @@
 #'
 #' @docType package
 #' @name entrydatar
-#' @import ggplot2
-#' @importFrom data.table fread
+#' @import data.table
+#' @import bit64
+#' @importFrom dplyr "%>%"
 NULL
+

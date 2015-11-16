@@ -4,9 +4,12 @@
 \alias{get_files_master}
 \title{Master code: for selected years, download and export the data.}
 \usage{
-get_files_master(year_start = 1990, year_end = 2013)
+get_files_master(path_data = "~/Downloads/", year_start = 1990,
+  year_end = 2013)
 }
 \arguments{
+\item{path_data:}{where do we store the data}
+
 \item{year_start:}{start year for which we want data}
 
 \item{year_end:}{end year for which we want data}

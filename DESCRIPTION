@@ -8,13 +8,17 @@ Description: The package downloads and aggregate the qcew from the BLS. Perhaps
     extend to other sources from other countries.
 License: MIT
 LazyData: TRUE
-Depends: 
+Depends:
     R (>= 3.2.2)
-Imports: 
+Imports:
     plyr       (>= 1.8.3),
     dplyr      (>= 0.4.3),
     data.table (>= 1.9.6),
     functional (>= 0.6),
     bit64      (>= 0.9)
-RoxygenNote: 5.0.1
-Suggests: testthat
+RoxygenNote: 5.0.0
+Suggests:
+    testthat,
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

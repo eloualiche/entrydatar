@@ -1,0 +1,43 @@
+---
+title: "Download data from the QCEW"
+author: "Erik Loualiche"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{QCEW}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+We download data from the QCEW. Example to get a cut is:
+```
+library(data.table, bit64)
+```
+
+```
+dt <- entrydatar::get_files_cut(data_cut = 10, year_start = 1990, year_end =1993, 
+                                path_data = "~/Downloads/", write = F)
+dt
+```
+
+
+Table of cuts looks as the following:
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+|                           | Geographic/Size LevelCode Format | National | National by size | CSA | MSA | Statewide | Statewide, by size | County | MicroSA |
+|---------------------------|----------------------------------|----------|------------------|-----|-----|-----------|--------------------|--------|---------|
+| Industry Ownership Level  | -                                | 1x       | 2x               | 3x  | 4x  | 5x        | 6x                 | 7x     | 8x      |
+| Total, All Ownerships     | x0                               | 10       | -                | 30  | 40  | 50        | -                  | 70     | 80      |
+| Total, by Ownership       | x1                               | 11       | 21               | -   | 41  | 51        | 61                 | 71     | -       |
+| Domain, by Ownership      | x2                               | 12       | 22               | -   | 42  | 52        | 62                 | 72     | -       |
+| SuperSector, by Ownership | x3                               | 13       | 23               | -   | 43  | 53        | 63                 | 73     | -       |
+| Sector, by Ownership      | x4                               | 14       | 24               | -   | 44  | 54        | 64                 | 74     | -       |
+| 3-digit, by Ownership     | x5                               | 15       | 25               | -   | 45  | 55        | -                  | 75     | -       |
+| 4-digit, by Ownership     | x6                               | 16       | 26               | -   | 46  | 56        | -                  | 76     | -       |
+| 5-digit, by Ownership     | x7                               | 17       | 27               | -   | 47  | 57        | -                  | 77     | -       |
+| 6-digit, by Ownership     | x8                               | 18       | 28               | -   | 48  | 58        | -                  | 78     | -       |
+
+
+
+
+
