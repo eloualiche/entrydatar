@@ -22,8 +22,8 @@ download_cbp_data <- function(
   }
 
   path2 <- paste0("CBP_CSV/")
-  zip_file_name <- paste0("cbp", target_year %% 100, "co.zip")
-  file_name <- paste0("cbp", target_year %% 100, "co.txt")
+  zip_file_name <- paste0("cbp", str_sub(target_year, 3, 4), "co.zip")
+  file_name <- paste0("cbp", str_sub(target_year, 3, 4), "co.txt")
 
   url <- paste0("ftp://ftp.census.gov/", path1, path2, zip_file_name)
 

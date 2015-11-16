@@ -1,0 +1,8 @@
+dt_res <- download_all_cbp()
+
+library(stringr)
+
+year <- 2000
+str_sub(year, 3, 4)
+
+s2000 %% 100
