@@ -8,8 +8,12 @@ Vignettes: there are no vignettes for now
 
 You can install 
 
--  The current version from [github](https://github.com/eloualiche/entrydatar) with
+-  The current version from [github](https://github.mit.edu/erikl/aptestr) with
 
-	```R
-	devtools::install_github("eloualiche/entrydatar")
-	```
+	```{r}
+library(devtools)
+devtools::install_github(
+  "erikl/entrydatar", 
+  host = "github.mit.edu/api/v3", 
+  auth_token = "d2c545def9a8e8d8e3bd9be1fa18a815dafa09a8")
+```
