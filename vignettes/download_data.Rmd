@@ -26,7 +26,8 @@ Table of cuts looks as the following:
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 |                           | Geographic/Size LevelCode Format | National | National by size | CSA | MSA | Statewide | Statewide, by size | County | MicroSA |
 |---------------------------|----------------------------------|----------|------------------|-----|-----|-----------|--------------------|--------|---------|
-| Industry Ownership Level  | -                                | 1x       | 2x               | 3x  | 4x  | 5x        | 6x                 | 7x     | 8x      |
+| Industry Ownership Level  |                                  | 1x       | 2x               | 3x  | 4x  | 5x        | 6x                 | 7x     | 8x      |
+|                           |                                  |          |                  |     |     |           |                    |        |         |
 | Total, All Ownerships     | x0                               | 10       | -                | 30  | 40  | 50        | -                  | 70     | 80      |
 | Total, by Ownership       | x1                               | 11       | 21               | -   | 41  | 51        | 61                 | 71     | -       |
 | Domain, by Ownership      | x2                               | 12       | 22               | -   | 42  | 52        | 62                 | 72     | -       |

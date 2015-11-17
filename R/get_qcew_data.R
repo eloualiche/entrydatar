@@ -8,30 +8,6 @@
 #' tool like cat
 #'
 
-#' Download QCEW dataset from directly from the BLS website
-#'
-#' @param target_year: year for which we want to download the data
-#' @param path_data: where does the download happen: default current directory
-#' @return NIL. Downloads the file to the current directory and unzips it.
-download_qcew_data = function(
-  target_year,
-  path_data = "./"
-){
-
-  zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
-
-  url = paste0(
-    "http://www.bls.gov/cew/data/files/",
-    toString(target_year),
-    "/csv/",
-    zip_file_name)
-
-  download.file(url,
-                paste0(path_data, zip_file_name) )           # download file to path_data
-  unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
-
-} # end of download_data
-
 
 
 #' Export the downloaded table into a csv file.
@@ -148,27 +124,53 @@ get_files_cut = function(
 
   dt_res <- data.table()
 
-  for (year in seq(year_start, year_end)) {
+  if (data_cut <= 20 | data_cut >= 30){
 
-    message(paste0("Processing data for year ", toString(year)))
-    download_qcew_data(target_year = year, path_data = path_data)
+    for (year in seq(year_start, year_end)) {
 
-    df <- fread(paste0(path_data,
-                       toString(year), ".q1-q4.singlefile.csv"))
-    dt_split <- split(df, df$agglvl_code)
+      message(paste0("Processing data for year ", toString(year)))
+      download_qcew_data(target_year = year, path_data = path_data)
 
-    dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-    dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+      df <- fread(paste0(path_data,
+                         toString(year), ".q1-q4.singlefile.csv"))
+      dt_split <- split(df, df$agglvl_code)
 
-    # cleaning up
-    file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-    file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
-    message("")
+      dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+      dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
 
-    dt_res <- rbind(dt_res, dt_split, fill = T)
+      # cleaning up
+      file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+      file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+      message("")
+
+      dt_res <- rbind(dt_res, dt_split, fill = T)
+
+    }
 
   }
 
+  if (data_cut >= 20 & data_cut <= 30){
+
+    for (year in seq(year_start, year_end)) {
+
+      message(paste0("Processing data for year ", toString(year)))
+      download_qcew_size_data(target_year = year, path_data = path_data)
+
+      df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
+      dt_split <- split(df, df$agglvl_code)
+
+      dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+      dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+      # cleaning up
+      file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+      file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+      message("")
+
+      dt_res <- rbind(dt_res, dt_split, fill = T)
+
+    }
+  }
   if (write == T){
     write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
   }
@@ -177,3 +179,59 @@ get_files_cut = function(
 
 }
 
+
+
+
+
+
+#' Download QCEW dataset from directly from the BLS website
+#'
+#' @param target_year: year for which we want to download the data
+#' @param path_data: where does the download happen: default current directory
+#' @return NIL. Downloads the file to the current directory and unzips it.
+download_qcew_data = function(
+  target_year,
+  path_data = "./"
+){
+
+  zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
+
+  url = paste0(
+    "http://www.bls.gov/cew/data/files/",
+    toString(target_year),
+    "/csv/",
+    zip_file_name)
+
+  download.file(url,
+                paste0(path_data, zip_file_name) )           # download file to path_data
+  unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+
+} # end of download_data
+
+
+
+
+#' Download QCEW dataset (size files 1st quarter) directly from the BLS website
+#'
+#' @param target_year: year for which we want to download the data
+#' @param path_data: where does the download happen: default current directory
+#' @return NIL. Downloads the file to the current directory and unzips it.
+download_qcew_size_data = function(
+  target_year,
+  path_data = "./"
+){
+
+  zip_file_name = paste0(toString(target_year), "_q1_by_size.zip")
+
+  url = paste0(
+    "http://www.bls.gov/cew/data/files/",
+    toString(target_year),
+    "/csv/",
+    zip_file_name)
+
+  download.file(url,
+                paste0(path_data, zip_file_name) )           # download file to path_data
+  unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+
+
+} # end of download_data
