@@ -4,11 +4,11 @@ entrydatar
 blsqcew downloads and aggregates flat tables of entry statistics from the Quarterly Census of Employment and Wages program. Available on the [BLS website](http://www.bls.gov/cew/home.htm)
 
 
-Vignettes: there are no vignettes for now
+Vignettes: 
+  - You can download specific cuts of the [QCEW](vignettes/download_data.Rmd)
 
 You can install 
-
--  The current version from [github](https://github.mit.edu/erikl/aptestr) with
+  -  The current version from [github](https://github.mit.edu/erikl/entrydatar) with
 
 	```{r}
 library(devtools)
