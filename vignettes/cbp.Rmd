@@ -27,10 +27,16 @@ dt_tidy
 ### Some more information about data layout
 
 ----------------------------------------------------------------
-| Variable Name             | Geographic/Size LevelCode Format |
+| Variable Name             | Description                      |
 |---------------------------|----------------------------------|
-| Size                      |                                  |
 |                           |                                  |
+| Variable                  |                                  |
+| `emp`                     | Total Mid-March Employees        |
+| `qp1`                     | First Quarter Payroll ($1,000)   |
+| `ap`                      | Total Annual Payroll($1,000)     |
+| `est`                     | Total Number of establishments   |
+|                           |                                  |
+| Size                      |                                  |
 | `N1_4`                    | 1-4 Employee Size Class          |
 | `N5_9`                    | 5-9 Employee Size Class          |
 | `N10_19`                  | 10-19 Employee Size Class        |
@@ -45,4 +51,13 @@ dt_tidy
 | `N1000_3`                 | 2500-4999 Employee Size Class    |
 | `N1000_4`                 | 5000 or More Employee Size Class |
 |                           |                                  |
-| 
+| Flags                     |                                  |
+| `empflag`                 | Size class replaced withheld     |
+|                           | emp and payroll replaced by 0    |
+| `fipstate`                | FIPS State Code                  |
+| `fipcscty`                | FIPCS County Code                |
+| `censtate`                | Census State Code                |
+| `cencty`                  | Census County Code               |
+
+
+

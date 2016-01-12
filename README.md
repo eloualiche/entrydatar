@@ -24,10 +24,12 @@ We download an industry flat file directly from the [BLS](http://www.bls.gov/web
 
 #### County Business Pattern (CBP)
 See the Census [website](http://www.census.gov/econ/cbp/) for more information.
-Annual data on business employment at the country
+Annual data on business employment at the county level.
 
-Files can be manually downloaded from this [page](http://www.census.gov/econ/cbp/download/)
+Files can be manually downloaded from this [page](http://www.census.gov/econ/cbp/download/).
 
+To Do on CBP:
+- Some of the data is on `naics` and some on `sic`. Is there an harmonized dataset.
 
 ### Vignettes: 
   - You can download specific cuts of the [QCEW](vignettes/qcew.Rmd)
