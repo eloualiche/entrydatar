@@ -1,5 +1,31 @@
 # Group all the functions
 
+#' Clean the CBP
+#'
+#' @note Tidy up the CBP data into year state county industry dataset
+#' @param industry: which level industries should be included (vector, NULL for all)
+#' @param year_start: year starting data (>=1986)
+#' @param year_end: year ending data (<=2013)
+#' @return data.table
+#' @export
+tidy_cbp <- function(
+  dt_raw = NULL,
+  industry   = c(2,3,4),
+  year_start = 1996,
+  year_end   = 2013,
+){
+
+  if ( is.null(dt_raw)){
+    dt_raw <- download_all_cbp(year_start, year_end)
+  }
+
+  dt_res <- copy(dt_raw)
+
+
+  dt_res <- dt_raw
+  return(dt_cbp)
+
+}
 
 
 #' Download the CBP

@@ -1,5 +1,5 @@
 ---
-title: "Download data from the QCEW"
+title: "Download data from the Quarterly Census of Employment and Wages (QCEW)"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -14,8 +14,16 @@ We download data from the QCEW. Example to get a cut is:
 library(data.table, bit64)
 ```
 
+For example if we are interested in downloading aggregate level data we use the cut `10`:
 ```
 dt <- entrydatar::get_files_cut(data_cut = 10, year_start = 1990, year_end =1993, 
+                                path_data = "~/Downloads/", write = F)
+dt
+```
+
+On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut `28`:
+```
+dt <- entrydatar::get_files_cut(data_cut = 28, year_start = 1990, year_end = 2015, 
                                 path_data = "~/Downloads/", write = F)
 dt
 ```

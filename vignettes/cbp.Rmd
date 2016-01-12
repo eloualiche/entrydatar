@@ -1,0 +1,48 @@
+---
+title: "Download data from the County Business Pattern (CBP)"
+author: "Erik Loualiche"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{CBP}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+We download data from the CBP. Data is available for the period from 1986 to 2013 at an annual frequency.
+The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses. 
+
+For example if we would like the raw data:
+```{r}
+dt_raw <- download_all_cbp(year_start, year_end)
+dt_raw
+```
+
+For something a bit tidier we gather the data around year, geography, industry and size:
+```{r}
+dt_tidy <- tidy_cbp(dt_raw, year_start, year_end)
+dt_tidy
+```
+
+### Some more information about data layout
+
+----------------------------------------------------------------
+| Variable Name             | Geographic/Size LevelCode Format |
+|---------------------------|----------------------------------|
+| Size                      |                                  |
+|                           |                                  |
+| `N1_4`                    | 1-4 Employee Size Class          |
+| `N5_9`                    | 5-9 Employee Size Class          |
+| `N10_19`                  | 10-19 Employee Size Class        |
+| `N20_49`                  | 20-49 Employee Size Class        |
+| `N50_99`                  | 50-99 Employee Size Class        |
+| `N100_249`                | 100-249 Employee Size Class      |
+| `N250_499`                | 250-499 Employee Size Class      |
+| `N500_999`                | 500-999 Employee Size Class      |
+| `N1000`                   | 1000 or More Employee Size Class |
+| `N1000_1`                 | 1000-1499 Employee Size Class    |
+| `N1000_2`                 | 1500-2499 Employee Size Class    |
+| `N1000_3`                 | 2500-4999 Employee Size Class    |
+| `N1000_4`                 | 5000 or More Employee Size Class |
+|                           |                                  |
+| 
