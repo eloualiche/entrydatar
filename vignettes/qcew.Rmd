@@ -49,5 +49,5 @@ Table of cuts looks as the following for naics based industries
 
 
 
-Aggregation levels and files that contain them are in tables for [naics](./data/naics_agglevel.csv) and for [sic](./data/sic_agglevel.csv)
+Aggregation levels and files that contain them are in tables for [naics](../data/naics_agglevel.csv) and for [sic](../data/sic_agglevel.csv)
 

@@ -82,8 +82,9 @@ export_all_data = function (
 get_files_master = function (
   path_data = "~/Downloads/",
   year_start = 1990,
-  year_end = 2013
-){
+  year_end = 2013,
+  industry = "naics"
+  ){
 
   for (year in seq(year_start, year_end)) {
 
@@ -101,6 +102,9 @@ get_files_master = function (
   }
 
 }
+
+
+
 
 
 
@@ -156,7 +160,7 @@ get_files_cut = function(
       for (year in seq(year_start, year_end)) {
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_size_data(target_year = year, path_data = path_data)
+        download_qcew_size_data(target_year = year, industry = industry, path_data = path_data)
 
         df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
         dt_split <- split(df, df$agglvl_code)
@@ -206,7 +210,7 @@ get_files_cut = function(
       for (year in seq(year_start, year_end)) {
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_size_data(target_year = year, path_data = path_data)
+        download_qcew_size_data(target_year = year, industry, path_data = path_data)
 
         df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
         dt_split <- split(df, df$agglvl_code)
@@ -226,11 +230,6 @@ get_files_cut = function(
   }
 
 
-
-
-
-
-
   if (write == T){
     write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
   }
@@ -238,6 +237,9 @@ get_files_cut = function(
   return( dt_res )
 
 }
+
+
+
 
 
 
@@ -283,17 +285,18 @@ download_qcew_size_data = function(
   path_data = "./"
 ){
 
-  zip_file_name = paste0(toString(target_year), "_q1_by_size.zip")
+  if (industry == "naics"){
+    zip_file_name = paste0(toString(target_year), "_q1_by_size.zip")
 
-  url = paste0(
-    "http://www.bls.gov/cew/data/files/",
-    toString(target_year),
-    "/csv/",
-    zip_file_name)
+    url = paste0(
+      "http://www.bls.gov/cew/data/files/",
+      toString(target_year),
+      "/csv/",
+      zip_file_name)
+  }
 
   download.file(url,
                 paste0(path_data, zip_file_name) )           # download file to path_data
   unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
-
 
 } # end of download_data
