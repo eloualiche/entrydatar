@@ -33,7 +33,7 @@ dt_tidy
 | Variable                  |                                  |
 | `emp`                     | Total Mid-March Employees        |
 | `qp1`                     | First Quarter Payroll ($1,000)   |
-| `ap`                      | Total Annual Payroll($1,000)     |
+| `ap`                      | Total Annual Payroll ($1,000)     |
 | `est`                     | Total Number of establishments   |
 |                           |                                  |
 | Size                      |                                  |

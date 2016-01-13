@@ -118,59 +118,119 @@ get_files_cut = function(
   data_cut = 10,
   year_start = 1990,
   year_end = 2013,
+  industry = "naics",
   path_data = "~/Downloads/",
   write = F
 ){
 
   dt_res <- data.table()
 
-  if (data_cut <= 20 | data_cut >= 30){
+  if(industry == "naics"){
 
-    for (year in seq(year_start, year_end)) {
+    if (data_cut <= 20 | data_cut >= 30){
 
-      message(paste0("Processing data for year ", toString(year)))
-      download_qcew_data(target_year = year, path_data = path_data)
+      for (year in seq(year_start, year_end)) {
 
-      df <- fread(paste0(path_data,
-                         toString(year), ".q1-q4.singlefile.csv"))
-      dt_split <- split(df, df$agglvl_code)
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
 
-      dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-      dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+        df <- fread(paste0(path_data,
+                           toString(year), ".q1-q4.singlefile.csv"))
 
-      # cleaning up
-      file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-      file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
-      message("")
+        dt_split <- split(df, df$agglvl_code)
 
-      dt_res <- rbind(dt_res, dt_split, fill = T)
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
 
-    }
-
-  }
-
-  if (data_cut >= 20 & data_cut <= 30){
-
-    for (year in seq(year_start, year_end)) {
-
-      message(paste0("Processing data for year ", toString(year)))
-      download_qcew_size_data(target_year = year, path_data = path_data)
-
-      df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
-      dt_split <- split(df, df$agglvl_code)
-
-      dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-      dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-
-      # cleaning up
-      file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-      file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
-      message("")
+        # cleaning up
+        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        message("")
 
       dt_res <- rbind(dt_res, dt_split, fill = T)
 
+      }
+
+    } else if (data_cut >= 20 & data_cut <= 30){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_size_data(target_year = year, path_data = path_data)
+
+        df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # cleaning up
+        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
     }
   }
+
+  if(industry == "sic"){
+
+    if (!(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
+
+        df <- fread(paste0(path_data,
+                           "sic.", toString(year), ".q1-q4.singlefile.csv"))
+
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # cleaning up
+        file.remove( paste0(path_data, "sic.", year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, "sic_", year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
+
+    } else if (data_cut %in% c(7,8,9,10,11,12,24,25)){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_size_data(target_year = year, path_data = path_data)
+
+        df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # cleaning up
+        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
+    }
+  }
+
+
+
+
+
+
+
   if (write == T){
     write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
   }
@@ -182,8 +242,6 @@ get_files_cut = function(
 
 
 
-
-
 #' Download QCEW dataset from directly from the BLS website
 #'
 #' @param target_year: year for which we want to download the data
@@ -191,16 +249,19 @@ get_files_cut = function(
 #' @return NIL. Downloads the file to the current directory and unzips it.
 download_qcew_data = function(
   target_year,
+  industry = "naics",
   path_data = "./"
 ){
 
-  zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
+  if (industry == "naics"){
+    zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
+    dir_name      = paste0("http://www.bls.gov/cew/data/files/", toString(target_year), "/csv/")
+  } else if (industry == "sic"){
+    zip_file_name = paste0("sic_", toString(target_year), "_qtrly_singlefile.zip")
+    dir_name      = paste0("http://www.bls.gov/cew/data/files/", toString(target_year), "/sic/csv/")
+  }
 
-  url = paste0(
-    "http://www.bls.gov/cew/data/files/",
-    toString(target_year),
-    "/csv/",
-    zip_file_name)
+  url = paste0(dir_name, zip_file_name)
 
   download.file(url,
                 paste0(path_data, zip_file_name) )           # download file to path_data
@@ -218,6 +279,7 @@ download_qcew_data = function(
 #' @return NIL. Downloads the file to the current directory and unzips it.
 download_qcew_size_data = function(
   target_year,
+  industry = "naics",
   path_data = "./"
 ){
 

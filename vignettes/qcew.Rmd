@@ -29,7 +29,8 @@ dt
 ```
 
 
-Table of cuts looks as the following:
+Table of cuts looks as the following for naics based industries
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 |                           | Geographic/Size LevelCode Format | National | National by size | CSA | MSA | Statewide | Statewide, by size | County | MicroSA |
@@ -48,5 +49,5 @@ Table of cuts looks as the following:
 
 
 
-
+Aggregation levels and files that contain them are in tables for [naics](./data/naics_agglevel.csv) and for [sic](./data/sic_agglevel.csv)
 
