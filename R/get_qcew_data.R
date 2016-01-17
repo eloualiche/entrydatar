@@ -10,6 +10,149 @@
 
 
 
+
+
+#' Other code: loads data.table with option to write it for a given cut
+#'
+#' @param path_data: where do we store the data
+#' @param year_start: start year for which we want data
+#' @param year_end: end year for which we want data
+#' @return data.table aggregate
+#' @examples
+#'   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993, path_data = "~/Downloads/", write = T)
+#' @export
+get_files_cut = function(
+  data_cut = 10,
+  year_start = 1990,
+  year_end = 2013,
+  industry = "naics",
+  path_data = "~/Downloads/",
+  write = F
+){
+
+  dt_res <- data.table()
+
+  if(industry == "naics"){
+
+    if (data_cut <= 20 | data_cut >= 30){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
+
+        df <- fread(paste0(path_data,
+                           toString(year), ".q1-q4.singlefile.csv"))
+
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # cleaning up
+        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
+
+    } else if (data_cut >= 20 & data_cut <= 30){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_size_data(target_year = year, industry = industry, path_data = path_data)
+
+        df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # cleaning up
+        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
+    }
+  }
+
+  if(industry == "sic"){
+
+    if (!(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
+
+        df <- fread(paste0(path_data,
+                           "sic.", toString(year), ".q1-q4.singlefile.csv"))
+
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+
+        dt_split[, sic := gsub("[[:alpha:]]", "", str_sub(industry_code, 6, -1) ) ]
+        dt_split[ is.na(as.numeric(sic)), sic := NA ]
+
+        ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # cleaning up
+        file.remove( paste0(path_data, "sic.", year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, "sic_", year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
+
+    } else if (data_cut %in% c(7,8,9,10,11,12,24,25)){
+
+      for (year in seq(year_start, year_end)) {
+
+        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        download_qcew_size_data(target_year = year, industry, path_data = path_data)
+
+        df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
+        dt_split <- split(df, df$agglvl_code)
+
+        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+
+        dt_split[, sic := gsub("[[:alpha:]]", "", str_sub(industry_code, 6, -1) ) ]
+        dt_split[ is.na(as.numeric(sic)), sic := NA ]
+
+        # cleaning up
+        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
+        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        message("")
+
+        dt_res <- rbind(dt_res, dt_split, fill = T)
+
+      }
+    }
+  }
+
+
+  if (write == T){
+    write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
+  }
+
+  return( dt_res )
+
+}
+
+
+
+
+
+
+
 #' Export the downloaded table into a csv file.
 #'
 #' @param year: filename for .csv file. Note that you need to pass in the
@@ -107,142 +250,6 @@ get_files_master = function (
 
 
 
-
-
-#' Other code: loads data.table with option to write it for a given cut
-#'
-#' @param path_data: where do we store the data
-#' @param year_start: start year for which we want data
-#' @param year_end: end year for which we want data
-#' @return data.table aggregate
-#' @examples
-#'   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993, path_data = "~/Downloads/", write = T)
-#' @export
-get_files_cut = function(
-  data_cut = 10,
-  year_start = 1990,
-  year_end = 2013,
-  industry = "naics",
-  path_data = "~/Downloads/",
-  write = F
-){
-
-  dt_res <- data.table()
-
-  if(industry == "naics"){
-
-    if (data_cut <= 20 | data_cut >= 30){
-
-      for (year in seq(year_start, year_end)) {
-
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
-
-        df <- fread(paste0(path_data,
-                           toString(year), ".q1-q4.singlefile.csv"))
-
-        dt_split <- split(df, df$agglvl_code)
-
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-
-        # cleaning up
-        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
-        message("")
-
-      dt_res <- rbind(dt_res, dt_split, fill = T)
-
-      }
-
-    } else if (data_cut >= 20 & data_cut <= 30){
-
-      for (year in seq(year_start, year_end)) {
-
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_size_data(target_year = year, industry = industry, path_data = path_data)
-
-        df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
-        dt_split <- split(df, df$agglvl_code)
-
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-
-        # cleaning up
-        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
-        message("")
-
-        dt_res <- rbind(dt_res, dt_split, fill = T)
-
-      }
-    }
-  }
-
-  if(industry == "sic"){
-
-    if (!(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
-
-      for (year in seq(year_start, year_end)) {
-
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
-
-        df <- fread(paste0(path_data,
-                           "sic.", toString(year), ".q1-q4.singlefile.csv"))
-
-        dt_split <- split(df, df$agglvl_code)
-
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-
-        dt_split[, sic := gsub("[[:alpha:]]", "", str_sub(industry_code, 6, -1) ) ]
-        dt_split[ is.na(as.numeric(sic)), sic := NA ]
-
-        ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-
-        # cleaning up
-        file.remove( paste0(path_data, "sic.", year, ".q1-q4.singlefile.csv" ) )
-        file.remove( paste0(path_data, "sic_", year, "_qtrly_singlefile.zip" ) )
-        message("")
-
-        dt_res <- rbind(dt_res, dt_split, fill = T)
-
-      }
-
-    } else if (data_cut %in% c(7,8,9,10,11,12,24,25)){
-
-      for (year in seq(year_start, year_end)) {
-
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_size_data(target_year = year, industry, path_data = path_data)
-
-        df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
-        dt_split <- split(df, df$agglvl_code)
-
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-
-        dt_split[, sic := gsub("[[:alpha:]]", "", str_sub(industry_code, 6, -1) ) ]
-        dt_split[ is.na(as.numeric(sic)), sic := NA ]
-
-        # cleaning up
-        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
-        message("")
-
-        dt_res <- rbind(dt_res, dt_split, fill = T)
-
-      }
-    }
-  }
-
-
-  if (write == T){
-    write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
-  }
-
-  return( dt_res )
-
-}
 
 
 
