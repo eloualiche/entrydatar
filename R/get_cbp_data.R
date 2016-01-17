@@ -12,7 +12,7 @@ tidy_cbp <- function(
   dt_raw = NULL,
   industry   = c(2,3,4),
   year_start = 1996,
-  year_end   = 2013,
+  year_end   = 2013
 ){
 
   if ( is.null(dt_raw)){

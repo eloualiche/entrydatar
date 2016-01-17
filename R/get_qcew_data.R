@@ -194,10 +194,10 @@ get_files_cut = function(
         dt_split <- split(df, df$agglvl_code)
 
         dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
-        
+
         dt_split[, sic := gsub("[[:alpha:]]", "", str_sub(industry_code, 6, -1) ) ]
         dt_split[ is.na(as.numeric(sic)), sic := NA ]
-        
+
         ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
 
         # cleaning up
@@ -243,10 +243,6 @@ get_files_cut = function(
   return( dt_res )
 
 }
-
-
-
-
 
 
 
