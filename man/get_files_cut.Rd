@@ -2,10 +2,10 @@
 % Please edit documentation in R/get_qcew_data.R
 \name{get_files_cut}
 \alias{get_files_cut}
-\title{Other code: loads data.table with option to write it for a given cut}
+\title{Group all the functions}
 \usage{
 get_files_cut(data_cut = 10, year_start = 1990, year_end = 2013,
-  path_data = "~/Downloads/", write = F)
+  industry = "naics", path_data = "~/Downloads/", write = F)
 }
 \arguments{
 \item{path_data:}{where do we store the data}
@@ -18,6 +18,17 @@ get_files_cut(data_cut = 10, year_start = 1990, year_end = 2013,
 data.table aggregate
 }
 \description{
+Group all the functions
+}
+\note{
+downloads data from the Quarterly Census for Employment and Wages
+  program, for desired years, splitting data by the aggregation level codes
+  and exporting them into separate files sorted by year and aggregation level
+
+: we intend to have a single file for each aggregation level, but it is
+more convenient to merge the individual files using an external command line
+tool like cat
+
 Other code: loads data.table with option to write it for a given cut
 }
 \examples{

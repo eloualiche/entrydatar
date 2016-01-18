@@ -3,6 +3,7 @@
 export(download_all_cbp)
 export(get_files_cut)
 export(get_files_master)
+export(tidy_cbp)
 export(tidy_qcew)
 import(bit64)
 import(data.table)

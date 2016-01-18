@@ -5,7 +5,7 @@
 \title{Master code: for selected years, download and export the data.}
 \usage{
 get_files_master(path_data = "~/Downloads/", year_start = 1990,
-  year_end = 2013)
+  year_end = 2013, industry = "naics")
 }
 \arguments{
 \item{path_data:}{where do we store the data}
