@@ -15,7 +15,8 @@ Imports:
     dplyr      (>= 0.4.3),
     data.table (>= 1.9.6),
     functional (>= 0.6),
-    bit64      (>= 0.9)
+    bit64      (>= 0.9),
+    stringr    (>= 1.0.0)
 RoxygenNote: 5.0.1
 Suggests:
     testthat,

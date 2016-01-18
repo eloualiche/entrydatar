@@ -14,13 +14,13 @@ The most detailed cut of the data incorporates size, country and industry (4 dig
 
 For example if we would like the raw data:
 ```{r}
-dt_raw <- download_all_cbp(year_start, year_end)
+dt_raw <- entrydatar::download_all_cbp(1990, 1990)
 dt_raw
 ```
 
 For something a bit tidier we gather the data around year, geography, industry and size:
 ```{r}
-dt_tidy <- tidy_cbp(dt_raw, year_start, year_end)
+dt_tidy <- entrydatar::tidy_cbp(dt_raw, 1990, 1990)
 dt_tidy
 ```
 
