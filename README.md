@@ -32,8 +32,9 @@ To Do on CBP:
 - Some of the data is on `naics` and some on `sic`. Is there an harmonized dataset.
 
 ### Vignettes: 
-  - You can download specific cuts of the [QCEW](vignettes/qcew.Rmd)
-  - You can download a clean version of the [CBP](vignettes/cbp.Rmd)
+  - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)
+  - How to download a clean version of the [CBP](vignettes/cbp.Rmd)
+  - How to download a clean version of the [CBP](vignettes/bed.Rmd)
 
 
 ### Installation
