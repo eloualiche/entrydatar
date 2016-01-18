@@ -149,7 +149,65 @@ get_files_cut = function(
 
 
 
+#' Tidying the dataset for regression use (or merge)
+#'
+#' @param dt: input dataset from get_files_cut
+#' @param industry: industry type
+#' @param frequency: download either quarterly, monthly or all data
+#' @note returns a data.table file that is formatted according to tidy standard
+#'   typically this will be year x sub_year (quarter or month) x size x own_code x industry
+#'   the file can be aggregated as such
+#'   I do not download all the information (some location quotients and taxes are forgotten)
+#' @return data.table dt_res
+#' @examples
+#'   dt_tidy <- tidy_qcew(data_cut = 10, year_start = 1990, year_end =1993, path_data = "~/Downloads/", write = T)
+#' @export
+tidy_qcew <- function(
+  dt,
+  industry = "naics",
+  frequency = "all"
+){
 
+  if (frequency %in% c("month", "all")){
+
+    dt_month <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
+                          month1_emplvl, month2_emplvl, month3_emplvl,
+                          area_fips, own_code, size_code) ]
+    dt_month <- dt_month %>% gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
+    dt_month[, `:=`(month = as.numeric(gsub("[^\\d]+", "", month, perl=TRUE)) ) ]
+    dt_month[, month := (quarter-1)*3 + month ]
+    setorder(dt_month, industry_code, year, month)
+
+    if (frequency == "month"){
+      dt_tidy <- dt_month
+    }
+
+  }
+
+  if (frequency %in% c("quarter", "all")){
+
+    dt_quarter <- dt_naics[, list(year, quarter = as.numeric(qtr), industry_code,
+                                  total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
+                                  avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs,
+                                  area_fips, own_code, size_code) ]
+    setorder(dt_quarter, industry_code, year, quarter)
+
+    if (frequency == "quarter"){
+      dt_tidy <- dt_quarter
+    }
+
+  }
+
+  if (frequency == "all"){
+
+    dt_tidy <- merge(dt_month, dt_quarter, all.x = T,
+                     by = c("year", "quarter", "industry_code", "own_code", "area_fips", "size_code") )
+
+  }
+
+  return( dt_tidy )
+
+}
 
 
 

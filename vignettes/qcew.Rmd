@@ -27,10 +27,21 @@ dt
 
 On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut `28`:
 ```
-dt <- entrydatar::get_files_cut(data_cut = 28, year_start = 1990, year_end = 2015, 
-                                path_data = "~/Downloads/", write = F)
-dt
+dt_naics <- entrydatar::get_files_cut(data_cut = 28, 
+                                      industry = "naics"
+                                      year_start = 1990, year_end = 2015, 
+                                      path_data = "~/Downloads/", write = F)
+dt_naics
 ```
+
+The data is still raw from the BLS download. We can clean the data in two ways: a monthly dataset with employment by categories and a quarterly dataset with only number of firms. Finally we allow an option for aggregating both types. 
+```
+dt_naics <- entrydatar::tidy_qcew(dt_naics,
+                                  frequency = "month")
+dt_naics
+```
+
+
 
 
 For example the table of cuts looks as the following for **naics** based industries is as follows:
@@ -57,8 +68,7 @@ For example the table of cuts looks as the following for **naics** based industr
 
 ### Data codes
 
-### Aggregation levels
-
+#### Aggregation levels
 - Aggregation levels and files that contain them are defined by the BLS; we reproduce the table in the package for mergeing or easier access:
   + **naics** [table](../data_raw/naics_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm)
   + **sic** [table](../data_raw/sic_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm)
