@@ -34,7 +34,7 @@ To Do on CBP:
 ### Vignettes: 
   - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)
   - How to download a clean version of the [CBP](vignettes/cbp.Rmd)
-  - How to download a clean version of the [CBP](vignettes/bed.Rmd)
+  - How to download a clean version of the [BED](vignettes/bed.Rmd)
 
 
 ### Installation

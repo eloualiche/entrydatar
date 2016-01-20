@@ -16,6 +16,7 @@ In this vignette we provide examples of how to use entrydatar to download precis
 To get read to download data, we load some libraries that the package might have forgotten to call (the package works with all tables in a `data.table` format)
 ```
 library(data.table, bit64)
+library(entrydatar)
 ```
 
 For example if we are interested in downloading aggregate level data we use the cut `10`:
