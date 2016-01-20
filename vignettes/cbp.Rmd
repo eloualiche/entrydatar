@@ -14,7 +14,7 @@ The most detailed cut of the data incorporates size, country and industry (4 dig
 
 For example if we would like the raw data:
 ```{r}
-libbrary(entrydatar)
+library(entrydatar)
 dt_raw <- download_all_cbp(1990, 1990)
 dt_raw
 ```

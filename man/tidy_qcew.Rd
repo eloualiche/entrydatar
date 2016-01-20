@@ -4,17 +4,17 @@
 \alias{tidy_qcew}
 \title{Tidying the dataset for regression use (or merge)}
 \usage{
-tidy_qcew(dt, industry = "naics", frequency = "all")
+tidy_qcew(dt, frequency = "all", industry = "naics")
 }
 \arguments{
 \item{dt:}{input dataset from get_files_cut}
 
-\item{industry:}{industry type}
+\item{industry:}{download naics or sic data}
 
 \item{frequency:}{download either quarterly, monthly or all data}
 }
 \value{
-data.table dt_res
+data.table dt_tidy
 }
 \description{
 Tidying the dataset for regression use (or merge)
@@ -26,6 +26,8 @@ returns a data.table file that is formatted according to tidy standard
   I do not download all the information (some location quotients and taxes are forgotten)
 }
 \examples{
-  dt_tidy <- tidy_qcew(data_cut = 10, year_start = 1990, year_end =1993, path_data = "~/Downloads/", write = T)
+  dt_tidy <- tidy_qcew(data_cut = 10,
+                       year_start = 1990, year_end =1993,
+                       path_data = "~/Downloads/", write = T)
 }
 

@@ -13,6 +13,10 @@ get_files_cut(data_cut = 10, year_start = 1990, year_end = 2013,
 \item{year_start:}{start year for which we want data}
 
 \item{year_end:}{end year for which we want data}
+
+\item{industry:}{download naics or sic data}
+
+\item{write:}{save it somewhere}
 }
 \value{
 data.table aggregate
@@ -32,6 +36,7 @@ tool like cat
 Other code: loads data.table with option to write it for a given cut
 }
 \examples{
-  dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993, path_data = "~/Downloads/", write = T)
+  dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
+                      path_data = "~/Downloads/", write = T)
 }
 

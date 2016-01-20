@@ -12,7 +12,7 @@
 #' @param path_data: where does the download happen: default current directory
 #' @return df_res.
 #' @export
-load_bed_data = function(
+get_bed_data = function(
   which_data = "industry",
   path_data = "./"
 ){
@@ -55,11 +55,11 @@ load_bed_data = function(
     dt_ind[, series_id:= NULL ]
     df1 <- dt_ind[ emp==1 & open ==1, !c("emp","open") , with=FALSE ] %>%
         rename( ent_emp = entry )
-    df2 <- dt_ind[ emp==1 & open ==0, !c("year","period","emp","open","ind_def","note1") ,with=FALSE] %>%
+    df2 <- dt_ind[ emp==1 & open ==0, !c("year","period","emp","open","note1") ,with=FALSE] %>%
         rename( exit_emp = entry )
-    df3 <- dt_ind[ emp==0 & open ==1, !c("year","period","emp","open","ind_def","note1") ,with=FALSE] %>%
+    df3 <- dt_ind[ emp==0 & open ==1, !c("year","period","emp","open","note1") ,with=FALSE] %>%
         rename( ent_cnt = entry )
-    df4 <- dt_ind[ emp==0 & open ==0, !c("year","period","emp","open","ind_def","note1") ,with=FALSE] %>%
+    df4 <- dt_ind[ emp==0 & open ==0, !c("year","period","emp","open","note1") ,with=FALSE] %>%
         rename( exit_cnt = entry )
 
     df <- merge( df1, df2, by = c("date_ym", "naics3"),  all.y=FALSE)
@@ -73,7 +73,7 @@ load_bed_data = function(
     file.remove( paste0(path_data, "bed_ind.txt" ) )
 
     # return dataset
-    return( df_res )
+    return( df )
 
 
     }

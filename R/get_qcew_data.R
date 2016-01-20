@@ -33,11 +33,15 @@ get_files_cut = function(
   write = F
 ){
 
+
+
+    
   dt_res <- data.table()
 
   if(industry == "naics"){
 
-    if (data_cut <= 20 | data_cut >= 30){
+    # NON SIZE DATA SAMPLE
+    if ( prod(data_cut <= 20 | data_cut >= 30) ){          # make sure all the elements are of the same type
 
       for (year in seq(year_start, year_end)) {
 
@@ -47,9 +51,7 @@ get_files_cut = function(
         df <- fread(paste0(path_data,
                            toString(year), ".q1-q4.singlefile.csv"))
 
-        dt_split <- split(df, df$agglvl_code)
-
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- df[ agglvl_code %in% data_cut ]
         dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
 
         # cleaning up
@@ -61,7 +63,8 @@ get_files_cut = function(
 
       }
 
-    } else if (data_cut >= 20 & data_cut <= 30){
+    # SIZE DATA
+    } else if ( prod(data_cut >= 20 & data_cut <= 30) ){
 
       for (year in seq(year_start, year_end)) {
 
@@ -69,9 +72,9 @@ get_files_cut = function(
         download_qcew_size_data(target_year = year, industry = industry, path_data = path_data)
 
         df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
-        dt_split <- split(df, df$agglvl_code)
 
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- df[ agglvl_code %in% data_cut ]
+        
         dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
         setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
                            c("qtrly_estabs", "lq_qtrly_estabs") )
@@ -84,7 +87,15 @@ get_files_cut = function(
         dt_res <- rbind(dt_res, dt_split, fill = T)
 
       }
+
+    # one ofwhich is just not allowed  
+    } else {
+
+        stop("Cannot download data from Single File and Size dataset Jointly")
+
     }
+
+    
   }
 
   if(industry == "sic"){

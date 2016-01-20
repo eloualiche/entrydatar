@@ -10,6 +10,8 @@ download_qcew_data(target_year, industry = "naics", path_data = "./")
 \item{target_year:}{year for which we want to download the data}
 
 \item{path_data:}{where does the download happen: default current directory}
+
+\item{industry:}{download naics or sic data}
 }
 \value{
 NIL. Downloads the file to the current directory and unzips it.
