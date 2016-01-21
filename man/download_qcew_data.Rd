@@ -9,12 +9,12 @@ download_qcew_data(target_year, industry = "naics", path_data = "./")
 \arguments{
 \item{target_year:}{year for which we want to download the data}
 
-\item{path_data:}{where does the download happen: default current directory}
+\item{path_data:}{where does the download happen: default current directory + tmp}
 
 \item{industry:}{download naics or sic data}
 }
 \value{
-NIL. Downloads the file to the current directory and unzips it.
+file complete path. Downloads the file to the current directory and unzips it.
 }
 \description{
 Download QCEW dataset from directly from the BLS website

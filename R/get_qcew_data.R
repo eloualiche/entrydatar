@@ -29,14 +29,15 @@ get_files_cut = function(
   year_start = 1990,
   year_end = 2013,
   industry = "naics",
-  path_data = "~/Downloads/",
+  path_data = "~/Desktop/tmp_data/",
   write = F
 ){
 
-
-
-    
   dt_res <- data.table()
+
+  subdir <- randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
+                          loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
+  dir.create(paste0(path_data, subdir))
 
   if(industry == "naics"){
 
@@ -46,17 +47,16 @@ get_files_cut = function(
       for (year in seq(year_start, year_end)) {
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
 
-        df <- fread(paste0(path_data,
-                           toString(year), ".q1-q4.singlefile.csv"))
+        file_name <- download_qcew_data(target_year = year, industry = industry,
+                                        path_data = paste0(path_data, subdir, "/") )
+        df <- fread(paste0(path_data, subdir, "/", file_name) )
 
         dt_split <- df[ agglvl_code %in% data_cut ]
         dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
 
         # cleaning up
-        file.remove( paste0(path_data, year, ".q1-q4.singlefile.csv" ) )
-        file.remove( paste0(path_data, year, "_qtrly_singlefile.zip" ) )
+        # unlink(paste0(path_data, subdir), recursive = T)
         message("")
 
         dt_res <- rbind(dt_res, dt_split, fill = T)
@@ -74,7 +74,7 @@ get_files_cut = function(
         df <- fread( paste0(path_data, toString(year), ".q1.by_size.csv") )
 
         dt_split <- df[ agglvl_code %in% data_cut ]
-        
+
         dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
         setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
                            c("qtrly_estabs", "lq_qtrly_estabs") )
@@ -88,16 +88,17 @@ get_files_cut = function(
 
       }
 
-    # one ofwhich is just not allowed  
+    # one of which is just not allowed
     } else {
 
         stop("Cannot download data from Single File and Size dataset Jointly")
 
     }
 
-    
+
   }
 
+  # SIC INDUSTRY
   if(industry == "sic"){
 
     if (data_cut < 10){
@@ -109,14 +110,12 @@ get_files_cut = function(
       for (year in seq(year_start, year_end)) {
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        download_qcew_data(target_year = year, industry = industry, path_data = path_data)
+        file_name <- download_qcew_data(target_year = year, industry = industry,
+                                        path_data = paste0(path_data, subdir, "/") )
 
-        df <- fread(paste0(path_data,
-                           "sic.", toString(year), ".q1-q4.singlefile.csv"))
+        df <- fread(paste0(path_data, subdir, "/", file_name) )
 
-        dt_split <- split(df, df$agglvl_code)
-
-        dt_split <- data.table(dt_split[ c(paste0(data_cut)) ][[1]])
+        dt_split <- df[ agglvl_code %in% data_cut ]
 
         dt_split[, old_industry_code := industry_code ]
         dt_split[, industry_code := gsub("[[:alpha:]]", "", str_sub(old_industry_code, 6, -1) ) ]
@@ -133,6 +132,7 @@ get_files_cut = function(
 
       }
 
+    # SIZE DATA
     } else if (data_cut %in% c(7,8,9,10,11,12,24,25)){
 
       for (year in seq(year_start, year_end)) {
@@ -150,8 +150,6 @@ get_files_cut = function(
         dt_split[ is.na(as.numeric(industry_code)), sic := NA ]
 
         # cleaning up
-        file.remove( paste0(path_data, "sic.", toString(year), ".q1.by_size.csv" ) )
-        file.remove( paste0(path_data, "sic_", toString(year), "_q1_by_size.zip" ) )
         message("")
 
         dt_res <- rbind(dt_res, dt_split, fill = T)
@@ -160,6 +158,8 @@ get_files_cut = function(
     }
   }
 
+
+  unlink(paste0(path_data, subdir), recursive = T) # erase the temp subdirectory
 
   if (write == T){
     write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
@@ -196,11 +196,11 @@ tidy_qcew <- function(
 
     dt_month <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                           month1_emplvl, month2_emplvl, month3_emplvl,
-                          area_fips, own_code, size_code) ]
+                          area_fips, own_code, size_code, agglvl_code) ]
     dt_month <- dt_month %>% gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
     dt_month[, `:=`(month = as.numeric(gsub("[^\\d]+", "", month, perl=TRUE)) ) ]
     dt_month[, month := (quarter-1)*3 + month ]
-    setorder(dt_month, industry_code, year, month)
+    setorder(dt_month, agglvl_code, industry_code, year, month)
 
     if (frequency == "month"){
       dt_tidy <- dt_month
@@ -215,7 +215,7 @@ tidy_qcew <- function(
       dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                               total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
                               avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs,
-                              area_fips, own_code, size_code) ]
+                              area_fips, own_code, size_code, agglvl_code) ]
 
     } else if (industry == "sic"){
 
@@ -237,7 +237,7 @@ tidy_qcew <- function(
   if (frequency == "all"){
 
     dt_tidy <- merge(dt_month, dt_quarter, all.x = T,
-                     by = c("year", "quarter", "industry_code", "own_code", "area_fips", "size_code") )
+                     by = c("year", "quarter", "industry_code", "own_code", "area_fips", "size_code", "agglvl_code") )
     setorder(dt_tidy, industry_code, year, month)
 
   }
@@ -352,9 +352,9 @@ get_files_master = function (
 #' Download QCEW dataset from directly from the BLS website
 #'
 #' @param target_year: year for which we want to download the data
-#' @param path_data: where does the download happen: default current directory
+#' @param path_data: where does the download happen: default current directory + tmp
 #' @param industry: download naics or sic data
-#' @return NIL. Downloads the file to the current directory and unzips it.
+#' @return file complete path. Downloads the file to the current directory and unzips it.
 download_qcew_data = function(
   target_year,
   industry = "naics",
@@ -375,7 +375,13 @@ download_qcew_data = function(
                 paste0(path_data, zip_file_name) )           # download file to path_data
   unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
 
-} # end of download_data
+  # output is list of files in directory
+  read_list <- list.files( paste0(path_data) )
+  read_list <- read_list[grep("\\.csv$", read_list)]
+
+  return(read_list)
+
+} # end of download_qcew
 
 
 

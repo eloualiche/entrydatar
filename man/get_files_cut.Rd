@@ -5,7 +5,7 @@
 \title{Group all the functions}
 \usage{
 get_files_cut(data_cut = 10, year_start = 1990, year_end = 2013,
-  industry = "naics", path_data = "~/Downloads/", write = F)
+  industry = "naics", path_data = "~/Desktop/tmp_data/", write = F)
 }
 \arguments{
 \item{path_data:}{where do we store the data}
