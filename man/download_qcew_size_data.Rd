@@ -14,9 +14,12 @@ download_qcew_size_data(target_year, industry = "naics", path_data = "./")
 \item{industry:}{download naics or sic data}
 }
 \value{
-NIL. Downloads the file to the current directory and unzips it.
+read_list: String with names of downloaded files
 }
 \description{
 Download QCEW dataset (size files 1st quarter) directly from the BLS website
+}
+\note{
+Downloads the file to the current directory and unzips it.
 }
 
