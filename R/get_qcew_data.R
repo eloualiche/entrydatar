@@ -177,7 +177,6 @@ get_files_cut = function(
 }
 
 
-
 #' Tidying the dataset for regression use (or merge)
 #'
 #' @param dt: input dataset from get_files_cut
@@ -256,6 +255,55 @@ tidy_qcew <- function(
   return( dt_tidy )
 
 }
+
+
+
+
+
+
+
+
+
+#' Tidying the dataset for regression use (or merge): operate year by year to keep memory to manageable levels.
+#'
+#' @param dt: input dataset from get_files_cut
+#' @param industry: download naics or sic data
+#' @param frequency: download either quarterly, monthly or all data
+#' @note returns a data.table file that is formatted according to tidy standard
+#'   typically this will be year x sub_year (quarter or month) x size x own_code x industry
+#'   the file can be aggregated as such
+#'   I do not download all the information (some location quotients and taxes are forgotten)
+#' @return data.table dt_res
+#' @examples
+#'   dt_tidy <- tidy_qcew_year(dt, frequency = "all", industry = "naics")
+#' @export
+tidy_qcew_year <- function(
+  dt,
+  frequency = "all",
+  industry = "naics"
+){
+
+  year_list <- as.vector(unique(dt$year))
+  dt_res <- data.table()
+
+  for (i_year in 1:length(year_list) ){
+
+    sub_year <- year_list[i_year]
+
+    dt_tmp <- dt[ year == sub_year ]
+
+    dt_tmp <- tidy_qcew(dt_tmp,
+                frequency = frequency, industry = industry)
+
+    dt_res <- rbind(dt_res, dt_tmp)
+
+  }
+
+  return( dt_res )
+
+}
+
+
 
 
 

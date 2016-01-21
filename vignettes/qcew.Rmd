@@ -26,6 +26,8 @@ dt <- entrydatar::get_files_cut(data_cut = 10, year_start = 1990, year_end =1993
 dt
 ```
 
+Note that the dataset can be large. Downloading most of the industry 3 and 4 digits cuts across counties and MSAs ends up with 57mn rows. Saving it in `.rds` formats takes around 2gb of memory.
+
 On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut `28`:
 ```
 dt_naics <- entrydatar::get_files_cut(data_cut = 28, 

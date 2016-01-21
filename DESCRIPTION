@@ -11,11 +11,12 @@ LazyData: TRUE
 Depends:
     R (>= 3.2.2)
 Imports:
-    plyr       (>= 1.8.3),
-    dplyr      (>= 0.4.3),
-    data.table (>= 1.9.6),
-    functional (>= 0.6),
     bit64      (>= 0.9),
+    data.table (>= 1.9.6),
+    dplyr      (>= 0.4.3),
+    functional (>= 0.6),
+    plyr       (>= 1.8.3),
+    random,
     stringr    (>= 1.0.0)
 RoxygenNote: 5.0.1
 Suggests:
