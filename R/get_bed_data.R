@@ -69,6 +69,9 @@ get_bed_data = function(
     df$nent_emp <- df$ent_emp - df$exit_emp
     df$nent_cnt <- df$ent_cnt - df$exit_cnt
 
+
+    df[, dateq := as.quarterly(ISOdate(floor(date_ym/100), date_ym %% 100, 1) )  ]
+
     # cleaning up
     file.remove( paste0(path_data, "bed_ind.txt" ) )
 

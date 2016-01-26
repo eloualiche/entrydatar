@@ -104,7 +104,8 @@ Then for example `XXYYY` can be split in two parts:
     + `YYY` is `996` then it represents	"Overseas Locations"
     + `YYY` is `997` then it represents "Multicounty, Not Statewide"
     + `YYY` is `998` then it represents "Out-of-State"
-    + `YYY` is `999` then it represents "Unknown Or Undefined"    
+    + `YYY` is `999` then it represents "Unknown Or Undefined" 
+  - If the first character is `C` then it represents subdivisions at the MSA level
   
 BLS documentation is available at the following links  
   - For [naics](http://www.bls.gov/cew/doc/titles/area/area_titles.htm)
