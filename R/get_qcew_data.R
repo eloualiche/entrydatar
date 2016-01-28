@@ -51,10 +51,15 @@ get_files_cut = function(
 
         file_name <- download_qcew_data(target_year = year, industry = industry,
                                         path_data = paste0(path_data, subdir, "/") )
-        df <- fread(paste0(path_data, subdir, "/", file_name) )
+
+        df <- fread(paste0(path_data, subdir, "/", file_name), colClasses = c(disclosure_code = "character") )
+        df %>% tab(disclosure_code)
 
         dt_split <- df[ agglvl_code %in% data_cut ]
-        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+
+        # dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+        # this clean up is not necessary to keep disclosure codes intact
+
 
         # cleaning up
         # unlink(paste0(path_data, subdir), recursive = T)
@@ -220,7 +225,7 @@ tidy_qcew <- function(
 
       dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                               total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
-                              avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs,
+                              avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code
                               area_fips, own_code, size_code, agglvl_code) ]
 
 

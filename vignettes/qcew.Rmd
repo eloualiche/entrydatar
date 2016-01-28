@@ -124,3 +124,9 @@ BLS documentation is available at the following links:
 
   - For [naics](http://www.bls.gov/cew/doc/titles/area/area_titles.htm)
   - For [sic](http://www.bls.gov/cew/doc/titles/area/sic_area_titles.htm)
+
+
+
+
+---------------------------
+(c) Erik Loualiche
