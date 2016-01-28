@@ -13,14 +13,14 @@ We download data from the CBP. Data is available for the period from 1986 to 201
 The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses. 
 
 For example if we would like the raw data:
-```{r}
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
 library(entrydatar)
 dt_raw <- download_all_cbp(1990, 1990)
 dt_raw
 ```
 
 For something a bit tidier we gather the data around year, geography, industry and size:
-```{r}
+```{r, results='hide', warning = F, error = F, message = F, eval = F}
 dt_tidy <- entrydatar::tidy_cbp(dt_raw, 1990, 1990)
 dt_tidy
 ```

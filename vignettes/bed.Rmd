@@ -15,7 +15,7 @@ The flat file is at the bottom of this [page](http://www.bls.gov/bdm/bdmind3.htm
 Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) with other data.
 
 For example to start and get the BED industry data:
-```{r}
+```{r, results='hide', warning = F, error = F, message = F, eval = F}
 library(entrydatar)
 dt_ind <- get_bed_data("industry")
 dt_ind
