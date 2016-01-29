@@ -225,7 +225,7 @@ tidy_qcew <- function(
 
       dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                               total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
-                              avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code
+                              avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code,
                               area_fips, own_code, size_code, agglvl_code) ]
 
 
