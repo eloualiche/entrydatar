@@ -55,8 +55,10 @@ get_files_cut = function(
         df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
 
         dt_split <- df[ agglvl_code %in% data_cut ]
+        vec_tmp <- dt_split$disclosure_code          # only character
 
-        # dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+        dt_split$disclosure_code <- vec_tmp
         # this clean up is not necessary to keep disclosure codes intact
 
 
