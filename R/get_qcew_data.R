@@ -27,7 +27,7 @@
 get_files_cut = function(
   data_cut = 10,
   year_start = 1990,
-  year_end = 2013,
+  year_end = 2015,
   industry = "naics",
   path_data = "~/Desktop/tmp_data/",
   write = F
@@ -52,8 +52,7 @@ get_files_cut = function(
         file_name <- download_qcew_data(target_year = year, industry = industry,
                                         path_data = paste0(path_data, subdir, "/") )
 
-        df <- fread(paste0(path_data, subdir, "/", file_name), colClasses = c(disclosure_code = "character") )
-        df %>% tab(disclosure_code)
+        df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
 
         dt_split <- df[ agglvl_code %in% data_cut ]
 
