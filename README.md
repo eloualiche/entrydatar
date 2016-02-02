@@ -40,12 +40,9 @@ To Do on CBP:
 ### Installation
   -  Install the current version from [github](https://github.mit.edu/erikl/entrydatar) with
 
-	```{r}
+```{r}
 library(devtools)
-devtools::install_github(
-  "erikl/entrydatar", 
-  host = "github.mit.edu/api/v3", 
-  auth_token = "d2c545def9a8e8d8e3bd9be1fa18a815dafa09a8")
+devtools::install_github("erikl/entrydatar")
 ```
 
 
