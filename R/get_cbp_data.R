@@ -21,9 +21,6 @@ tidy_cbp <- function(
 
   dt_res <- copy(dt_raw)
 
-
-  dt_res <- dt_raw
-
   return(dt_res)
 
 }
@@ -37,13 +34,15 @@ tidy_cbp <- function(
 #'   http://www.census.gov/econ/cbp/download/full_layout/County_Layout_SIC.txt
 #' @param year_start: year starting data download
 #' @param year_end: year ending data download
+#' @param aggregation_level: which data type to download
 #' @param path_data: where does the download happen: default current directory
 #' @return data.table
 #' @export
 download_all_cbp <- function(
-  year_start = 1996,
-  year_end   = 2013,
-  path_data = "~/Downloads/"
+  year_start        = 1996,
+  year_end          = 2013,
+  aggregation_level = "county",
+  path_data         = "~/Downloads/"
 ){
 
   dt_res <- data.table()
@@ -51,7 +50,7 @@ download_all_cbp <- function(
   for (year in seq(year_start, year_end)){
 
     message(paste0("Downloading and processing year: ", year))
-    dt_year <- download_cbp_data(target_year = year, path_data = path_data)
+    dt_year <- download_cbp_data(target_year = year, path_data = path_data, aggregation_level = aggregation_level)
     dt_year[, year := year ]
     dt_res  <- rbind(dt_res, dt_year, fill = T)
 
@@ -66,12 +65,16 @@ download_all_cbp <- function(
 #' Download one year of county business pattern dataset
 #'
 #' @param target_year: year for which we want to download the data
+#' @param aggregation_level: which data cut to download
 #' @param path_data: where does the download happen: default current directory
 #' @return data.table
 download_cbp_data <- function(
   target_year,
+  aggregation_level = "county",
   path_data = "~/Downloads/"
 ){
+
+  aggregation_level <- tolower(aggregation_level)
 
   if (target_year >= 2002){
     path1 <- paste0("econ", target_year, "/")
@@ -80,19 +83,45 @@ download_cbp_data <- function(
   }
 
   path2 <- paste0("CBP_CSV/")
-  zip_file_name <- paste0("cbp", str_sub(target_year, 3, 4), "co.zip")
-  file_name <- paste0("cbp", str_sub(target_year, 3, 4), "co.txt")
 
-  url <- paste0("ftp://ftp.census.gov/", path1, path2, zip_file_name)
+  if (aggregation_level == "county"){
+    suffix = "co"
+  } else if (aggregation_level == "us"){
+    suffix = "us"
+  } else if (aggregation_level == "state"){
+    suffix = "st"
+  } else if (aggregation_level == "msa"){
+    suffix = "msa"
+    if (target_year < 1993){
+      warning("No MSA file before 1993")
+      return( data.table() )
+    }
+  } else {
+    error(paste0("Aggregation level not known: ", aggregation_level, " ??"))
+  }
 
-  download.file(url,
-                paste0(path_data, zip_file_name) )           # download file to path_data
+  zip_file_name <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".zip")
+  file_name <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".txt")
 
-  unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+  if (aggregation_level != "us"){
+
+    url <- paste0("ftp://ftp.census.gov/", path1, path2, zip_file_name)
+    download.file(url,
+                  paste0(path_data, zip_file_name) )           # download file to path_data
+    unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+
+  } else{                                                      # national case is not zipped
+    url <- paste0("ftp://ftp.census.gov/", path1, path2, file_name)
+    download.file(url,
+                  paste0(path_data, file_name) )
+  }
+
 
   dt_res <- fread(paste0(path_data, file_name))
 
+  if (aggregation_level != "US"){
   file.remove( paste0(path_data, zip_file_name ) )
+  }
   file.remove( paste0(path_data, file_name ) )
 
   return(dt_res)

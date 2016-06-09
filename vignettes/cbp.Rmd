@@ -19,13 +19,25 @@ dt_raw <- download_all_cbp(1990, 1990)
 dt_raw
 ```
 
-For something a bit tidier we gather the data around year, geography, industry and size:
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
-dt_tidy <- entrydatar::tidy_cbp(dt_raw, 1990, 1990)
-dt_tidy
+The data is by default aggregated at the county level. I allow different level of aggregations using variable `aggregation_level`. The `aggregation_level` variable is detailed in a table below. Calling variable without the default is now:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_county_level   <- download_all_cbp(1990, 1990,
+                                      aggregation_level = "county")
+dt_national_level <- download_all_cbp(1990, 1990,
+                                      aggregation_level = "US")
 ```
 
-### Some more information about data layout
+
+### Some more information about data layout and availability
+
+- Metro area data start with 1993.
+- ZIP Code data start with 1994
+- Congressional District data started in 2013.
+- LFO breakout for States starts with 2010.
+- Island Area data and LFO breakout for U.S. start with 2008.
+- Puerto Rico data start with 1998.
+
+
 
 ----------------------------------------------------------------
 | Variable Name             | Description                      |
@@ -34,7 +46,7 @@ dt_tidy
 | Variable                  |                                  |
 | `emp`                     | Total Mid-March Employees        |
 | `qp1`                     | First Quarter Payroll ($1,000)   |
-| `ap`                      | Total Annual Payroll ($1,000)     |
+| `ap`                      | Total Annual Payroll ($1,000)    |
 | `est`                     | Total Number of establishments   |
 |                           |                                  |
 | Size                      |                                  |
@@ -59,6 +71,68 @@ dt_tidy
 | `fipcscty`                | FIPCS County Code                |
 | `censtate`                | Census State Code                |
 | `cencty`                  | Census County Code               |
+----------------------------------------------------------------
+
+Informative flags are the `empflag` about data suppression. It denotes employment size class for data withheld to avoid disclosure (confidentiality) or withheld because data do not meet publication standards. The aggregate size class is indicated by letters from `a` to `m`. `lfo` informs about the legal organizational form of the firms considered. Definitions of the flags are in the following table:
+
+-----------------------------------------------------------------
+|  Data Flag                 | Description                      |
+|----------------------------|----------------------------------|
+|                            |                                  |
+| Employment Flag            |                                  |
+| `EMPFLAG`                  |                                  |
+| `a`                        | 0-19                             |
+| `b`                        | 20-99                            |
+| `c`                        | 100-249                          |
+| `e`                        | 250-499                          |
+| `f`                        | 500-999                          |
+| `g`                        | 1,000-2,499                      |
+| `h`                        | 2,500-4,999                      |
+| `i`                        | 5,000-9,999                      |
+| `j`                        | 10,000-24,999                    |
+| `k`                        | 25,000-49,999                    |
+| `l`                        | 50,000-99,999                    |
+| `m`                        | 100,000 or More                  | 
+|                            |                                  |
+| Legal Form of Organization |                                  |
+| `LFO`                      |                                  |
+| `-`                        | All Establishments               |
+| `C`                        | Corporations                     |
+| `Z`                        | S-Corporations                   |
+| `S`                        | Sole Proprietorships             |
+| `P`                        | Partnernhips                     |
+| `N`                        | Non-Profits                      |
+| `G`                        | Government                       |
+| `O`                        | Other                            |
+----------------------------------------------------------------
 
 
+To Download different version of the dataset the match is:
+-----------------------------------------------------------------
+|  Aggregation Argument      | Description                      |
+|----------------------------|----------------------------------|
+| `county `                  | county level (default)           |
+| `US`                       | national                         |
+| `MSA`                      | metropolitan area                |
+| `state`                    | state level                      |
+----------------------------------------------------------------
+
+
+
+For something a bit tidier we gather the data around year, geography, industry and size. *Not yet implemented*
+```{r, results='hide', warning = F, error = F, message = F, eval = F}
+# dt_tidy <- entrydatar::tidy_cbp(dt_raw, 1990, 1990)
+# dt_tidy
+```
+
+
+
+
+
+
+
+
+
+                        
+  
 
