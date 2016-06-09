@@ -35,7 +35,7 @@ get_files_cut = function(
 
   dt_res <- data.table()
 
-  subdir <- randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
+  subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                           loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
   dir.create(paste0(path_data, subdir))
   message(paste0("Creating temporary directory: '", path_data, subdir, "' "))
@@ -428,14 +428,13 @@ download_qcew_data = function(
 
   if (industry == "naics"){
     zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
-    dir_name      = paste0("http://www.bls.gov/cew/data/files/", toString(target_year), "/csv/")
+    dir_name      = paste0("http://data.bls.gov/cew/data/files/", toString(target_year), "/csv/")
   } else if (industry == "sic"){
     zip_file_name = paste0("sic_", toString(target_year), "_qtrly_singlefile.zip")
-    dir_name      = paste0("http://www.bls.gov/cew/data/files/", toString(target_year), "/sic/csv/")
+    dir_name      = paste0("http://data.bls.gov/cew/data/files/", toString(target_year), "/sic/csv/")
   }
 
   url = paste0(dir_name, zip_file_name)
-
   download.file(url,
                 paste0(path_data, zip_file_name) )           # download file to path_data
   unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
@@ -468,7 +467,7 @@ download_qcew_size_data = function(
     zip_file_name = paste0(toString(target_year), "_q1_by_size.zip")
 
     url = paste0(
-      "http://www.bls.gov/cew/data/files/",
+      "http://data.bls.gov/cew/data/files/",
       toString(target_year),
       "/csv/",
       zip_file_name)
@@ -487,7 +486,7 @@ download_qcew_size_data = function(
 
     # http://www.bls.gov/cew/data/files/2000/sic/csv/sic_2000_q1_by_size.zip
     url <- paste0(
-      "http://www.bls.gov/cew/data/files/",
+      "http://data.bls.gov/cew/data/files/",
       toString(target_year),
       "/sic/csv/",
       zip_file_name)

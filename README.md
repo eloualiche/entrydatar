@@ -6,6 +6,9 @@ Downloads and aggregates flat tables of entry statistics from the Quarterly Cens
 ### Available data
   
 #### Quarterly Census of Employment and Wages (QCEW) 
+
+**The zip file are broken at the moment: download routines are broken for QCEW at the moment**
+
 See the [BLS website](http://www.bls.gov/cew/home.htm) for more information.
 
 Establishment level entry data.

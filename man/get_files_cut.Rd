@@ -4,7 +4,7 @@
 \alias{get_files_cut}
 \title{Group all the functions}
 \usage{
-get_files_cut(data_cut = 10, year_start = 1990, year_end = 2013,
+get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
   industry = "naics", path_data = "~/Desktop/tmp_data/", write = F)
 }
 \arguments{
