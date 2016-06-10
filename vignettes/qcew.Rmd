@@ -46,7 +46,7 @@ dt_naics
 
 ### Backup: what if the BLS has changed my data!
 
-I included an option to specify a snapshot of the data take through the url wayback machine: thanks To [Gabriel Chodorow-Reich](http://scholar.harvard.edu/chodorow-reich) for suggesting the idea.[^1].
+I included an option to specify a snapshot of the data take through the url wayback machine: thanks To [Gabriel Chodorow-Reich](http://scholar.harvard.edu/chodorow-reich) for suggesting the idea.<sup>[1](#fn1)</sup>
 Specify a suffix found from the internet wayback machine on the BLS website and add it as an argument in the download function:
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
 # Enter the address directly from the html address
@@ -150,8 +150,7 @@ BLS documentation is available at the following links:
 
 
 ---------------------------
-[^1]: The `stata` version of this code is on Gabe's website [here](http://scholar.harvard.edu/chodorow-reich/data-programs)
-
+<a name="fn1">1</a>: The `stata` version of this code is on Gabe's website [here](http://scholar.harvard.edu/chodorow-reich/data-programs)
 
 ---------------------------
 (c) Erik Loualiche
