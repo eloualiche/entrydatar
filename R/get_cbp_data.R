@@ -76,13 +76,12 @@ download_cbp_data <- function(
 
   aggregation_level <- tolower(aggregation_level)
 
-  if (target_year >= 2002){
-    path1 <- paste0("econ", target_year, "/")
-  } else {
-    path1 <- "Econ2001_And_Earlier/"
-  }
-
-  path2 <- paste0("CBP_CSV/")
+  #if (target_year >= 2002){
+  #  path1 <- paste0("econ", target_year, "/")
+  #} else {
+  #  path1 <- "Econ2001_And_Earlier/"
+  #}
+  # path2 <- paste0("CBP_CSV/")
 
   if (aggregation_level == "county"){
     suffix = "co"
@@ -100,27 +99,31 @@ download_cbp_data <- function(
     error(paste0("Aggregation level not known: ", aggregation_level, " ??"))
   }
 
+  url_prefix    <- "http://www2.census.gov/programs-surveys/cbp/datasets/"
+  partial_url   <- paste0(url_prefix, target_year, "/")
   zip_file_name <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".zip")
-  file_name <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".txt")
+  file_name     <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".txt")
 
-  if (aggregation_level != "us"){
+  if (aggregation_level == "us" & target_year <= 2007){    # national case is not zipped before 2007
 
-    url <- paste0("ftp://ftp.census.gov/", path1, path2, zip_file_name)
+    url <- paste0(partial_url, file_name)
+    download.file(url,
+                  paste0(path_data, file_name) )
+
+  } else{
+    url <- paste0(partial_url, zip_file_name)
     download.file(url,
                   paste0(path_data, zip_file_name) )           # download file to path_data
     unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
 
-  } else{                                                      # national case is not zipped
-    url <- paste0("ftp://ftp.census.gov/", path1, path2, file_name)
-    download.file(url,
-                  paste0(path_data, file_name) )
   }
 
 
   dt_res <- fread(paste0(path_data, file_name))
+  setnames(dt_res, tolower(names(dt_res)) )
 
-  if (aggregation_level != "US"){
-  file.remove( paste0(path_data, zip_file_name ) )
+  if ( (aggregation_level != "us") || (target_year > 2007)){
+    file.remove( paste0(path_data, zip_file_name ) )
   }
   file.remove( paste0(path_data, file_name ) )
 

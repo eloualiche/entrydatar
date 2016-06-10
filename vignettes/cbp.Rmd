@@ -108,14 +108,14 @@ Informative flags are the `empflag` about data suppression. It denotes employmen
 
 
 To Download different version of the dataset the match is:
------------------------------------------------------------------
-|  Aggregation Argument      | Description                      |
-|----------------------------|----------------------------------|
-| `county `                  | county level (default)           |
-| `US`                       | national                         |
-| `MSA`                      | metropolitan area                |
-| `state`                    | state level                      |
-----------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
+|  Aggregation Argument      | Description                      | Data layout                                |
+|----------------------------|----------------------------------|--------------------------------------------|
+| `county `                  | county level (default)           |                                            |
+| `US`                       | national                         | [US](../tables/us_lfo_layout.txt)          |
+| `MSA`                      | metropolitan area                | [MSA](../tables/metra_are_layout,txt)      |
+| `state`                    | state level                      | [State](../tables/state_x_lfo_layout.txt)  |
+--------------------------------------------------------------------------------------------------------------
 
 
 

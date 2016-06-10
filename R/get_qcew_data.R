@@ -18,6 +18,7 @@
 #' @param year_start: start year for which we want data
 #' @param year_end: end year for which we want data
 #' @param industry: download naics or sic data
+#' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @param write: save it somewhere
 #' @return data.table aggregate
 #' @examples
@@ -29,7 +30,8 @@ get_files_cut = function(
   year_start = 1990,
   year_end = 2015,
   industry = "naics",
-  path_data = "~/Desktop/tmp_data/",
+  path_data = "~/Downloads/tmp_data/",
+  url_wayback = "",
   write = F
 ){
 
@@ -50,7 +52,8 @@ get_files_cut = function(
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
 
         file_name <- download_qcew_data(target_year = year, industry = industry,
-                                        path_data = paste0(path_data, subdir, "/") )
+                                        path_data = paste0(path_data, subdir, "/"),
+                                        url_wayback = url_wayback)
 
         df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
 
@@ -60,7 +63,6 @@ get_files_cut = function(
         dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
         dt_split$disclosure_code <- vec_tmp
         # this clean up is not necessary to keep disclosure codes intact
-
 
         # cleaning up
         # unlink(paste0(path_data, subdir), recursive = T)
@@ -79,15 +81,16 @@ get_files_cut = function(
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
 
         file_name <- download_qcew_size_data(target_year = year, industry = industry,
-                                             path_data = paste0(path_data, subdir, "/") )
+                                             path_data = paste0(path_data, subdir, "/"),
+                                             url_wayback = url_wayback)
 
         df <- fread( paste0(path_data, subdir, "/", file_name) )
 
         dt_split <- df[ agglvl_code %in% data_cut ]
 
         dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-        setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
-                           c("qtrly_estabs", "lq_qtrly_estabs") )
+        # setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
+        #                   c("qtrly_estabs", "lq_qtrly_estabs") )
 
         # cleaning up
         message("")
@@ -120,7 +123,8 @@ get_files_cut = function(
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
         file_name <- download_qcew_data(target_year = year, industry = industry,
-                                        path_data = paste0(path_data, subdir, "/") )
+                                        path_data = paste0(path_data, subdir, "/"),
+                                        url_wayback = url_wayback)
 
         df <- fread(paste0(path_data, subdir, "/", file_name) )
 
@@ -151,7 +155,8 @@ get_files_cut = function(
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
         file_name <- download_qcew_size_data(target_year = year, industry,
-                                             path_data = paste0(path_data, subdir, "/") )
+                                             path_data = paste0(path_data, subdir, "/"),
+                                             url_wayback = url_wayback)
 
         df <- fread( paste0(path_data, subdir, "/", file_name) )
 
@@ -419,19 +424,28 @@ get_files_master = function (
 #' @param target_year: year for which we want to download the data
 #' @param path_data: where does the download happen: default current directory + tmp
 #' @param industry: download naics or sic data
+#' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @return file complete path. Downloads the file to the current directory and unzips it.
 download_qcew_data = function(
   target_year,
   industry = "naics",
-  path_data = "./"
+  path_data = "./",
+  url_wayback = ""
 ){
+
+  url_prefix <- "http://data.bls.gov/cew/data/files/"
+  if (url_wayback != ""){
+    url_prefix = url_wayback
+    url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")
+    # 2011/csv/2011_qtrly_singlefile.zip"
+  }
 
   if (industry == "naics"){
     zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
-    dir_name      = paste0("http://data.bls.gov/cew/data/files/", toString(target_year), "/csv/")
+    dir_name      = paste0(url_prefix, toString(target_year), "/csv/")
   } else if (industry == "sic"){
     zip_file_name = paste0("sic_", toString(target_year), "_qtrly_singlefile.zip")
-    dir_name      = paste0("http://data.bls.gov/cew/data/files/", toString(target_year), "/sic/csv/")
+    dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")
   }
 
   url = paste0(dir_name, zip_file_name)
@@ -455,19 +469,28 @@ download_qcew_data = function(
 #' @param target_year: year for which we want to download the data
 #' @param path_data: where does the download happen: default current directory
 #' @param industry: download naics or sic data
+#' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @return read_list: String with names of downloaded files
 #' @note Downloads the file to the current directory and unzips it.
 download_qcew_size_data = function(
   target_year,
   industry = "naics",
-  path_data = "./"
+  path_data = "./",
+  url_wayback = ""
 ){
+
+  url_prefix <- "http://data.bls.gov/cew/data/files/"
+  if (url_wayback != ""){
+    url_wayback <- (gsub("[^\\d]+", "", url_wayback, perl=TRUE))  # extract the date from the wayback call (so we can also just input a date)
+    url_wayback <- paste0("https://web.archive.org/web/", url_wayback, "/")
+    url_prefix <- paste0(url_wayback, "http://www.bls.gov/cew/data/files/")
+  }
 
   if (industry == "naics"){
     zip_file_name = paste0(toString(target_year), "_q1_by_size.zip")
 
     url = paste0(
-      "http://data.bls.gov/cew/data/files/",
+      url_prefix,
       toString(target_year),
       "/csv/",
       zip_file_name)
@@ -477,7 +500,6 @@ download_qcew_size_data = function(
     unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
 
   } else if (industry == "sic"){
-
     if (target_year < 1997 | target_year > 2000){
       warning("No size files for sic outside of 1997-2000 period.")
     }
@@ -486,7 +508,7 @@ download_qcew_size_data = function(
 
     # http://www.bls.gov/cew/data/files/2000/sic/csv/sic_2000_q1_by_size.zip
     url <- paste0(
-      "http://data.bls.gov/cew/data/files/",
+      url_prefix,
       toString(target_year),
       "/sic/csv/",
       zip_file_name)

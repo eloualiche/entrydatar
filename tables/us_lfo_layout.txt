@@ -1,0 +1,215 @@
+                                    CBP[YR]US.TXT
+
+                                U.S. Data Dictionary
+                                by 3-, 4-, 5-, and 6-Digit NAICS Codes
+
+Note:  In the filename, [YR] is the 2-digit data year.  Each data field is separated by comma (,) delimiters.
+
+NOTE:  The "EMPFLAG" field (Data Suppression Flag) denotes employment size class for data withheld to avoid 
+disclosure (confidentiality) or withheld because data do not meet publication standards.  Similarly, each 
+employment size class has it's own data suppression flag (field names f1_4, f5_9, ... f1000).
+
+
+Field           Data  
+Name            Type    Description
+
+USCODE          C       U.S. Geography Indicator = "98"
+
+NAICS           C       Industry Code - 6-digit NAICS code.
+  
+LFO             C       Legal Form of Organization
+
+                        '-' - All Establishments                        
+                        C - Corporations
+                        Z - S-Corporations
+                        S - Sole Proprietorships
+                        P - Partnerships
+                        N - Non-Profits
+                        G - Government
+                        O - Other
+
+EMPFLAG         C       Data Suppression Flag
+                        This denotes employment size class for data withheld to avoid disclosure (confidentiality) 
+                        or withheld because data do not meet publication standards. 
+ 
+                                a       0-19
+                                b       20-99
+                                c       100-249
+                                e       250-499
+                                f       500-999
+                                g       1,000-2,499
+                                h       2,500-4,999
+                                i       5,000-9,999
+                                j       10,000-24,999
+                                k       25,000-49,999
+                                l       50,000-99,999
+                                m       100,000 or More
+
+EMP_NF          C       Total Mid-March Employees Noise Flag (See all Noise Flag definitions at the end of this record 
+                        layout)
+
+EMP             N       Total Mid-March Employees with Noise
+
+QP1_NF          C       Total First Quarter Payroll Noise Flag
+
+QP1             N       Total First Quarter Payroll ($1,000) with Noise
+                                                              
+AP_NF           C       Total Annual Payroll Noise Flag
+
+AP              N       Total Annual Payroll ($1,000) with Noise
+
+EST             N       Total Number of Establishments
+
+F1_4            C       Data Suppression Flag: - 1-4 Employee Size Class
+
+E1_4NF          C       Mid-March Employees Noise Flag: - 1-4 Employee Size Class
+
+E1_4            N       Mid-March Employees with Noise: - 1-4 Employee Size Class
+
+Q1_4NF          C       First Quarter Payroll Noise Flag: - 1-4 Employee Size Class
+
+Q1_4            N       First Quarter Payroll ($1,000) with Noise: - 1-4 Employee Size Class
+
+A1_4NF          C       Annual Payroll Noise Flag: - 1-4 Employee Size Class
+
+A1_4            N       Annual Payroll ($1,000) with Noise: - 1-4 Employee Size Class
+
+N1_4            N       Number of Establishments: 1-4 Employee Size Class
+
+F5_9            C       Data Suppression Flag: 5-9 Employee Size Class
+
+E5_9NF          C       Mid-March Employees Noise Flag: - 5-9 Employee Size Class
+
+E5_9            N       Mid-March Employees with Noise: - 5-9 Employee Size Class
+
+Q5_9NF          C       First Quarter Payroll Noise Flag: - 5-9 Employee Size Class
+
+Q5_9            N       First Quarter Payroll ($1,000) with Noise: - 5-9 Employee Size Class
+
+A5_9NF          C       Annual Payroll Noise Flag: - 5-9 Employee Size Class
+
+A5_9            N       Annual Payroll ($1,000) with Noise: - 5-9 Employee Size Class
+
+N5_9            N       Number of Establishments: 5-9 Employee Size Class
+
+F10_19          C       Data Suppression Flag: 10-19 Employee Size Class
+
+E10_19NF        C       Mid-March Employees Noise Flag: - 10-19 Employee Size Class
+
+E10_19          N       Mid-March Employees with Noise: - 10-19 Employee Size Class
+
+Q10_19NF        C       First Quarter Payroll Noise Flag: - 10-19 Employee Size Class
+
+Q10_19          N       First Quarter Payroll ($1,000) with Noise: - 10-19 Employee Size Class
+
+A10_19NF        C       Annual Payroll Noise Flag: - 10-19 Employee Size Class
+
+A10_19          N       Annual Payroll ($1,000) with Noise: - 10-19 Employee Size Class
+
+N10_19          N       Number of Establishments: 10-19 Employee Size Class
+
+F20_49          C       Data Suppression Flag: 20-49 Employee Size Class
+
+E20_49NF        C       Mid-March Employees Noise Flag: - 20-49 Employee Size Class
+
+E20_49          N       Mid-March Employees with Noise: - 20-49 Employee Size Class
+
+Q20_49NF        C       First Quarter Payroll Noise Flag: - 20-49 Employee Size Class
+
+Q20_49          N       First Quarter Payroll ($1,000) with Noise: - 20-49 Employee Size Class
+
+A20_49NF        C       Annual Payroll Noise Flag: - 20-49 Employee Size Class
+
+A20_49          N       Annual Payroll ($1,000) with Noise: - 20-49 Employee Size Class
+
+N20_49          N       Number of Establishments: 20-49 Employee Size Class
+
+F50_99          C       Data Suppression Flag: 50-99 Employee Size Class
+
+E50_99NF        C       Mid-March Employees Noise Flag: - 50-99 Employee Size Class
+
+E50_99          N       Mid-March Employees with Noise: - 50-99 Employee Size Class
+
+Q50_99NF        C       First Quarter Payroll Noise Flag: - 50-99 Employee Size Class
+
+Q50_99          N       First Quarter Payroll ($1,000) with Noise: - 50-99 Employee Size Class
+
+A50_99NF        C       Annual Payroll Noise Flag: - 50-99 Employee Size Class
+
+A50_99          N       Annual Payroll ($1,000) with Noise: - 50-99 Employee Size Class
+
+N50_99          N       Number of Establishments: 50-99 Employee Size Class
+
+F100_249        C       Data Suppression Flag: 100-249 Employee Size Class
+
+E100_249NF      C       Mid-March Employees Noise Flag: - 100-249 Employee Size Class
+
+E100_249        N       Mid-March Employees with Noise: - 100-249 Employee Size Class
+
+Q100_249NF      C       First Quarter Payroll Noise Flag: - 100-249 Employee Size Class
+
+Q100_249        N       First Quarter Payroll ($1,000) with Noise: - 100-249 Employee Size Class
+
+A100_249NF      C       Annual Payroll Noise Flag: - 100-249 Employee Size Class
+
+A100_249        N       Annual Payroll ($1,000) with Noise: - 100-249 Employee Size Class
+
+N100_249        N       Number of Establishments: 100-249 Employee Size Class
+
+F250_499        C       Data Suppression Flag: 250-499 Employee Size Class
+
+E250_499NF      C       Mid-March Employees Noise Flag: - 250-499 Employee Size Class
+
+E250_499        N       Mid-March Employees with Noise: - 250-499 Employee Size Class
+
+Q250_499NF      C       First Quarter Payroll Noise Flag: - 250-499 Employee Size Class
+
+Q250_499        N       First Quarter Payroll ($1,000) with Noise: - 250-499 Employee Size Class
+
+A250_499NF      C       Annual Payroll Noise Flag: - 250-499 Employee Size Class
+
+A250_499        N       Annual Payroll ($1,000) with Noise: - 250-499 Employee Size Class
+
+N250_499        N       Number of Establishments: 250-499 Employee Size Class
+
+F500_999        C       Data Suppression Flag: 500-999 Employee Size Class
+
+E500_999NF      C       Mid-March Employees Noise Flag: - 500-999 Employee Size Class
+
+E500_999        N       Mid-March Employees with Noise: - 500-999 Employee Size Class
+
+Q500_999NF      C       First Quarter Payroll Noise Flag: - 500-999 Employee Size Class
+
+Q500_999        N       First Quarter Payroll ($1,000) with Noise: - 500-999 Employee Size Class
+
+A500_999NF      C       Annual Payroll Noise Flag: - 500-999 Employee Size Class
+
+A500_999        N       Annual Payroll ($1,000) with Noise: - 500-999 Employee Size Class
+
+N500_999        N       Number of Establishments: 500-999 Employee Size Class
+
+F1000           C       Data Suppression Flag: - 1,000 or More Employee Size Class
+
+E1000NF         C       Mid-March Employees Noise Flag: - 1,000 or More Employee Size Class
+
+E1000           N       Mid-March Employees with Noise: - 1,000 or More Employee Size Class
+
+Q1000NF         C       First Quarter Payroll Noise Flag: - 1,000 or More Employee Size Class
+
+Q1000           N       First Quarter Payroll ($1,000) with Noise: - 1,000 or More Employee Size Class
+
+A1000NF         C       Annual Payroll Noise Flag: - 1,000 or More Employee Size Class
+
+A1000           N       Annual Payroll ($1,000) with Noise: - 1,000 or More Employee Size Class
+
+N1000           N       Number of Establishments: 1,000 or More Employee Size Class
+
+
+NOTE: Noise Flag definitions (fields ending in NF) are:
+
+        G       0 to < 2% noise (low noise)
+        H       2 to < 5% noise (medium noise)
+        D       Withheld to avoid disclosing data for individual companies; data are included in higher level totals. Employment 
+                or payroll field set to zero.
+        S       Withheld because estimate did not meet publication standards. Employment or payroll field set to zero.
+

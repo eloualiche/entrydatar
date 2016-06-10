@@ -31,7 +31,7 @@ Note that the dataset can be large. Downloading most of the industry 3 and 4 dig
 On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut `28`:
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
 dt_naics <- entrydatar::get_files_cut(data_cut = 28, 
-                                      industry = "naics"
+                                      industry = "naics",
                                       year_start = 1990, year_end = 2015, 
                                       path_data = "~/Downloads/", write = F)
 dt_naics
@@ -44,8 +44,30 @@ dt_naics <- entrydatar::tidy_qcew(dt_naics,
 dt_naics
 ```
 
+### Backup: what if the BLS has changed my data!
+
+I included an option to specify a snapshot of the data take through the url wayback machine: thanks To [Gabriel Chodorow-Reich](http://scholar.harvard.edu/chodorow-reich) for suggesting the idea.[^1].
+Specify a suffix found from the internet wayback machine on the BLS website and add it as an argument in the download function:
+```{r, results='hide', warning = F, error = F, message = F, eval = F}
+# Enter the address directly from the html address
+wayback_suffix <- "https://web.archive.org/web/20141101135821"  # suffix for November 1st, 2014
+# Or enter the exact date at which date it has been crawled:
+wayback_suffix <- 20141101135821  
+
+# execute adding the wayback option
+dt_naics <- entrydatar::get_files_cut(data_cut = 28, 
+                                      industry = "naics",
+                                      year_start = 1990,
+                                      year_end = 2013,       # try not to ask for data from the future
+                                      url_wayback = wayback_suffix,
+                                      path_data = "~/Downloads/", write = F)
+dt_naics
+```
 
 
+
+
+## Documentation on the data
 
 For example the table of cuts looks as the following for **naics** based industries is as follows:
 
@@ -126,6 +148,9 @@ BLS documentation is available at the following links:
   - For [sic](http://www.bls.gov/cew/doc/titles/area/sic_area_titles.htm)
 
 
+
+---------------------------
+[^1]: The `stata` version of this code is on Gabe's website [here](http://scholar.harvard.edu/chodorow-reich/data-programs)
 
 
 ---------------------------

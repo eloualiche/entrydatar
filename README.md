@@ -45,7 +45,7 @@ To Do on CBP:
 
 ```{r}
 library(devtools)
-devtools::install_github("erikl/entrydatar")
+devtools::install_github("eloualiche/entrydatar")
 ```
 
 
