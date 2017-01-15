@@ -4,10 +4,11 @@ author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Download data from Business Employment Dynamics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 
 Downloads data from the BED website. Of main importance is the flat file with firm level count by industry (3 digits naics) every quarter.
 The flat file is at the bottom of this [page](http://www.bls.gov/bdm/bdmind3.htm) under this [url](http://www.bls.gov/web/cewbd/bd_data_ind3.txt).
@@ -20,3 +21,7 @@ library(entrydatar)
 dt_ind <- get_bed_data("industry")
 dt_ind
 ```
+
+
+---------------------------
+(c) Erik Loualiche

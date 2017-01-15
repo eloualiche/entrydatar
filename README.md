@@ -7,7 +7,7 @@ Downloads and aggregates flat tables of entry statistics from the Quarterly Cens
   
 #### Quarterly Census of Employment and Wages (QCEW) 
 
-**The zip file are broken at the moment: download routines are broken for QCEW at the moment**
+**The zip file are broken at the moment: use wayback machine fix when downloading the QCEW (see vignette for how to use it)**
 
 See the [BLS website](http://www.bls.gov/cew/home.htm) for more information.
 
@@ -31,8 +31,10 @@ Annual data on business employment at the county level.
 
 Files can be manually downloaded from this [page](http://www.census.gov/econ/cbp/download/).
 
-To Do on CBP:
+Left to Do on CBP:
 - Some of the data is on `naics` and some on `sic`. Is there an harmonized dataset.
+- `tidy` function on cbp is not finished
+
 
 ### Vignettes: 
   - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)

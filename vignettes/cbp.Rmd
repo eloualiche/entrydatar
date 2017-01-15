@@ -4,10 +4,11 @@ author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{CBP}
+  %\VignetteIndexEntry{Download data from the County Business Pattern (CBP)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
+
 
 We download data from the CBP. Data is available for the period from 1986 to 2013 at an annual frequency.
 The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses. 
@@ -125,6 +126,9 @@ For something a bit tidier we gather the data around year, geography, industry a
 # dt_tidy
 ```
 
+
+---------------------------
+(c) Erik Loualiche
 
 
 

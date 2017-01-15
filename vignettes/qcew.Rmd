@@ -4,7 +4,7 @@ author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{QCEW}
+  %\VignetteIndexEntry{Download data from the Quarterly Census of Employment and Wages (QCEW)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,7 +20,7 @@ library(entrydatar)
 ```
 
 For example if we are interested in downloading aggregate level data we use the cut `10`:
-``````{r, results='hide', warning = F, error = F, message = F, eval = F}
+```{r, results='hide', warning = F, error = F, message = F, eval = F}
 dt <- entrydatar::get_files_cut(data_cut = 10, year_start = 1990, year_end =1993, 
                                 path_data = "~/Downloads/", write = F)
 dt
