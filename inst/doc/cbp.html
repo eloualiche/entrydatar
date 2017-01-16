@@ -74,7 +74,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<p>We download data from the CBP. Data is available for the period from 1986 to 2013 at an annual frequency. The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses.</p>
+<p>We download data from the County Business Pattern (CBP). Data is available for the period from 1986 to 2014 at an annual frequency.<br />
+The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses.<br />
+The data is directly retrieved from the Census <a href="http://www.census.gov/programs-surveys/cbp.html">website</a></p>
 <p>For example if we would like the raw data:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(entrydatar)
 dt_raw &lt;-<span class="st"> </span><span class="kw">download_all_cbp</span>(<span class="dv">1990</span>, <span class="dv">1990</span>)
@@ -87,12 +89,16 @@ dt_national_level &lt;-<span class="st"> </span><span class="kw">download_all_cb
 <div id="some-more-information-about-data-layout-and-availability" class="section level3">
 <h3>Some more information about data layout and availability</h3>
 <ul>
+<li>By Geography:</li>
 <li>Metro area data start with 1993.</li>
 <li>ZIP Code data start with 1994</li>
 <li>Congressional District data started in 2013.</li>
 <li>LFO breakout for States starts with 2010.</li>
 <li>Island Area data and LFO breakout for U.S. start with 2008.</li>
-<li>Puerto Rico data start with 1998.</li>
+<li><p>Puerto Rico data start with 1998.</p></li>
+<li>By Industry:</li>
+<li>4-digit SIC code from 1986 to 1997</li>
+<li><p>6-digit NAICS code from 1998 to 2014. New flags added after 2007.</p></li>
 </ul>
 <table>
 <tbody>
@@ -198,7 +204,7 @@ dt_national_level &lt;-<span class="st"> </span><span class="kw">download_all_cb
 <td>| Data Flag | Description |</td>
 </tr>
 <tr class="even">
-<td>|—————————-|———————————-|</td>
+<td>|—————————-|—————————————-|</td>
 </tr>
 <tr class="odd">
 <td>| | |</td>
@@ -278,6 +284,36 @@ dt_national_level &lt;-<span class="st"> </span><span class="kw">download_all_cb
 <tr class="even">
 <td>| <code>O</code> | Other |</td>
 </tr>
+<tr class="odd">
+<td>| | |</td>
+</tr>
+<tr class="even">
+<td>| Noise Flag | |</td>
+</tr>
+<tr class="odd">
+<td>| <code>EMP_NF</code> | Total Mid-March Employees Noise Flag |</td>
+</tr>
+<tr class="even">
+<td>| <code>QP1_NF</code> | Total First Quarter Payroll Noise Flag |</td>
+</tr>
+<tr class="odd">
+<td>| <code>AP_NF</code> | Total Annual Payroll Noise Flag |</td>
+</tr>
+<tr class="even">
+<td>| <code>G</code> | 0 to &lt; 2% noise (low noise) |</td>
+</tr>
+<tr class="odd">
+<td>| <code>H</code> | 2 to &lt; 5% noise (low noise) |</td>
+</tr>
+<tr class="even">
+<td>| <code>D</code> | |</td>
+</tr>
+<tr class="odd">
+<td>| <code>D</code> | Withheld (see records layout) |</td>
+</tr>
+<tr class="even">
+<td>| <code>S</code> | Withheld (see records layout) |</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -315,7 +351,8 @@ dt_national_level &lt;-<span class="st"> </span><span class="kw">download_all_cb
 </tbody>
 </table>
 <hr />
-<p>For something a bit tidier we gather the data around year, geography, industry and size. <em>Not yet implemented</em></p>
+<hr />
+<p>For something a bit tidier we gather the data around year, geography, industry and size. <em>Not yet implemented</em>.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># dt_tidy &lt;- entrydatar::tidy_cbp(dt_raw, 1990, 1990)</span>
 <span class="co"># dt_tidy</span></code></pre></div>
 <hr />

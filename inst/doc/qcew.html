@@ -74,24 +74,34 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 
-<p>In this vignette we provide examples of how to use entrydatar to download precise files from the QCEW. In the second part we give rudimentary documentations of the feature that are of principal interest to work with the data.</p>
+<p>In this vignette we provide examples of how to use entrydatar to download precise files from the QCEW.<br />
+In the second part we give rudimentary documentations of the feature that are of principal interest to work with the data.</p>
 <div id="downloading-data-from-the-qcew" class="section level2">
 <h2>Downloading data from the QCEW</h2>
 <p>To get read to download data, we load some libraries that the package might have forgotten to call (the package works with all tables in a <code>data.table</code> format)</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(data.table, bit64)
 <span class="kw">library</span>(entrydatar)</code></pre></div>
 <p>For example if we are interested in downloading aggregate level data we use the cut <code>10</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt &lt;-<span class="st"> </span>entrydatar::<span class="kw">get_files_cut</span>(<span class="dt">data_cut =</span> <span class="dv">10</span>, <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span><span class="dv">1993</span>, 
-                                <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
-dt</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt_agg &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(       
+  <span class="dt">data_cut =</span> <span class="dv">10</span>,     
+  <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span><span class="dv">1993</span>,    
+  <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
+dt_agg</code></pre></div>
 <p>Note that the dataset can be large. Downloading most of the industry 3 and 4 digits cuts across counties and MSAs ends up with 57mn rows. Saving it in <code>.rds</code> formats takes around 2gb of memory.</p>
 <p>On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut <code>28</code>:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt_naics &lt;-<span class="st"> </span>entrydatar::<span class="kw">get_files_cut</span>(<span class="dt">data_cut =</span> <span class="dv">28</span>, 
-                                      <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,
-                                      <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span> <span class="dv">2015</span>, 
-                                      <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt_naics &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(        
+  <span class="dt">data_cut =</span> <span class="dv">28</span>,       
+  <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,      
+  <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span> <span class="dv">2015</span>,       
+  <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
 dt_naics</code></pre></div>
-<p>The data is still raw from the BLS download. We can clean the data in two ways: a monthly dataset with employment by categories and a quarterly dataset with only number of firms. Finally we allow an option for aggregating both types.</p>
+<p>The BLS provides quarterly as well as annual averages, which are lighter. There is now an option to download directly the annual average using a frequency option. The default is quarterly, so everything should be backward compatible.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt_naics &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(<span class="dt">data_cut =</span> <span class="dv">28</span>,
+                          <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,
+                          <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span> <span class="dv">2015</span>,
+                          <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
+dt_naics</code></pre></div>
+<p>The data is still raw from the BLS download. We can clean the data in two ways: a monthly dataset with employment by categories and a quarterly dataset with only number of firms. Finally we allow an option for aggregating both types. Note this function works only for the quarterly version of the data.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dt_naics &lt;-<span class="st"> </span>entrydatar::<span class="kw">tidy_qcew</span>(dt_naics,
                                   <span class="dt">frequency =</span> <span class="st">&quot;month&quot;</span>)
 dt_naics</code></pre></div>
@@ -104,12 +114,12 @@ wayback_suffix &lt;-<span class="st"> &quot;https://web.archive.org/web/20141101
 wayback_suffix &lt;-<span class="st"> </span><span class="dv">20141101135821</span>  
 
 <span class="co"># execute adding the wayback option</span>
-dt_naics &lt;-<span class="st"> </span>entrydatar::<span class="kw">get_files_cut</span>(<span class="dt">data_cut =</span> <span class="dv">28</span>, 
-                                      <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,
-                                      <span class="dt">year_start =</span> <span class="dv">1990</span>,
-                                      <span class="dt">year_end =</span> <span class="dv">2013</span>,       <span class="co"># try not to ask for data from the future</span>
-                                      <span class="dt">url_wayback =</span> wayback_suffix,
-                                      <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
+dt_naics &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(
+  <span class="dt">data_cut =</span> <span class="dv">28</span>,
+  <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,
+  <span class="dt">year_start =</span> <span class="dv">1990</span>,  <span class="dt">year_end =</span> <span class="dv">2014</span>,       <span class="co"># try not to ask for data from the future        </span>
+  <span class="dt">url_wayback =</span> wayback_suffix,
+  <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)
 dt_naics</code></pre></div>
 </div>
 </div>
@@ -128,10 +138,10 @@ dt_naics</code></pre></div>
 <td>## Some documentation on the dataset</td>
 </tr>
 <tr class="odd">
-<td>The data file layout for a general view of what is available:</td>
+<td>The table of contents to download directly datasets</td>
 </tr>
 <tr class="even">
-<td>- <a href="http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm">For naics</a> - <a href="http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm">For sic</a></td>
+<td>The data file layout for a general view of what is available: - For <a href="https://www.bls.gov/cew/datatoc.htm">table of contents</a> - For <a href="http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm">naics</a> - For <a href="http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm">sic</a></td>
 </tr>
 <tr class="odd">
 <td>### Data codes</td>

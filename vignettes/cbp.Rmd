@@ -10,8 +10,9 @@ vignette: >
 ---
 
 
-We download data from the CBP. Data is available for the period from 1986 to 2013 at an annual frequency.
-The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses. 
+We download data from the County Business Pattern (CBP). Data is available for the period from 1986 to 2014 at an annual frequency.    
+The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses.    
+The data is directly retrieved from the Census [website](http://www.census.gov/programs-surveys/cbp.html)
 
 For example if we would like the raw data:
 ```{r, results='hide', warning = F, error = F, message = F, eval= F}
@@ -31,13 +32,17 @@ dt_national_level <- download_all_cbp(1990, 1990,
 
 ### Some more information about data layout and availability
 
-- Metro area data start with 1993.
-- ZIP Code data start with 1994
-- Congressional District data started in 2013.
-- LFO breakout for States starts with 2010.
-- Island Area data and LFO breakout for U.S. start with 2008.
-- Puerto Rico data start with 1998.
+- By Geography:
+  + Metro area data start with 1993.
+  + ZIP Code data start with 1994
+  + Congressional District data started in 2013.
+  + LFO breakout for States starts with 2010.
+  + Island Area data and LFO breakout for U.S. start with 2008.
+  + Puerto Rico data start with 1998.
 
+- By Industry:
+  + 4-digit SIC code from 1986 to 1997
+  + 6-digit NAICS code from 1998 to 2014. New flags added after 2007.
 
 
 ----------------------------------------------------------------
@@ -76,36 +81,46 @@ dt_national_level <- download_all_cbp(1990, 1990,
 
 Informative flags are the `empflag` about data suppression. It denotes employment size class for data withheld to avoid disclosure (confidentiality) or withheld because data do not meet publication standards. The aggregate size class is indicated by letters from `a` to `m`. `lfo` informs about the legal organizational form of the firms considered. Definitions of the flags are in the following table:
 
------------------------------------------------------------------
-|  Data Flag                 | Description                      |
-|----------------------------|----------------------------------|
-|                            |                                  |
-| Employment Flag            |                                  |
-| `EMPFLAG`                  |                                  |
-| `a`                        | 0-19                             |
-| `b`                        | 20-99                            |
-| `c`                        | 100-249                          |
-| `e`                        | 250-499                          |
-| `f`                        | 500-999                          |
-| `g`                        | 1,000-2,499                      |
-| `h`                        | 2,500-4,999                      |
-| `i`                        | 5,000-9,999                      |
-| `j`                        | 10,000-24,999                    |
-| `k`                        | 25,000-49,999                    |
-| `l`                        | 50,000-99,999                    |
-| `m`                        | 100,000 or More                  | 
-|                            |                                  |
-| Legal Form of Organization |                                  |
-| `LFO`                      |                                  |
-| `-`                        | All Establishments               |
-| `C`                        | Corporations                     |
-| `Z`                        | S-Corporations                   |
-| `S`                        | Sole Proprietorships             |
-| `P`                        | Partnernhips                     |
-| `N`                        | Non-Profits                      |
-| `G`                        | Government                       |
-| `O`                        | Other                            |
-----------------------------------------------------------------
+-----------------------------------------------------------------------
+|  Data Flag                 | Description                            |
+|----------------------------|----------------------------------------|
+|                            |                                        |
+| Employment Flag            |                                        |
+| `EMPFLAG`                  |                                        |
+| `a`                        | 0-19                                   |
+| `b`                        | 20-99                                  |
+| `c`                        | 100-249                                |
+| `e`                        | 250-499                                |
+| `f`                        | 500-999                                |
+| `g`                        | 1,000-2,499                            |
+| `h`                        | 2,500-4,999                            |
+| `i`                        | 5,000-9,999                            |
+| `j`                        | 10,000-24,999                          |
+| `k`                        | 25,000-49,999                          |
+| `l`                        | 50,000-99,999                          |
+| `m`                        | 100,000 or More                        |
+|                            |                                        |
+| Legal Form of Organization |                                        |
+| `LFO`                      |                                        |
+| `-`                        | All Establishments                     |
+| `C`                        | Corporations                           |
+| `Z`                        | S-Corporations                         |
+| `S`                        | Sole Proprietorships                   |
+| `P`                        | Partnernhips                           |
+| `N`                        | Non-Profits                            |
+| `G`                        | Government                             |
+| `O`                        | Other                                  |
+|                            |                                        |
+| Noise Flag                 |                                        |
+| `EMP_NF`                   | Total Mid-March Employees Noise Flag   |
+| `QP1_NF`                   | Total First Quarter Payroll Noise Flag |
+| `AP_NF`                    | Total Annual Payroll Noise Flag        |
+| `G`                        | 0 to < 2% noise (low noise)            |
+| `H`                        | 2 to < 5% noise (low noise)            |
+| `D`                        |                                        |
+| `D`                        | Withheld (see records layout)          |
+| `S`                        | Withheld (see records layout)          |
+-----------------------------------------------------------------------
 
 
 To Download different version of the dataset the match is:
@@ -120,7 +135,10 @@ To Download different version of the dataset the match is:
 
 
 
-For something a bit tidier we gather the data around year, geography, industry and size. *Not yet implemented*
+
+---------------------------
+
+For something a bit tidier we gather the data around year, geography, industry and size. *Not yet implemented*.
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
 # dt_tidy <- entrydatar::tidy_cbp(dt_raw, 1990, 1990)
 # dt_tidy
@@ -129,14 +147,3 @@ For something a bit tidier we gather the data around year, geography, industry a
 
 ---------------------------
 (c) Erik Loualiche
-
-
-
-
-
-
-
-
-                        
-  
-

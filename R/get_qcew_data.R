@@ -12,12 +12,16 @@
 
 
 
+
+
+
 #' Other code: loads data.table with option to write it for a given cut
 #'
 #' @param path_data: where do we store the data
 #' @param year_start: start year for which we want data
 #' @param year_end: end year for which we want data
 #' @param industry: download naics or sic data
+#' @param frequency: download the quarterly files or the yearly files (default is quarterly)
 #' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @param write: save it somewhere
 #' @return data.table aggregate
@@ -30,6 +34,7 @@ get_files_cut = function(
   year_start = 1990,
   year_end = 2015,
   industry = "naics",
+  frequency = "quarter",
   path_data = "~/Downloads/tmp_data/",
   url_wayback = "",
   write = F
@@ -51,7 +56,8 @@ get_files_cut = function(
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
 
-        file_name <- download_qcew_data(target_year = year, industry = industry,
+        file_name <- download_qcew_data(target_year = year,
+                                        industry = industry, frequency = frequency,
                                         path_data = paste0(path_data, subdir, "/"),
                                         url_wayback = url_wayback)
 
@@ -73,14 +79,15 @@ get_files_cut = function(
 
       }
 
-    # SIZE DATA
+    # SIZE DATA: downloading only quarter version for now (ignore freqyency)
     } else if ( prod(data_cut >= 20 & data_cut <= 30) ){
 
       for (year in seq(year_start, year_end)) {
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
 
-        file_name <- download_qcew_size_data(target_year = year, industry = industry,
+        file_name <- download_qcew_size_data(target_year = year,
+                                             industry = industry,
                                              path_data = paste0(path_data, subdir, "/"),
                                              url_wayback = url_wayback)
 
@@ -122,7 +129,8 @@ get_files_cut = function(
       for (year in seq(year_start, year_end)) {
 
         message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        file_name <- download_qcew_data(target_year = year, industry = industry,
+        file_name <- download_qcew_data(target_year = year,
+                                        industry = industry, frequency = frequency,
                                         path_data = paste0(path_data, subdir, "/"),
                                         url_wayback = url_wayback)
 
@@ -144,7 +152,7 @@ get_files_cut = function(
 
       }
 
-    # SIZE DATA
+    # SIZE DATA: no freuqncy here either
     } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
 
       for (i_cut in 1:length(data_cut)){  # pad with zeroes
@@ -186,6 +194,16 @@ get_files_cut = function(
   return( dt_res )
 
 }
+
+
+
+
+
+
+
+
+
+
 
 
 #' Tidying the dataset for regression use (or merge)
@@ -318,6 +336,11 @@ tidy_qcew_year <- function(
 
 
 
+
+
+
+
+
 #' Export the downloaded table into a csv file.
 #'
 #' @param year: filename for .csv file. Note that you need to pass in the
@@ -352,6 +375,15 @@ export_named_df = function(
     write.table(file = destination_file, append=TRUE, row.names=FALSE, col.names=FALSE , sep=",")
 
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -422,29 +454,42 @@ get_files_master = function (
 #' Download QCEW dataset from directly from the BLS website
 #'
 #' @param target_year: year for which we want to download the data
-#' @param path_data: where does the download happen: default current directory + tmp
 #' @param industry: download naics or sic data
+#' @param path_data: where does the download happen: default current directory + tmp
+#' @param frequency: download the quarterly files or the yearly files (default is quarterly)
 #' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @return file complete path. Downloads the file to the current directory and unzips it.
 download_qcew_data = function(
   target_year,
-  industry = "naics",
-  path_data = "./",
+  industry    = "naics",
+  path_data   = "./",
+  frequency   = "quarter",
   url_wayback = ""
 ){
+
+  if (frequency %in% c("quarter", "Q")){
+    freq_string = "qtrly"
+  } else if (frequency %in% c("year", "Y")){
+    freq_string = "annual"
+  } else {
+    stop(paste0("Wrong frequency input .... ", frequency))
+  }
 
   url_prefix <- "http://data.bls.gov/cew/data/files/"
   if (url_wayback != ""){
     url_prefix = url_wayback
-    url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")
+    url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")  # note that this pulls from the old server www.bls.gov instead of data.bls.gov
     # 2011/csv/2011_qtrly_singlefile.zip"
   }
 
+
   if (industry == "naics"){
-    zip_file_name = paste0(toString(target_year), "_qtrly_singlefile.zip")
+    zip_file_name = paste0(toString(target_year), "_",
+                           freq_string, "_singlefile.zip")
     dir_name      = paste0(url_prefix, toString(target_year), "/csv/")
   } else if (industry == "sic"){
-    zip_file_name = paste0("sic_", toString(target_year), "_qtrly_singlefile.zip")
+    zip_file_name = paste0("sic_", toString(target_year), "_",
+                           freq_string, "_singlefile.zip")
     dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")
   }
 
@@ -460,6 +505,16 @@ download_qcew_data = function(
   return(read_list)
 
 } # end of download_qcew
+
+
+
+
+
+
+
+
+
+
 
 
 
