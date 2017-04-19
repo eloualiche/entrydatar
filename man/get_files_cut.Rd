@@ -5,7 +5,9 @@
 \title{Group all the functions}
 \usage{
 get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
-  industry = "naics", path_data = "~/Desktop/tmp_data/", write = F)
+  industry = "naics", frequency = "quarter",
+  path_data = "~/Downloads/tmp_data/", url_wayback = "", write = F,
+  verbose = F)
 }
 \arguments{
 \item{path_data:}{where do we store the data}
@@ -16,7 +18,13 @@ get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
 
 \item{industry:}{download naics or sic data}
 
+\item{frequency:}{download the quarterly files or the yearly files (default is quarterly)}
+
+\item{url_wayback:}{allows to specify the path in internet wayback machine that kept some of the archive}
+
 \item{write:}{save it somewhere}
+
+\item{verbose:}{useful for looking all the downloads link (debugging mode)}
 }
 \value{
 data.table aggregate
@@ -39,4 +47,3 @@ Other code: loads data.table with option to write it for a given cut
   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
                       path_data = "~/Downloads/", write = T)
 }
-

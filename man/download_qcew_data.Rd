@@ -4,14 +4,19 @@
 \alias{download_qcew_data}
 \title{Download QCEW dataset from directly from the BLS website}
 \usage{
-download_qcew_data(target_year, industry = "naics", path_data = "./")
+download_qcew_data(target_year, industry = "naics", path_data = "./",
+  frequency = "quarter", url_wayback = "", verbose = F)
 }
 \arguments{
 \item{target_year:}{year for which we want to download the data}
 
+\item{industry:}{download naics or sic data}
+
 \item{path_data:}{where does the download happen: default current directory + tmp}
 
-\item{industry:}{download naics or sic data}
+\item{frequency:}{download the quarterly files or the yearly files (default is quarterly)}
+
+\item{url_wayback:}{allows to specify the path in internet wayback machine that kept some of the archive}
 }
 \value{
 file complete path. Downloads the file to the current directory and unzips it.
@@ -19,4 +24,3 @@ file complete path. Downloads the file to the current directory and unzips it.
 \description{
 Download QCEW dataset from directly from the BLS website
 }
-

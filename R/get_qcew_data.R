@@ -24,6 +24,7 @@
 #' @param frequency: download the quarterly files or the yearly files (default is quarterly)
 #' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @param write: save it somewhere
+#' @param verbose: useful for looking all the downloads link (debugging mode)
 #' @return data.table aggregate
 #' @examples
 #'   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
@@ -37,7 +38,8 @@ get_files_cut = function(
   frequency = "quarter",
   path_data = "~/Downloads/tmp_data/",
   url_wayback = "",
-  write = F
+  write = F,
+  verbose = F
 ){
 
   dt_res <- data.table()
@@ -45,7 +47,8 @@ get_files_cut = function(
   subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                           loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
   dir.create(paste0(path_data, subdir))
-  message(paste0("Creating temporary directory: '", path_data, subdir, "' "))
+  message(paste0("# -----------------------------------------------------\n",
+                 "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
 
   if(industry == "naics"){
 
@@ -54,12 +57,12 @@ get_files_cut = function(
 
       for (year in seq(year_start, year_end)) {
 
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+        message(paste0("\n# Processing data for year ", toString(year)," and ", industry, " industry type."))
 
         file_name <- download_qcew_data(target_year = year,
                                         industry = industry, frequency = frequency,
                                         path_data = paste0(path_data, subdir, "/"),
-                                        url_wayback = url_wayback)
+                                        url_wayback = url_wayback, verbose = verbose)
 
         df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
 
@@ -464,7 +467,8 @@ download_qcew_data = function(
   industry    = "naics",
   path_data   = "./",
   frequency   = "quarter",
-  url_wayback = ""
+  url_wayback = "",
+  verbose     = F
 ){
 
   if (frequency %in% c("quarter", "Q")){
@@ -493,6 +497,9 @@ download_qcew_data = function(
     dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")
   }
 
+  if (verbose == T){
+    message(paste0("# Downloading from url .... ", url))
+    }
   url = paste0(dir_name, zip_file_name)
   download.file(url,
                 paste0(path_data, zip_file_name) )           # download file to path_data

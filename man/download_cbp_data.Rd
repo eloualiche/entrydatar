@@ -4,10 +4,13 @@
 \alias{download_cbp_data}
 \title{Download one year of county business pattern dataset}
 \usage{
-download_cbp_data(target_year, path_data = "~/Downloads/")
+download_cbp_data(target_year, aggregation_level = "county",
+  path_data = "~/Downloads/")
 }
 \arguments{
 \item{target_year:}{year for which we want to download the data}
+
+\item{aggregation_level:}{which data cut to download}
 
 \item{path_data:}{where does the download happen: default current directory}
 }
@@ -17,4 +20,3 @@ data.table
 \description{
 Download one year of county business pattern dataset
 }
-

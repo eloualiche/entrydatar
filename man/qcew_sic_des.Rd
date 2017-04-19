@@ -24,4 +24,3 @@ Also available on the BLS [website](http://www.bls.gov/cew/doc/titles/industry/s
 Variables are as follows
 }
 \keyword{datasets}
-

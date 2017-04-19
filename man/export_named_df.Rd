@@ -28,4 +28,3 @@ our data does not have any headers; this simplifies the process of
   joining all the csv files with cat or similar command line tools so that we
   have a single file across all aggregation level codes.
 }
-

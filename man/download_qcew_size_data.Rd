@@ -4,7 +4,8 @@
 \alias{download_qcew_size_data}
 \title{Download QCEW dataset (size files 1st quarter) directly from the BLS website}
 \usage{
-download_qcew_size_data(target_year, industry = "naics", path_data = "./")
+download_qcew_size_data(target_year, industry = "naics", path_data = "./",
+  url_wayback = "")
 }
 \arguments{
 \item{target_year:}{year for which we want to download the data}
@@ -12,6 +13,8 @@ download_qcew_size_data(target_year, industry = "naics", path_data = "./")
 \item{path_data:}{where does the download happen: default current directory}
 
 \item{industry:}{download naics or sic data}
+
+\item{url_wayback:}{allows to specify the path in internet wayback machine that kept some of the archive}
 }
 \value{
 read_list: String with names of downloaded files
@@ -22,4 +25,3 @@ Download QCEW dataset (size files 1st quarter) directly from the BLS website
 \note{
 Downloads the file to the current directory and unzips it.
 }
-

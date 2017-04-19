@@ -28,4 +28,3 @@ returns a data.table file that is formatted according to tidy standard
 \examples{
   dt_tidy <- tidy_qcew_year(dt, frequency = "all", industry = "naics")
 }
-

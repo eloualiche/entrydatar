@@ -23,4 +23,3 @@ Clean the CBP
 \note{
 Tidy up the CBP data into year state county industry dataset
 }
-

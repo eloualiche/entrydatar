@@ -30,4 +30,3 @@ returns a data.table file that is formatted according to tidy standard
                        year_start = 1990, year_end =1993,
                        path_data = "~/Downloads/", write = T)
 }
-

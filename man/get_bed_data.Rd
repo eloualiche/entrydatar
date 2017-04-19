@@ -22,4 +22,3 @@ downloads data from the Entry Data from the Business Employment Dynamics Website
   Data is split and tidy
 Download BED dataset from directly from the BLS website
 }
-

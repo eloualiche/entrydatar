@@ -2,7 +2,10 @@
 title: "Download data from Business Employment Dynamics"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+# output: rmarkdown::html_vignette
+output:
+  md_document:
+    variant: markdown_github
 vignette: >
   %\VignetteIndexEntry{Download data from Business Employment Dynamics}
   %\VignetteEngine{knitr::rmarkdown}

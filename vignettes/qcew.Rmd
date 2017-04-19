@@ -3,6 +3,9 @@ title: "Download data from the Quarterly Census of Employment and Wages (QCEW)"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+#output:
+#  md_document:
+#    variant: markdown_github
 vignette: >
   %\VignetteIndexEntry{Download data from the Quarterly Census of Employment and Wages (QCEW)}
   %\VignetteEngine{knitr::rmarkdown}
@@ -11,7 +14,7 @@ vignette: >
 
 In this vignette we provide examples of how to use entrydatar to download precise files from the QCEW.     
 In the second part we give rudimentary documentations of the feature that are of principal interest to work with the data.
-
+For an overview of the QCEW, head over to the [BLS website](https://www.bls.gov/cew/cewover.htm)
 
 
 ## Downloading data from the QCEW
@@ -45,10 +48,11 @@ dt_naics
 
 The BLS provides quarterly as well as annual averages, which are lighter. There is now an option to download directly the annual average using a frequency option. The default is quarterly, so everything should be backward compatible.
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
-dt_naics <- get_files_cut(data_cut = 28,
-                          industry = "naics",
-                          year_start = 1990, year_end = 2015,
-                          path_data = "~/Downloads/", write = F)
+dt_naics <- get_files_cut(     
+  data_cut = 28,     
+  industry = "naics",     
+  year_start = 1990, year_end = 2015,    
+  path_data = "~/Downloads/", write = F)
 dt_naics
 ```
 
@@ -56,7 +60,23 @@ The data is still raw from the BLS download. We can clean the data in two ways: 
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
 dt_naics <- entrydatar::tidy_qcew(dt_naics,
                                   frequency = "month")
-dt_naics
+dt_naics[]
+```
+
+The result looks like a neat panel:
+```{r, results='hide', warning = F, error = F, message = F, eval = F}
+        year quarter industry_code area_fips own_code size_code agglvl_code month emplvl
+     1: 1990       1          1011     01001        5         0          73     1    149
+     2: 1990       1          1011     01003        5         0          73     1    632
+     3: 1990       1          1011     01005        5         0          73     1    290
+     4: 1990       1          1011     01007        5         0          73     1    329
+     5: 1990       1          1011     01009        5         0          73     1    216
+    ---                                                                                 
+513884: 1990       4          1028     78010        1         0          73    12    208
+513885: 1990       4          1028     78010        2         0          73    12   2972
+513886: 1990       4          1028     78020        1         0          73    12      1
+513887: 1990       4          1028     78030        1         0          73    12    356
+513888: 1990       4          1028     78030        2         0          73    12   4034
 ```
 
 ### Backup: what if the BLS has changed my data!
@@ -73,7 +93,7 @@ wayback_suffix <- 20141101135821
 dt_naics <- get_files_cut(
   data_cut = 28,
   industry = "naics",
-  year_start = 1990,  year_end = 2014,       # try not to ask for data from the future        
+  year_start = 1990,  year_end = 2015,       # try not to ask for data from the future        
   url_wayback = wayback_suffix,
   path_data = "~/Downloads/", write = F)
 dt_naics
@@ -81,12 +101,11 @@ dt_naics
 
 
 
-
 ## Documentation on the data
 
 For example the table of cuts looks as the following for **naics** based industries is as follows:
 
-
+```
 --------------------------------------------------------------------------------------------------------------------------------------------------------------
 |                           | Geographic/Size LevelCode Format | National | National by size | CSA | MSA | Statewide | Statewide, by size | County | MicroSA |
 |---------------------------|----------------------------------|----------|------------------|-----|-----|-----------|--------------------|--------|---------|
@@ -101,7 +120,8 @@ For example the table of cuts looks as the following for **naics** based industr
 | 4-digit, by Ownership     | x6                               | 16       | 26               | -   | 46  | 56        | -                  | 76     | -       |
 | 5-digit, by Ownership     | x7                               | 17       | 27               | -   | 47  | 57        | -                  | 77     | -       |
 | 6-digit, by Ownership     | x8                               | 18       | 28               | -   | 48  | 58        | -                  | 78     | -       |
-
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+```
 
 
 
@@ -110,10 +130,11 @@ For example the table of cuts looks as the following for **naics** based industr
 The table of contents to download directly datasets
 
 The data file layout for a general view of what is available:
-  - For [table of contents](https://www.bls.gov/cew/datatoc.htm)
-  - For [naics](http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm)
-  - For [sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm)
 
+  - For [table of contents](https://www.bls.gov/cew/datatoc.htm)
+  - For [quarterly naics](http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm) and [annual naics](https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm)
+  - For [quarterly sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm) and [annual sic](https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm)
+  
 
 
 
@@ -122,10 +143,10 @@ The data file layout for a general view of what is available:
 #### Aggregation levels
 
 - Aggregation levels and files that contain them are defined by the BLS; we reproduce the table in the package for merging or easier access:
-  + **naics** [table](../data_raw/naics_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm)
-  + **sic** [table](../data_raw/sic_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm)
+    + **naics** [table](../data_raw/naics_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm)
+    + **sic** [table](../data_raw/sic_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm)
+    + **Supersectors** and **Sector**: head over to the [BLS webpage](https://www.bls.gov/cew/supersector.htm)
 - Note that there is no disaggregated data for size X industry before 1990 in the case of **naics**. The layout of files on the [download page](http://www.bls.gov/cew/datatoc.htm) is somewhat misleading.
-
 
 #### Size Classes
   - For [naics](http://www.bls.gov/cew/doc/titles/size/size_titles.htm)
@@ -133,7 +154,9 @@ The data file layout for a general view of what is available:
 
 
 #### Industries
+
 Industry titles are standard in that case
+
   - **naics** [table](../data_raw/naics_industry_titles.csv); original [BLS webage](http://www.bls.gov/cew/doc/titles/industry/industry_titles.htm)
   - **sic** [table](../data_raw/sic_industry_titles.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/industry/sic_industry_titles.htm)
 
