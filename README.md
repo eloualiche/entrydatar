@@ -1,11 +1,11 @@
 `entrydatar`: R package for data on U.S. firm level entry
 ======
 
-Downloads and aggregates flat tables of entry statistics from the *Quarterly Census of Employment and Wages* and *Business Employment Dynamics program* and the *County Business Patterns*. 
+Downloads and aggregates flat tables of entry statistics from the *Quarterly Census of Employment and Wages* and *Business Employment Dynamics program* and the *County Business Patterns*.
 
 ## Available data
-  
-### Quarterly Census of Employment and Wages (QCEW) 
+
+### Quarterly Census of Employment and Wages (QCEW)
 
 See the [BLS website](http://www.bls.gov/cew/home.htm) for more information.
 
@@ -19,7 +19,7 @@ Files can be manually downloaded from this [page](http://www.bls.gov/cew/datatoc
 See the [BLS website](http://www.bls.gov/bdm/home.htm) for more information
 
 Firm level entry data.
-Data is available at the naics (3 digits level) from 1992Q3 to 2015Q1. 
+Data is available at the naics (3 digits level) from 1992Q3 to 2015Q1.
 We download an industry flat file directly from the [BLS](http://www.bls.gov/web/cewbd/bd_data_ind3.txt)
 
 
@@ -33,11 +33,17 @@ Left to Do on CBP:
 - Some of the data is on `naics` and some on `sic`. Is there an harmonized dataset.
 - `tidy` function on cbp is not finished
 
+### Other datasets (In progress)
 
-## Vignettes: 
+  - Local Area Unemployment Statistics from the BLS: [LAU](https://www.bls.gov/lau/#tables)
+    `get_lau_data(years = seq(1990, 2016), path_data  = "./")``
+
+
+## Vignettes:
   - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)
   - How to download a clean version of the [CBP](vignettes/cbp.Rmd)
   - How to download a clean version of the [BED](vignettes/bed.Rmd)
+
 
 
 ## Installation
