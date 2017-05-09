@@ -1,4 +1,5 @@
-`entrydatar`: R package for data on U.S. firm level entry
+`entrydatar` 
+R package for data on U.S. firm level entry
 ======
 
 Downloads and aggregates flat tables of entry statistics from the *Quarterly Census of Employment and Wages* and *Business Employment Dynamics program* and the *County Business Patterns*.
@@ -10,7 +11,7 @@ Downloads and aggregates flat tables of entry statistics from the *Quarterly Cen
 See the [BLS website](http://www.bls.gov/cew/home.htm) for more information.
 
 Establishment level entry data.
-NAICS available from 1990 to 2015 and SIC from 1975 to 2000.   
+NAICS available from 1990 to 2016 and SIC from 1975 to 2000.   
 
 Files can be manually downloaded from this [page](http://www.bls.gov/cew/datatoc.htm).
 
@@ -36,14 +37,12 @@ Left to Do on CBP:
 ### Other datasets (In progress)
 
   - Local Area Unemployment Statistics from the BLS: [LAU](https://www.bls.gov/lau/#tables)
-    `get_lau_data(years = seq(1990, 2016), path_data  = "./")`
-
+```get_lau_data(years = seq(1990, 2016), path_data  = "./")```
 
 ## Vignettes:
   - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)
   - How to download a clean version of the [CBP](vignettes/cbp.Rmd)
   - How to download a clean version of the [BED](vignettes/bed.Rmd)
-
 
 
 ## Installation
@@ -53,6 +52,12 @@ Left to Do on CBP:
 library(devtools)
 devtools::install_github("eloualiche/entrydatar")
 ```
+
+
+## Work in progress (to do list)
+  - Load QCEW directly from local downloaded files
+  
+
 
 
 ---------------------------

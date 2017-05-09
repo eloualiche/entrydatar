@@ -22,6 +22,7 @@
 #' @param year_end: end year for which we want data
 #' @param industry: download naics or sic data
 #' @param frequency: download the quarterly files or the yearly files (default is quarterly)
+#' @param download: if empty do download the file from the BLS website, if not use a local version
 #' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
 #' @param write: save it somewhere
 #' @param verbose: useful for looking all the downloads link (debugging mode)
@@ -30,171 +31,182 @@
 #'   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
 #'                       path_data = "~/Downloads/", write = T)
 #' @export
-get_files_cut = function(
-  data_cut = 10,
-  year_start = 1990,
-  year_end = 2015,
-  industry = "naics",
-  frequency = "quarter",
-  path_data = "~/Downloads/tmp_data/",
+get_files_cut <- function(
+  data_cut    = 10,
+  year_start  = 1990,
+  year_end    = 2015,
+  industry    = "naics",
+  frequency   = "quarter",
+  path_data   = "~/Downloads/tmp_data/",
+  download    = "",      
   url_wayback = "",
-  write = F,
-  verbose = F
+  write       = F,
+  verbose     = F
 ){
 
-  dt_res <- data.table()
+    dt_res <- data.table()
+    
+    message(paste0("# -----------------------------------------------------\n",
+                   "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
+    subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
+                                    loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
+    dir.create(paste0(path_data, subdir))
 
-  subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
-                          loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
-  dir.create(paste0(path_data, subdir))
-  message(paste0("# -----------------------------------------------------\n",
-                 "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
 
+  # ------------------------------------------------------------------------        
   if(industry == "naics"){
 
     # NON SIZE DATA SAMPLE
     if ( prod(data_cut <= 20 | data_cut >= 30) ){          # make sure all the elements are of the same type
 
-      for (year in seq(year_start, year_end)) {
+      for (year_iter in seq(year_start, year_end)) {
 
-        message(paste0("\n# Processing data for year ", toString(year)," and ", industry, " industry type."))
+          message(paste0("\n# Processing data for year ", toString(year_iter)," and ", industry, " industry type."))
+          if (download == ""){
+              message("# Download in progress ... ")
+              file_name <- download_qcew_data(target_year = year_iter,
+                                              industry = industry, frequency = frequency,
+                                              path_data = paste0(path_data, subdir, "/"),
+                                              url_wayback = url_wayback, verbose = verbose)
+              df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
+          } else {
+              message("# Read file locally ... ")
+              system( paste0("tar -xvzf ", "'", download, year_iter, "_qtrly_singlefile.zip' ", "-C ", path_data, subdir ) )
+              df <- fread(paste0(path_data, subdir, "/", paste0(year_iter, ".q1-q4.singlefile.csv")) ) #, colClasses = c(disclosure_code = "character") ) 
+          }
 
-        file_name <- download_qcew_data(target_year = year,
-                                        industry = industry, frequency = frequency,
-                                        path_data = paste0(path_data, subdir, "/"),
-                                        url_wayback = url_wayback, verbose = verbose)
+          dt_split <- df[ agglvl_code %in% data_cut ]
+          vec_tmp <- dt_split$disclosure_code          # only character
 
-        df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
+          dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+          dt_split$disclosure_code <- vec_tmp
+                                        # this clean up is not necessary to keep disclosure codes intact
 
-        dt_split <- df[ agglvl_code %in% data_cut ]
-        vec_tmp <- dt_split$disclosure_code          # only character
+                                        # cleaning up
+                                        # unlink(paste0(path_data, subdir), recursive = T)
+          message("")
+          if (download == ""){
+              file.remove( paste0(path_data, subdir, "/", file_name) )
+          } else {
+              system(paste0("rm ", path_data, subdir, "/*.csv"))
+          }
 
-        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-        dt_split$disclosure_code <- vec_tmp
-        # this clean up is not necessary to keep disclosure codes intact
-
-        # cleaning up
-        # unlink(paste0(path_data, subdir), recursive = T)
-        message("")
-        file.remove( paste0(path_data, subdir, "/", file_name) )
-
-        dt_res <- rbind(dt_res, dt_split, fill = T)
-
+          dt_res <- rbind(dt_res, dt_split, fill = T)
       }
 
-    # SIZE DATA: downloading only quarter version for now (ignore freqyency)
+
+   # ------------------------------------------------------------------------    
+   # SIZE DATA: downloading only quarter version for now (ignore frequency)
     } else if ( prod(data_cut >= 20 & data_cut <= 30) ){
 
-      for (year in seq(year_start, year_end)) {
+        for (year in seq(year_start, year_end)) {
 
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
+            message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
 
-        file_name <- download_qcew_size_data(target_year = year,
-                                             industry = industry,
-                                             path_data = paste0(path_data, subdir, "/"),
-                                             url_wayback = url_wayback)
+            file_name <- download_qcew_size_data(target_year = year,
+                                                 industry = industry,
+                                                 path_data = paste0(path_data, subdir, "/"),
+                                                 url_wayback = url_wayback)
 
-        df <- fread( paste0(path_data, subdir, "/", file_name) )
+            df <- fread( paste0(path_data, subdir, "/", file_name) )
 
-        dt_split <- df[ agglvl_code %in% data_cut ]
+            dt_split <- df[ agglvl_code %in% data_cut ]
 
-        dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
-        # setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
-        #                   c("qtrly_estabs", "lq_qtrly_estabs") )
+            dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+            # setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
+            # c("qtrly_estabs", "lq_qtrly_estabs") )
+            # cleaning up
+            message("")
+            file.remove( paste0(path_data, subdir, "/", file_name) )
 
-        # cleaning up
-        message("")
-        file.remove( paste0(path_data, subdir, "/", file_name) )
+            dt_res <- rbind(dt_res, dt_split, fill = T)
+        }
 
-        dt_res <- rbind(dt_res, dt_split, fill = T)
-
-      }
-
-    # one of which is just not allowed
+# one of which is just not allowed
     } else {
-
         stop("Cannot download data from Single File and Size dataset Jointly")
-
     }
 
 
   }
 
-  # SIC INDUSTRY
-  if(industry == "sic"){
+    
+# --------------------------------------------------------------------------------------    
+# SIC INDUSTRY
+# --------------------------------------------------------------------------------------    
+    if(industry == "sic"){
 
-    if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
+        if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
 
-      for (i_cut in 1:length(data_cut)){  # pad with zeroes
-        if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
-      }
+            for (i_cut in 1:length(data_cut)){  # pad with zeroes
+                if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
+            }
 
-      for (year in seq(year_start, year_end)) {
+            for (year in seq(year_start, year_end)) {
 
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
-        file_name <- download_qcew_data(target_year = year,
-                                        industry = industry, frequency = frequency,
-                                        path_data = paste0(path_data, subdir, "/"),
-                                        url_wayback = url_wayback)
+                message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type."))
+                file_name <- download_qcew_data(target_year = year,
+                                                industry = industry, frequency = frequency,
+                                                path_data = paste0(path_data, subdir, "/"),
+                                                url_wayback = url_wayback)
 
-        df <- fread(paste0(path_data, subdir, "/", file_name) )
+                df <- fread(paste0(path_data, subdir, "/", file_name) )
 
-        dt_split <- df[ agglvl_code %in% data_cut ]
+                dt_split <- df[ agglvl_code %in% data_cut ]
 
-        dt_split[, old_industry_code := industry_code ]
-        dt_split[, industry_code := gsub("[[:alpha:]]", "", str_sub(old_industry_code, 6, -1) ) ]
-        dt_split[ is.na(as.numeric(industry_code)), sic := NA ]
+                dt_split[, old_industry_code := industry_code ]
+                dt_split[, industry_code := gsub("[[:alpha:]]", "", str_sub(old_industry_code, 6, -1) ) ]
+                dt_split[ is.na(as.numeric(industry_code)), sic := NA ]
 
-        ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
+                ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
 
-        # cleaning up
-        file.remove( paste0(path_data, subdir, "/", file_name) )
-        message("")
+                # cleaning up
+                file.remove( paste0(path_data, subdir, "/", file_name) )
+                message("")
+                dt_res <- rbind(dt_res, dt_split, fill = T)
 
-        dt_res <- rbind(dt_res, dt_split, fill = T)
+            }
 
-      }
+        # ------------------------------------------------------------------------    
+        # SIZE DATA: no frequency here either
+        } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
 
-    # SIZE DATA: no freuqncy here either
-    } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
+            for (i_cut in 1:length(data_cut)){  # pad with zeroes
+                if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
+            }
 
-      for (i_cut in 1:length(data_cut)){  # pad with zeroes
-        if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
-      }
+            for (year in seq(year_start, year_end)) {
 
-      for (year in seq(year_start, year_end)) {
+                message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
+                file_name <- download_qcew_size_data(target_year = year, industry,
+                                                     path_data = paste0(path_data, subdir, "/"),
+                                                     url_wayback = url_wayback)
 
-        message(paste0("Processing data for year ", toString(year)," and ", industry, " industry type. Size subdivision"))
-        file_name <- download_qcew_size_data(target_year = year, industry,
-                                             path_data = paste0(path_data, subdir, "/"),
-                                             url_wayback = url_wayback)
+                df <- fread( paste0(path_data, subdir, "/", file_name) )
 
-        df <- fread( paste0(path_data, subdir, "/", file_name) )
+                dt_split <- df[ agglvl_code %in% data_cut ]
 
-        dt_split <- df[ agglvl_code %in% data_cut ]
+                dt_split[, old_industry_code := industry_code ]
+                dt_split[, industry_code := gsub("[[:alpha:]]", "", str_sub(old_industry_code, 6, -1) ) ]
+                dt_split[ is.na(as.numeric(industry_code)), sic := NA ]
 
-        dt_split[, old_industry_code := industry_code ]
-        dt_split[, industry_code := gsub("[[:alpha:]]", "", str_sub(old_industry_code, 6, -1) ) ]
-        dt_split[ is.na(as.numeric(industry_code)), sic := NA ]
+                                        # cleaning up
+                file.remove( paste0(path_data, subdir, "/", file_name) )
+                message("")
 
-        # cleaning up
-        file.remove( paste0(path_data, subdir, "/", file_name) )
-        message("")
+                dt_res <- rbind(dt_res, dt_split, fill = T)
 
-        dt_res <- rbind(dt_res, dt_split, fill = T)
-
-      }
+            }
+        }
     }
-  }
 
+    unlink(paste0(path_data, subdir), recursive = T) # erase the temp subdirectory
 
-  unlink(paste0(path_data, subdir), recursive = T) # erase the temp subdirectory
+    if (write == T){
+        write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
+    }
 
-  if (write == T){
-    write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
-  }
-
-  return( dt_res )
+    return( dt_res )
 
 }
 
@@ -468,50 +480,56 @@ download_qcew_data = function(
   path_data   = "./",
   frequency   = "quarter",
   url_wayback = "",
+  unzip       = T,
   verbose     = F
 ){
 
-  if (frequency %in% c("quarter", "Q")){
-    freq_string = "qtrly"
-  } else if (frequency %in% c("year", "Y")){
-    freq_string = "annual"
-  } else {
-    stop(paste0("Wrong frequency input .... ", frequency))
-  }
-
-  url_prefix <- "http://data.bls.gov/cew/data/files/"
-  if (url_wayback != ""){
-    url_prefix = url_wayback
-    url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")  # note that this pulls from the old server www.bls.gov instead of data.bls.gov
-    # 2011/csv/2011_qtrly_singlefile.zip"
-  }
-
-
-  if (industry == "naics"){
-    zip_file_name = paste0(toString(target_year), "_",
-                           freq_string, "_singlefile.zip")
-    dir_name      = paste0(url_prefix, toString(target_year), "/csv/")
-  } else if (industry == "sic"){
-    zip_file_name = paste0("sic_", toString(target_year), "_",
-                           freq_string, "_singlefile.zip")
-    dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")
-  }
-
-  if (verbose == T){
-    message(paste0("# Downloading from url .... ", url))
+    
+    if (frequency %in% c("quarter", "Q")){
+        freq_string = "qtrly"
+    } else if (frequency %in% c("year", "Y")){
+        freq_string = "annual"
+    } else {
+        stop(paste0("Wrong frequency input .... ", frequency))
     }
-  url = paste0(dir_name, zip_file_name)
-  download.file(url,
-                paste0(path_data, zip_file_name) )           # download file to path_data
-  unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
 
-  # output is list of files in directory
-  read_list <- list.files( paste0(path_data) )
-  read_list <- read_list[grep("\\.csv$", read_list)]
+    url_prefix <- "http://data.bls.gov/cew/data/files/"
+    if (url_wayback != ""){
+        url_prefix = url_wayback
+        url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")
+        # note that this pulls from the old server www.bls.gov instead of data.bls.gov
+        # 2011/csv/2011_qtrly_singlefile.zip"
+    }
 
-  return(read_list)
 
-} # end of download_qcew
+    if (industry == "naics"){
+        zip_file_name = paste0(toString(target_year), "_",
+                               freq_string, "_singlefile.zip")
+        dir_name      = paste0(url_prefix, toString(target_year), "/csv/")
+    } else if (industry == "sic"){
+        zip_file_name = paste0("sic_", toString(target_year), "_",
+                               freq_string, "_singlefile.zip")
+        dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")
+    }
+
+    if (verbose == T){
+        message(paste0("# Downloading from url .... ", url_prefix))
+    }
+    url = paste0(dir_name, zip_file_name)
+    download.file(url,
+                  paste0(path_data, zip_file_name) )           # download file to path_data
+    if (unzip == T){
+        unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+    }
+
+# output is list of files in directory
+    read_list <- list.files( paste0(path_data) )
+    
+    read_list <- read_list[grep("\\.csv$", read_list)]
+
+    return(read_list)
+
+} # end of download_qcew_data
 
 
 
@@ -532,13 +550,15 @@ download_qcew_data = function(
 #' @param path_data: where does the download happen: default current directory
 #' @param industry: download naics or sic data
 #' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
+#' @param unzip: default is True, False is useful if you are just downloading the data
 #' @return read_list: String with names of downloaded files
 #' @note Downloads the file to the current directory and unzips it.
 download_qcew_size_data = function(
   target_year,
-  industry = "naics",
-  path_data = "./",
-  url_wayback = ""
+  industry    = "naics",
+  path_data   = "./",
+  url_wayback = "",
+  unzip       = F
 ){
 
   url_prefix <- "http://data.bls.gov/cew/data/files/"
@@ -559,7 +579,9 @@ download_qcew_size_data = function(
 
     download.file(url,
                   paste0(path_data, zip_file_name) )           # download file to path_data
-    unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+    if (unzip == T){
+        unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+    }
 
   } else if (industry == "sic"){
     if (target_year < 1997 | target_year > 2000){
@@ -577,7 +599,9 @@ download_qcew_size_data = function(
 
     download.file(url,
                   paste0(path_data, zip_file_name))
-    unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+    if (unzip == T){
+        unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+    }
 
   }
 
