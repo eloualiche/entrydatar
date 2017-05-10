@@ -38,22 +38,22 @@ get_files_cut <- function(
   industry    = "naics",
   frequency   = "quarter",
   path_data   = "~/Downloads/tmp_data/",
-  download    = "",      
+  download    = "",
   url_wayback = "",
   write       = F,
   verbose     = F
 ){
 
     dt_res <- data.table()
-    
-    message(paste0("# -----------------------------------------------------\n",
-                   "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
+
     subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                                     loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
+      message(paste0("# -----------------------------------------------------\n",
+                   "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
     dir.create(paste0(path_data, subdir))
 
 
-  # ------------------------------------------------------------------------        
+  # ------------------------------------------------------------------------
   if(industry == "naics"){
 
     # NON SIZE DATA SAMPLE
@@ -72,7 +72,7 @@ get_files_cut <- function(
           } else {
               message("# Read file locally ... ")
               system( paste0("tar -xvzf ", "'", download, year_iter, "_qtrly_singlefile.zip' ", "-C ", path_data, subdir ) )
-              df <- fread(paste0(path_data, subdir, "/", paste0(year_iter, ".q1-q4.singlefile.csv")) ) #, colClasses = c(disclosure_code = "character") ) 
+              df <- fread(paste0(path_data, subdir, "/", paste0(year_iter, ".q1-q4.singlefile.csv")) ) #, colClasses = c(disclosure_code = "character") )
           }
 
           dt_split <- df[ agglvl_code %in% data_cut ]
@@ -95,7 +95,7 @@ get_files_cut <- function(
       }
 
 
-   # ------------------------------------------------------------------------    
+   # ------------------------------------------------------------------------
    # SIZE DATA: downloading only quarter version for now (ignore frequency)
     } else if ( prod(data_cut >= 20 & data_cut <= 30) ){
 
@@ -130,10 +130,10 @@ get_files_cut <- function(
 
   }
 
-    
-# --------------------------------------------------------------------------------------    
+
+# --------------------------------------------------------------------------------------
 # SIC INDUSTRY
-# --------------------------------------------------------------------------------------    
+# --------------------------------------------------------------------------------------
     if(industry == "sic"){
 
         if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
@@ -167,7 +167,7 @@ get_files_cut <- function(
 
             }
 
-        # ------------------------------------------------------------------------    
+        # ------------------------------------------------------------------------
         # SIZE DATA: no frequency here either
         } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
 
@@ -484,7 +484,7 @@ download_qcew_data = function(
   verbose     = F
 ){
 
-    
+
     if (frequency %in% c("quarter", "Q")){
         freq_string = "qtrly"
     } else if (frequency %in% c("year", "Y")){
@@ -524,7 +524,7 @@ download_qcew_data = function(
 
 # output is list of files in directory
     read_list <- list.files( paste0(path_data) )
-    
+
     read_list <- read_list[grep("\\.csv$", read_list)]
 
     return(read_list)
@@ -558,7 +558,7 @@ download_qcew_size_data = function(
   industry    = "naics",
   path_data   = "./",
   url_wayback = "",
-  unzip       = F
+  unzip       = T
 ){
 
   url_prefix <- "http://data.bls.gov/cew/data/files/"

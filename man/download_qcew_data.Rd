@@ -5,7 +5,7 @@
 \title{Download QCEW dataset from directly from the BLS website}
 \usage{
 download_qcew_data(target_year, industry = "naics", path_data = "./",
-  frequency = "quarter", url_wayback = "", verbose = F)
+  frequency = "quarter", url_wayback = "", unzip = T, verbose = F)
 }
 \arguments{
 \item{target_year:}{year for which we want to download the data}
