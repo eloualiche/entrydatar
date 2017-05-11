@@ -2,12 +2,13 @@
 title: "Download data from Business Dynamics Statistics"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
-#output:
-#  md_document:
-#    variant: markdown_github
+#output: rmarkdown::html_vignette
+output:
+  md_document:
+    variant: markdown_github
+always_allow_html: yes
 vignette: >
-  %\VignetteIndexEntry{Download data from Business Employment Dynamics}
+  %\VignetteIndexEntry{Download data from Business Dynamics Statistics}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,12 +21,12 @@ The two main data resources are the [firm characteristics tables](https://www.ce
 Codebook is available [here](https://www.census.gov/ces/pdf/BDS_2014_Codebook.pdf)
 
 For example to start and get the BED industry data:
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```{r, warning = F, error = F, message = F, eval = T}
 library(entrydatar)
-dt_firm  <- get_bds_cut(1977, 2014, "firm", "agesic")
-dt_firm[]
+dt_firm  <- get_bds_cut(1977, 2014, "firm", "all")
+DT::datatable(dt_firm)
 dt_estab <- get_bds_cut(1977, 2014, "establishment", "agesic")
-dt_estab[]
+DT::datatable(dt_estab)
 ```
 
 
