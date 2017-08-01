@@ -17,6 +17,7 @@ Imports:
     functional (>= 0.6),
     plyr       (>= 1.8.3),
     random,
+    statar,
     stringr    (>= 1.0.0)
 RoxygenNote: 6.0.1
 Suggests:

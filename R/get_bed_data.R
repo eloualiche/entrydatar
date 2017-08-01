@@ -54,13 +54,13 @@ get_bed_data = function(
 
     dt_ind[, series_id:= NULL ]
     df1 <- dt_ind[ emp==1 & open ==1, !c("emp","open") , with=FALSE ] %>%
-        rename( ent_emp = entry )
+        dplyr::rename( ent_emp = entry )
     df2 <- dt_ind[ emp==1 & open ==0, !c("year","period","emp","open","note1") ,with=FALSE] %>%
-        rename( exit_emp = entry )
+        dplyr::rename( exit_emp = entry )
     df3 <- dt_ind[ emp==0 & open ==1, !c("year","period","emp","open","note1") ,with=FALSE] %>%
-        rename( ent_cnt = entry )
+        dplyr::rename( ent_cnt = entry )
     df4 <- dt_ind[ emp==0 & open ==0, !c("year","period","emp","open","note1") ,with=FALSE] %>%
-        rename( exit_cnt = entry )
+        dplyr::rename( exit_cnt = entry )
 
     df <- merge( df1, df2, by = c("date_ym", "naics3"),  all.y=FALSE)
     df <- merge( df, df3, by = c("date_ym", "naics3"),  all.y=FALSE)
@@ -70,7 +70,7 @@ get_bed_data = function(
     df$nent_cnt <- df$ent_cnt - df$exit_cnt
 
 
-    df[, dateq := as.quarterly(ISOdate(floor(date_ym/100), date_ym %% 100, 1) )  ]
+    # df[, dateq := statar::as.quarterly(ISOdate(floor(date_ym/100), date_ym %% 100, 1) )  ]
 
     # cleaning up
     file.remove( paste0(path_data, "bed_ind.txt" ) )
