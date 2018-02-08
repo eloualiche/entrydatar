@@ -1,4 +1,4 @@
-`entrydatar` 
+`entrydatar`
 R package for data on U.S. firm level entry
 ======
 
@@ -7,7 +7,6 @@ Downloads and aggregates flat tables of entry statistics from the *Quarterly Cen
 ## Available data
 
 ### Quarterly Census of Employment and Wages (QCEW)
-
 See the [BLS website](http://www.bls.gov/cew/home.htm) for more information.
 
 Establishment level entry data.
@@ -40,12 +39,15 @@ Left to Do on CBP:
      ```get_lau_data(years = seq(1990, 2016), path_data  = "./")```
   - Business Dynamics Statistics from the Census: [BDS](https://www.census.gov/ces/dataproducts/bds/)
      ```get_bds_cut(1977, 2014, "firm", "agesic")```
+  - Business Formation from the BEA, Survey of Current Business: [NBF](https://www.bea.gov/scb/pdf/NATIONAL/BUSCYCLE/1996/0296cpgs.pdf)
+     ```get_nbf(years = seq(1948, 1994))```
 
 ## Vignettes:
-  - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)
-  - How to download a clean version of the [CBP](vignettes/cbp.Rmd)
-  - How to download a clean version of the [BED](vignettes/bed.Rmd)
-  - How to download a clean version of the [BDS](vignettes/bds.Rmd)
+  - How to download specific cuts of the [QCEW](vignettes/qcew.md)
+  - How to download a clean version of the [CBP](vignettes/cbp.md)
+  - How to download a clean version of the [BED](vignettes/bed.md)
+  - How to download a clean version of the [BDS](vignettes/bds.md)
+  - How to download a clean version of the [NBF](vignettes/nbf.md)
 
 
 ## Installation
@@ -59,7 +61,7 @@ devtools::install_github("eloualiche/entrydatar")
 
 ## Work in progress (to do list)
   - Load QCEW directly from local downloaded files
-  
+
 
 
 
