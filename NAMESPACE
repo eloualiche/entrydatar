@@ -2,7 +2,8 @@
 
 export(download_all_cbp)
 export(get_bds_cut)
-export(get_bed_data)
+export(get_bed)
+export(get_bed_detail)
 export(get_files_cut)
 export(get_files_master)
 export(get_lau_data)
