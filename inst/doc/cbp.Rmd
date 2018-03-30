@@ -3,6 +3,9 @@ title: "Download data from the County Business Pattern (CBP)"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+#output:
+#  md_document:
+#    variant: markdown_github
 vignette: >
   %\VignetteIndexEntry{Download data from the County Business Pattern (CBP)}
   %\VignetteEngine{knitr::rmarkdown}
@@ -129,7 +132,7 @@ To Download different version of the dataset the match is:
 |----------------------------|----------------------------------|--------------------------------------------|
 | `county `                  | county level (default)           |                                            |
 | `US`                       | national                         | [US](../tables/us_lfo_layout.txt)          |
-| `MSA`                      | metropolitan area                | [MSA](../tables/metra_are_layout,txt)      |
+| `MSA`                      | metropolitan area                | [MSA](../tables/metro_area_layout,txt)      |
 | `state`                    | state level                      | [State](../tables/state_x_lfo_layout.txt)  |
 --------------------------------------------------------------------------------------------------------------
 

@@ -1,0 +1,21 @@
+language: r
+os:
+  - linux
+  - osx
+
+cache: packages
+
+r_packages:
+
+notifications:
+  email: false
+
+before_install:
+  - mkdir -p ~/Downloads
+
+r_packages:
+  - covr
+
+after_success:
+  - Rscript -e 'library(covr); codecov()'
+

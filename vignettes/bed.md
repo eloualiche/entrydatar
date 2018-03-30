@@ -1,38 +1,82 @@
-Downloads data from the BED website. Of main importance is the flat file with firm level count by industry (3 digits naics) every quarter. The flat file is at the bottom of this [page](http://www.bls.gov/bdm/bdmind3.htm) under this [url](http://www.bls.gov/web/cewbd/bd_data_ind3.txt).
+Downloads data from the BED website. Of main importance is the flat file
+with firm level count by industry (3 digits naics) every quarter. The
+flat file is at the bottom of this
+[page](http://www.bls.gov/bdm/bdmind3.htm) under this
+[url](http://www.bls.gov/web/cewbd/bd_data_ind3.txt).
 
-Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) with other data.
+Note that there is also a
+[ftp](http://download.bls.gov/pub/time.series/bd/) with other data.
 
 For example to start and get the BED industry data:
 
 ``` r
 library(entrydatar)
-dt_ind <- get_bed_data("industry")
+dt_ind <- get_bed("industry")
 dt_ind
 ```
 
-Take for example industry `naics = 111`, *Crop Production*. The data comes from two tables:
+Take for example industry `naics = 111`, *Crop Production*. The data
+comes from two tables:
 
-+ [Table 7](https://www.bls.gov/web/cewbd/table7_1_ind3.txt)
-  + *Private sector establishments by direction of employment change, as percent of total establishments, seasonally adjusted*
-  + `ent_cnt` is *Establishment gaining jobs, Opening establishments*
-  + `exit_cnt` is *Establishment losing jobs, Closing establishments*
-  + `nent_cnt` is the difference between the number of opening establishments and the number of closing establishments. 
-  
-+ [Table 3](https://www.bls.gov/web/cewbd/table3_1_ind3.txt)
-  + *Private sector gross job gains and losses, as a percent of employment, seasonally adjusted*
-  + `ent_emp` is *Gross job gains, Opening establishments*
-  + `exit_emp` is *Gross job losses, Closing establishments*
-  + `nent_emp` Net change is the difference between total gross job gains and total gross job losses.
+  - [Table 7](https://www.bls.gov/web/cewbd/table7_1_ind3.txt)
+      - *Private sector establishments by direction of employment
+        change, as percent of total establishments, seasonally adjusted*
+      - `ent_cnt` is *Establishment gaining jobs, Opening
+        establishments*
+      - `exit_cnt` is *Establishment losing jobs, Closing
+        establishments*
+      - `nent_cnt` is the difference between the number of opening
+        establishments and the number of closing establishments.
+  - [Table 3](https://www.bls.gov/web/cewbd/table3_1_ind3.txt)
+      - *Private sector gross job gains and losses, as a percent of
+        employment, seasonally adjusted*
+      - `ent_emp` is *Gross job gains, Opening establishments*
+      - `exit_emp` is *Gross job losses, Closing establishments*
+      - `nent_emp` Net change is the difference between total gross job
+        gains and total gross job losses.
 
+# Other
 
-# In progress
+## In progress
 
-# Other informations
-Business Employment Dynamics Program Contacts
-Please contact us via email at: BDMInfo@bls.gov or by phone on 202-691-6553.
+All the flat files are available
+[here](https://download.bls.gov/pub/time.series/bd/). Of main importance
+is the [doc](https://download.bls.gov/pub/time.series/bd/bd.txt) To find
+a series it is important to read the series ID, for example
+`BDS0000000000000000210101LQ5` which can be broken out into:
 
+  - data abbreviation: `BD`
+  - `seasonal_code`: `S` Seasonally adjusted, `U` Not seasonally
+    adjusted
+  - `msa_code`: `00000` National
+  - `state_code`: `00` U.S. totals, see
+    [docs](https://download.bls.gov/pub/time.series/bd/bd.state)
+  - county\_code = 000
+  - `industry_code`: `000000` Total Private, see
+    [doc](https://download.bls.gov/pub/time.series/bd/bd.industry) for
+    breakdown by naics two and three digits.
+  - `unitanalysis_code`: `1` Establishment
+  - `dataelement_code`: `1` Employment, `2` Number of Establishments
+  - `sizeclass_code`: `00`: All size classes and see
+    [docs](https://download.bls.gov/pub/time.series/bd/bd.sizeclass) for
+    other
+  - `dataclass_code`: `01` Gross Job Gains, `02` Expansions, `03`
+    Openings, `04` Gross Job Losses, `05` Contractions, `06` Closings,
+    `07` Establishment Births, `08` Establishment Deaths
+  - `ratelevel_code`: `L` Level, `R` Rate
+  - `periodicity_code`: `A` Annual, `Q` Quarterly
+  - `ownership_code`: `5` Private Sector
 
+To be able to get all these series the code is required to download the
+full flat file which can be quite heavy (requires confirmation).
 
-------------------------------------------------------------------------
+\``r library(entrydatar) dt_ind <- get_bed_detail("industry") dt_ind[]`
+
+## Other informations
+
+Business Employment Dynamics Program Contacts is available via email at:
+<BDMInfo@bls.gov> or by phone on 202-691-6553.
+
+-----
 
 1.  Erik Loualiche

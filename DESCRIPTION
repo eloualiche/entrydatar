@@ -6,7 +6,7 @@ Date: 2015-11-15
 Authors@R: person("Erik", "Loualiche", email = "erikl@mit.edu", role = c("aut", "cre"))
 Description: The package downloads and aggregate the qcew from the BLS. Perhaps
     extend to other sources from other countries.
-License: MIT
+License: MIT + file LICENSE
 LazyData: TRUE
 Depends:
     R (>= 3.2.2)
@@ -15,13 +15,21 @@ Imports:
     data.table (>= 1.9.6),
     dplyr      (>= 0.4.3),
     functional (>= 0.6),
+    tidyr,
     plyr       (>= 1.8.3),
     random,
+    readxl,
     statar,
-    stringr    (>= 1.0.0)
+    stringr    (>= 1.0.0),
+    utils
 RoxygenNote: 6.0.1
 Suggests:
     testthat,
     knitr,
-    rmarkdown
+    rmarkdown,
+    skimr
 VignetteBuilder: knitr
+URL: https://github.com/eloualiche/entrydatar/
+BugReports: https://github.com/eloualiche/entrydatar/issues
+
+

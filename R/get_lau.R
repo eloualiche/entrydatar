@@ -8,9 +8,10 @@
 
 #' Download LAU County dataset from directly from the BLS website
 #'
-#' @param which_data: what kind of data download: default are the county files
-#' @param path_data: where does the download happen: default current directory
-#' @param years: which year do we download, as of now only 1990 to 2016 are available
+#' @param which_data what kind of data download: default are the county files
+#' @param path_data  where does the download happen: default current directory
+#' @param years       which year do we download, as of now only 1990 to 2016 are available
+#' @param verbose    sahow intermediate steps
 #' @return dt_res
 #' @export
 get_lau_data = function(
@@ -19,6 +20,8 @@ get_lau_data = function(
   path_data  = "./",
   verbose    = T
 ){
+
+  fips_state <- NULL
 
   if (which_data == "county"){
 
@@ -31,11 +34,11 @@ get_lau_data = function(
       if (year_iter >= 100){ year_iter = year_iter - 100}
       if (year_iter < 10){ year_iter = paste0(0, year_iter) }
 
-       download.file(paste0(url, year_iter, ".xlsx"),
+       utils::download.file(paste0(url, year_iter, ".xlsx"),
                      paste0(path_data, "lau_cty.xlsx"),
                      quiet = !verbose)
 
-        dt_ind <- read_excel(paste0(path_data, "lau_cty.xlsx")) %>% data.table
+        dt_ind <- readxl::read_excel(paste0(path_data, "lau_cty.xlsx")) %>% data.table
         setnames(dt_ind, c("laus_code", "fips_state", "fips_cty",
                            "lau_name",  "date_y", "V1", "force", "employed", "level", "rate"))
         dt_ind <- dt_ind[ !is.na(as.numeric(fips_state)) ]

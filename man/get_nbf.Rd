@@ -7,9 +7,9 @@
 get_nbf(year_start = 1948, year_end = 2014)
 }
 \arguments{
-\item{year_start:}{start year for which we want data}
+\item{year_start}{start year for which we want data}
 
-\item{year_end:}{end year for which we want data}
+\item{year_end}{end year for which we want data}
 }
 \value{
 data.table aggregate

@@ -8,15 +8,19 @@ download_qcew_data(target_year, industry = "naics", path_data = "./",
   frequency = "quarter", url_wayback = "", unzip = T, verbose = F)
 }
 \arguments{
-\item{target_year:}{year for which we want to download the data}
+\item{target_year}{year for which we want to download the data}
 
-\item{industry:}{download naics or sic data}
+\item{industry}{download naics or sic data}
 
-\item{path_data:}{where does the download happen: default current directory + tmp}
+\item{path_data}{where does the download happen: default current directory + tmp}
 
-\item{frequency:}{download the quarterly files or the yearly files (default is quarterly)}
+\item{frequency}{download the quarterly files or the yearly files (default is quarterly)}
 
-\item{url_wayback:}{allows to specify the path in internet wayback machine that kept some of the archive}
+\item{url_wayback}{allows to specify the path in internet wayback machine that kept some of the archive}
+
+\item{unzip}{unzip the file}
+
+\item{verbose}{how does the function output intermediate stages}
 }
 \value{
 file complete path. Downloads the file to the current directory and unzips it.

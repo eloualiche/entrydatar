@@ -1,0 +1,47 @@
+---
+title: "Download data from the Quarterly Workforce Indicator (QWI)"
+author: "Erik Loualiche"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+#output:
+#  md_document:
+#    variant: markdown_github
+vignette: >
+  %\VignetteIndexEntry{Download data from the Quarterly Census of Employment and Wages (QCEW)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+In this vignette we provide examples of how to use entrydatar to download precise files from the QWI.
+
+In the second part we give rudimentary documentations of the feature that are of principal interest to work with the data.
+
+For an overview of the QCEW, head over to the [Census website](https://lehd.ces.census.gov/data/)
+
+## Download
+
+
+
+## Data Cuts and Codes
+
+1. Demographics cuts:
+    + `sa`: Sex by Age
+    + `rh`: Race by ethnicity
+    + `se`: Sex by education
+2. Ownership:
+    + `oslp`: all (public and private employment)
+    + `op`: only private sector employment
+3. Geography:
+    + `gs`: State
+    + `gc`: County
+    + `gm`: Metro-/Micro-politan
+    + `gw`: Workforce investment Area
+4. Industry:
+    + `ns`: naics sector
+    + `n3`: naics subsectors    
+    + `n4`: naics industry groups
+5. Firm age and Size
+    + `fa`: firm agesic
+    + `fs`: firm Size
+    + `f`: firm size and age not included
+        

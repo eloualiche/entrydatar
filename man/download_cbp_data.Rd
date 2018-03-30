@@ -8,11 +8,11 @@ download_cbp_data(target_year, aggregation_level = "county",
   path_data = "~/Downloads/")
 }
 \arguments{
-\item{target_year:}{year for which we want to download the data}
+\item{target_year}{year for which we want to download the data}
 
-\item{aggregation_level:}{which data cut to download}
+\item{aggregation_level}{which data cut to download}
 
-\item{path_data:}{where does the download happen: default current directory}
+\item{path_data}{where does the download happen: default current directory}
 }
 \value{
 data.table

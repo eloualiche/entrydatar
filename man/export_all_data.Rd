@@ -7,9 +7,9 @@
 export_all_data(target_year, path_data = "./")
 }
 \arguments{
-\item{path_data:}{where does the download happen: default current directory}
+\item{target_year}{year for which we want to export the data}
 
-\item{target_year:}{year for which we want to export the data}
+\item{path_data}{where does the download happen: default current directory}
 }
 \value{
 NIL. Exports the data using the helper function export_named_df.

@@ -4,40 +4,42 @@
 \alias{get_bed_detail}
 \title{Download BED dataset from directly from the BLS website}
 \usage{
-get_bed_detail(seasonal = "S", msa = "00000", state = "00",
+get_bed_detail(seasonaladj = "S", msa = "00000", state = "00",
   county = "000", industry = "000000", unitanalysis = 1,
-  dataelement = 2, sizeclass = "00", dataclass = c("07"),
-  ratelevel = "L", periodicity = "Q", ownership = 5, download = F,
+  dataelement = 2, sizeclass = "00", dataclass = "07", ratelevel = "L",
+  periodicity = "Q", ownership = 5, download = F, read = F,
   path_data = "./")
 }
 \arguments{
-\item{seasonal:}{seasonality of the data; S (default) or U}
+\item{seasonaladj}{seasonality adjustment of the data; S (default) or U}
 
-\item{msa:}{msa code; 00000 (default) for national}
+\item{msa}{msa code; 00000 (default) for national}
 
-\item{state:}{state code; 00 (default) for national}
+\item{state}{state code; 00 (default) for national}
 
-\item{county:}{county code; 000 (default) for national}
+\item{county}{county code; 000 (default) for national}
 
-\item{industry:}{industry code; 000000 (default) for total private. See docs for industry classifications}
+\item{industry}{industry code; 000000 (default) for total private. See docs for industry classifications}
 
-\item{unitanalysis:}{unit of observation; 1 (default) for establishment}
+\item{unitanalysis}{unit of observation; 1 (default) for establishment}
 
-\item{dataelement:}{which type of date; 2 (default) number of establishments, 1 employment}
+\item{dataelement}{which type of date; 2 (default) number of establishments, 1 employment}
 
-\item{sizeclass:}{firm size class; 00 (default) for all}
+\item{sizeclass}{firm size class; 00 (default) for all}
 
-\item{dataclass:}{for type of information; 07 (default) for Establishment Births, 01 Gross Job Gains, 02 Expansions, 03 Openings, 04 Gross Job Losses, 05 Contractions, 06 Closings, 07 Establishment Births, 08 Establishment Deaths}
+\item{dataclass}{for type of information; 07 (default) for Establishment Births, 01 Gross Job Gains, 02 Expansions, 03 Openings, 04 Gross Job Losses, 05 Contractions, 06 Closings, 07 Establishment Births, 08 Establishment Deaths}
 
-\item{ratelevel:}{for type of statistics; L (default) for level, R for rate}
+\item{ratelevel}{for type of statistics; L (default) for level, R for rate}
 
-\item{periodicity:}{for sampling frequency; Q (default) for quarterly, A for annual}
+\item{periodicity}{for sampling frequency; Q (default) for quarterly, A for annual}
 
-\item{ownership:}{for type of ownership; 5 (default) for private sector}
+\item{ownership}{for type of ownership; 5 (default) for private sector}
 
-\item{download:}{requires download confirmation}
+\item{download}{requires download confirmation}
 
-\item{path_data:}{where does the download happen: default current directory}
+\item{read}{FALSE is default, read RDS files if available (faster than downloading 200Mb file)}
+
+\item{path_data}{where does the download happen: default current directory}
 }
 \value{
 dt_final

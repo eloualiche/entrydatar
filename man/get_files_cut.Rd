@@ -10,23 +10,25 @@ get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
   write = F, verbose = F)
 }
 \arguments{
-\item{path_data:}{where do we store the data}
+\item{data_cut}{see vignette for a list of the cut}
 
-\item{year_start:}{start year for which we want data}
+\item{year_start}{start year for which we want data}
 
-\item{year_end:}{end year for which we want data}
+\item{year_end}{end year for which we want data}
 
-\item{industry:}{download naics or sic data}
+\item{industry}{download naics or sic data}
 
-\item{frequency:}{download the quarterly files or the yearly files (default is quarterly)}
+\item{frequency}{download the quarterly files or the yearly files (default is quarterly)}
 
-\item{download:}{if empty do download the file from the BLS website, if not use a local version}
+\item{path_data}{where do we store the data}
 
-\item{url_wayback:}{allows to specify the path in internet wayback machine that kept some of the archive}
+\item{download}{if empty do download the file from the BLS website, if not use a local version}
 
-\item{write:}{save it somewhere}
+\item{url_wayback}{allows to specify the path in internet wayback machine that kept some of the archive}
 
-\item{verbose:}{useful for looking all the downloads link (debugging mode)}
+\item{write}{save it somewhere}
+
+\item{verbose}{useful for looking all the downloads link (debugging mode)}
 }
 \value{
 data.table aggregate
@@ -46,6 +48,8 @@ tool like cat
 Other code: loads data.table with option to write it for a given cut
 }
 \examples{
+  \dontrun{
   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
                       path_data = "~/Downloads/", write = T)
+  }
 }

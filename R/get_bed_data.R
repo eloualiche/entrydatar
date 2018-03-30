@@ -8,14 +8,17 @@
 
 #' Download BED dataset from directly from the BLS website
 #'
-#' @param which_data: what kind of data download: default is the main industry file
-#' @param path_data: where does the download happen: default current directory
+#' @param which_data what kind of data download: default is the main industry file
+#' @param path_data  where does the download happen: default current directory
 #' @return df
 #' @export
 get_bed = function(
   which_data = "industry",
   path_data = "./"
 ){
+
+  # Avoid notes when checking package due to nse:
+  series_id <- emp <- entry <- NULL
 
     if (which_data == "industry"){
 
@@ -88,21 +91,21 @@ get_bed = function(
 
 #' Download BED dataset from directly from the BLS website
 #'
-#' @param seasonaladj: seasonality adjustment of the data; S (default) or U
-#' @param msa: msa code; 00000 (default) for national
-#' @param state: state code; 00 (default) for national
-#' @param county: county code; 000 (default) for national
-#' @param industry: industry code; 000000 (default) for total private. See docs for industry classifications
-#' @param unitanalysis: unit of observation; 1 (default) for establishment
-#' @param dataelement: which type of date; 2 (default) number of establishments, 1 employment
-#' @param sizeclass: firm size class; 00 (default) for all
-#' @param dataclass: for type of information; 07 (default) for Establishment Births, 01 Gross Job Gains, 02 Expansions, 03 Openings, 04 Gross Job Losses, 05 Contractions, 06 Closings, 07 Establishment Births, 08 Establishment Deaths
-#' @param ratelevel: for type of statistics; L (default) for level, R for rate
-#' @param periodicity: for sampling frequency; Q (default) for quarterly, A for annual
-#' @param ownership: for type of ownership; 5 (default) for private sector
-#' @param download: requires download confirmation
-#' @param read
-#' @param path_data: where does the download happen: default current directory
+#' @param seasonaladj seasonality adjustment of the data; S (default) or U
+#' @param msa msa code; 00000 (default) for national
+#' @param state state code; 00 (default) for national
+#' @param county county code; 000 (default) for national
+#' @param industry industry code; 000000 (default) for total private. See docs for industry classifications
+#' @param unitanalysis unit of observation; 1 (default) for establishment
+#' @param dataelement which type of date; 2 (default) number of establishments, 1 employment
+#' @param sizeclass firm size class; 00 (default) for all
+#' @param dataclass for type of information; 07 (default) for Establishment Births, 01 Gross Job Gains, 02 Expansions, 03 Openings, 04 Gross Job Losses, 05 Contractions, 06 Closings, 07 Establishment Births, 08 Establishment Deaths
+#' @param ratelevel for type of statistics; L (default) for level, R for rate
+#' @param periodicity for sampling frequency; Q (default) for quarterly, A for annual
+#' @param ownership for type of ownership; 5 (default) for private sector
+#' @param download requires download confirmation
+#' @param read FALSE is default, read RDS files if available (faster than downloading 200Mb file)
+#' @param path_data where does the download happen: default current directory
 #' @return dt_final
 #' @export
 get_bed_detail <- function(
@@ -114,7 +117,7 @@ get_bed_detail <- function(
   unitanalysis = 1, # Establishment
   dataelement  = 2,# `1` Employment, `2` Number of Establishments
   sizeclass    = "00",
-  dataclass    = c("07"),
+  dataclass    = "07",
   ratelevel    = "L", # `L` Level, `R` Rate
   periodicity  = "Q", # `A` Annual, `Q` Quarterly
   ownership    = 5,   #  `5` Private Sector
@@ -122,6 +125,11 @@ get_bed_detail <- function(
   read         = F,
   path_data    = "./"
 ){
+
+  # Avoid notes when checking package due to nse:
+  seasonal <- msa_code <- state_code <- county_code <- industry_code <- unitanalysis_code <- NULL
+  dataelement_code <- sizeclass_code <- dataclass_code <- ratelevel_code <- periodicity_code <- NULL
+  ownership_code <- series_id <- series_title <- period <- date_ym <- value <- NULL
 
   # Check if download is required
   d_choice <- TRUE
@@ -166,12 +174,12 @@ get_bed_detail <- function(
                  industry_code     %in% industry     &
                  unitanalysis_code %in% unitanalysis &
                  dataelement_code  %in% dataelement  &
-                 sizeclass_code    %in%   sizeclass  &
+                 sizeclass_code    %in% sizeclass    &
                  dataclass_code    %in% dataclass    &
-                 ratelevel_code    %in%  ratelevel   &
-                 periodicity_code  %in%  periodicity &
+                 ratelevel_code    %in% ratelevel    &
+                 periodicity_code  %in% periodicity  &
                  ownership_code    %in% ownership,
-               .(series_id, series_title) ]
+               list(series_id, series_title) ]
 
   dt_final <- dt_all[ series_id %in% dt_lookup$series_id ]
   dt_final[, date := as.Date(ISOdate(year, as.numeric(substr(period,2,3))*3, 1)) ]
@@ -180,11 +188,12 @@ get_bed_detail <- function(
   dt_final[, c("year", "period", "footnote_codes") := NULL ]
   dt_final <- merge(dt_final, dt_lookup, all.x = T, by = c("series_id"))
 
-    # cleaning up
+  # cleaning up
+  if (read == FALSE){
   message("# Cleaning downloaded files ... \n")
     file.remove( paste0(path_data, "bed_all.txt" ) )
     file.remove( paste0(path_data, "bed_lookup.txt" ) )
-
+  }
 
     # return dataset
     return( dt_final )

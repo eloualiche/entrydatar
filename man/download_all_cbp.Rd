@@ -8,13 +8,13 @@ download_all_cbp(year_start = 1996, year_end = 2013,
   aggregation_level = "county", path_data = "~/Downloads/")
 }
 \arguments{
-\item{year_start:}{year starting data download}
+\item{year_start}{year starting data download}
 
-\item{year_end:}{year ending data download}
+\item{year_end}{year ending data download}
 
-\item{aggregation_level:}{which data type to download}
+\item{aggregation_level}{which data type to download}
 
-\item{path_data:}{where does the download happen: default current directory}
+\item{path_data}{where does the download happen: default current directory}
 }
 \value{
 data.table

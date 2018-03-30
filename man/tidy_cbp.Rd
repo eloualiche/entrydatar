@@ -8,11 +8,13 @@ tidy_cbp(dt_raw = NULL, industry = c(2, 3, 4), year_start = 1996,
   year_end = 2013)
 }
 \arguments{
-\item{industry:}{which level industries should be included (vector, NULL for all)}
+\item{dt_raw}{data we start with.}
 
-\item{year_start:}{year starting data (>=1986)}
+\item{industry}{which level industries should be included (vector, NULL for all)}
 
-\item{year_end:}{year ending data (<=2013)}
+\item{year_start}{year starting data (>=1986)}
+
+\item{year_end}{year ending data (<=2013)}
 }
 \value{
 data.table

@@ -7,11 +7,11 @@
 tidy_qcew_year(dt, frequency = "all", industry = "naics")
 }
 \arguments{
-\item{dt:}{input dataset from get_files_cut}
+\item{dt}{input dataset from get_files_cut}
 
-\item{industry:}{download naics or sic data}
+\item{frequency}{download either quarterly, monthly or all data}
 
-\item{frequency:}{download either quarterly, monthly or all data}
+\item{industry}{download naics or sic data}
 }
 \value{
 data.table dt_res
@@ -26,5 +26,7 @@ returns a data.table file that is formatted according to tidy standard
   I do not download all the information (some location quotients and taxes are forgotten)
 }
 \examples{
+  \dontrun{
   dt_tidy <- tidy_qcew_year(dt, frequency = "all", industry = "naics")
+  }
 }

@@ -3,9 +3,10 @@
 #' Clean the CBP
 #'
 #' @note Tidy up the CBP data into year state county industry dataset
-#' @param industry: which level industries should be included (vector, NULL for all)
-#' @param year_start: year starting data (>=1986)
-#' @param year_end: year ending data (<=2013)
+#' @param dt_raw    data we start with.
+#' @param industry   which level industries should be included (vector, NULL for all)
+#' @param year_start year starting data (>=1986)
+#' @param year_end   year ending data (<=2013)
 #' @return data.table
 #' @export
 tidy_cbp <- function(
@@ -32,10 +33,10 @@ tidy_cbp <- function(
 #'   for desired years, splitting data by the aggregation level codes
 #'   the docs for the CBP is available at the following:
 #'   http://www.census.gov/econ/cbp/download/full_layout/County_Layout_SIC.txt
-#' @param year_start: year starting data download
-#' @param year_end: year ending data download
-#' @param aggregation_level: which data type to download
-#' @param path_data: where does the download happen: default current directory
+#' @param year_start year starting data download
+#' @param year_end year ending data download
+#' @param aggregation_level which data type to download
+#' @param path_data where does the download happen: default current directory
 #' @return data.table
 #' @export
 download_all_cbp <- function(
@@ -64,9 +65,9 @@ download_all_cbp <- function(
 
 #' Download one year of county business pattern dataset
 #'
-#' @param target_year: year for which we want to download the data
-#' @param aggregation_level: which data cut to download
-#' @param path_data: where does the download happen: default current directory
+#' @param target_year year for which we want to download the data
+#' @param aggregation_level which data cut to download
+#' @param path_data where does the download happen: default current directory
 #' @return data.table
 download_cbp_data <- function(
   target_year,
@@ -96,7 +97,7 @@ download_cbp_data <- function(
       return( data.table() )
     }
   } else {
-    error(paste0("Aggregation level not known: ", aggregation_level, " ??"))
+    stop(paste0("Aggregation level not known: ", aggregation_level, " ??"))
   }
 
   url_prefix    <- "http://www2.census.gov/programs-surveys/cbp/datasets/"
@@ -107,19 +108,19 @@ download_cbp_data <- function(
   if (aggregation_level == "us" & target_year <= 2007){    # national case is not zipped before 2007
 
     url <- paste0(partial_url, file_name)
-    download.file(url,
+    utils::download.file(url,
                   paste0(path_data, file_name) )
 
   } else{
     url <- paste0(partial_url, zip_file_name)
-    download.file(url,
+    utils::download.file(url,
                   paste0(path_data, zip_file_name) )           # download file to path_data
-    unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+    utils::unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
 
   }
 
 
-  dt_res <- fread(paste0(path_data, file_name))
+  dt_res <- data.table::fread(paste0(path_data, file_name))
   setnames(dt_res, tolower(names(dt_res)) )
 
   if ( (aggregation_level != "us") || (target_year > 2007)){

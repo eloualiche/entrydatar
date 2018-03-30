@@ -7,13 +7,13 @@
 export_named_df(path_data = "./", year, named_df)
 }
 \arguments{
-\item{year:}{filename for .csv file. Note that you need to pass in the
+\item{path_data}{where does the download happen: default current directory}
+
+\item{year}{filename for .csv file. Note that you need to pass in the
 correct year here, since the function has no idea of what the actual year
 corresponding to this data is}
 
-\item{named_df:}{data frame with name}
-
-\item{path_data:}{where does the download happen: default current directory}
+\item{named_df}{data frame with name}
 }
 \value{
 NIL. Exports csv file "./singlefile/$agglvl_code/$year.csv"

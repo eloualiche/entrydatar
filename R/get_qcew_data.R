@@ -12,24 +12,24 @@
 
 
 
-
-
-
 #' Other code: loads data.table with option to write it for a given cut
 #'
-#' @param path_data: where do we store the data
-#' @param year_start: start year for which we want data
-#' @param year_end: end year for which we want data
-#' @param industry: download naics or sic data
-#' @param frequency: download the quarterly files or the yearly files (default is quarterly)
-#' @param download: if empty do download the file from the BLS website, if not use a local version
-#' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
-#' @param write: save it somewhere
-#' @param verbose: useful for looking all the downloads link (debugging mode)
+#' @param data_cut see vignette for a list of the cut
+#' @param path_data where do we store the data
+#' @param year_start start year for which we want data
+#' @param year_end end year for which we want data
+#' @param industry download naics or sic data
+#' @param frequency download the quarterly files or the yearly files (default is quarterly)
+#' @param download if empty do download the file from the BLS website, if not use a local version
+#' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
+#' @param write save it somewhere
+#' @param verbose useful for looking all the downloads link (debugging mode)
 #' @return data.table aggregate
 #' @examples
+#'   \dontrun{
 #'   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
 #'                       path_data = "~/Downloads/", write = T)
+#'   }
 #' @export
 get_files_cut <- function(
   data_cut    = 10,
@@ -203,7 +203,7 @@ get_files_cut <- function(
     unlink(paste0(path_data, subdir), recursive = T) # erase the temp subdirectory
 
     if (write == T){
-        write.csv( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
+        data.table::fwrite( dt_res, row.names = F, paste0(path_data, "qcew_", data_cut, ".csv") )
     }
 
     return( dt_res )
@@ -212,29 +212,22 @@ get_files_cut <- function(
 
 
 
-
-
-
-
-
-
-
-
-
 #' Tidying the dataset for regression use (or merge)
 #'
-#' @param dt: input dataset from get_files_cut
-#' @param industry: download naics or sic data
-#' @param frequency: download either quarterly, monthly or all data
+#' @param dt input dataset from get_files_cut
+#' @param industry download naics or sic data
+#' @param frequency download either quarterly, monthly or all data
 #' @note returns a data.table file that is formatted according to tidy standard
 #'   typically this will be year x sub_year (quarter or month) x size x own_code x industry
 #'   the file can be aggregated as such
 #'   I do not download all the information (some location quotients and taxes are forgotten)
 #' @return data.table dt_tidy
 #' @examples
+#'   \dontrun{
 #'   dt_tidy <- tidy_qcew(data_cut = 10,
 #'                        year_start = 1990, year_end =1993,
 #'                        path_data = "~/Downloads/", write = T)
+#'   }
 #' @export
 tidy_qcew <- function(
   dt,
@@ -244,10 +237,10 @@ tidy_qcew <- function(
 
   if (frequency %in% c("month", "all")){
 
-    dt_month <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
-                          month1_emplvl, month2_emplvl, month3_emplvl,
-                          area_fips, own_code, size_code, agglvl_code) ]
-    dt_month <- dt_month %>% gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
+    dt_month <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
+                       month1_emplvl, month2_emplvl, month3_emplvl,
+                       area_fips, own_code, size_code, agglvl_code) ]
+    dt_month <- dt_month %>% tidyr::gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
     dt_month[, `:=`(month = as.numeric(gsub("[^\\d]+", "", month, perl=TRUE)) ) ]
     dt_month[, month := (quarter-1)*3 + month ]
     setorder(dt_month, agglvl_code, industry_code, year, month)
@@ -262,10 +255,10 @@ tidy_qcew <- function(
 
     if (industry == "naics"){
 
-      dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
-                              total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
-                              avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code,
-                              area_fips, own_code, size_code, agglvl_code) ]
+      dt_quarter <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
+                           total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
+                           avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code,
+                           area_fips, own_code, size_code, agglvl_code) ]
 
 
     } else if (industry == "sic"){
@@ -310,16 +303,18 @@ tidy_qcew <- function(
 
 #' Tidying the dataset for regression use (or merge): operate year by year to keep memory to manageable levels.
 #'
-#' @param dt: input dataset from get_files_cut
-#' @param industry: download naics or sic data
-#' @param frequency: download either quarterly, monthly or all data
+#' @param dt        input dataset from get_files_cut
+#' @param industry  download naics or sic data
+#' @param frequency download either quarterly, monthly or all data
 #' @note returns a data.table file that is formatted according to tidy standard
 #'   typically this will be year x sub_year (quarter or month) x size x own_code x industry
 #'   the file can be aggregated as such
 #'   I do not download all the information (some location quotients and taxes are forgotten)
 #' @return data.table dt_res
 #' @examples
+#'   \dontrun{
 #'   dt_tidy <- tidy_qcew_year(dt, frequency = "all", industry = "naics")
+#'   }
 #' @export
 tidy_qcew_year <- function(
   dt,
@@ -358,11 +353,11 @@ tidy_qcew_year <- function(
 
 #' Export the downloaded table into a csv file.
 #'
-#' @param year: filename for .csv file. Note that you need to pass in the
+#' @param year  filename for .csv file. Note that you need to pass in the
 #'   correct year here, since the function has no idea of what the actual year
 #'   corresponding to this data is
-#' @param named_df: data frame with name
-#' @param path_data: where does the download happen: default current directory
+#' @param named_df  data frame with name
+#' @param path_data where does the download happen: default current directory
 #' @note generates the appropriate directory if it does not already exist.
 #' @note our data does not have any headers; this simplifies the process of
 #'   joining all the csv files with cat or similar command line tools so that we
@@ -387,7 +382,7 @@ export_named_df = function(
   file.create(destination_file)
 
   data.frame(named_df) %>%
-    write.table(file = destination_file, append=TRUE, row.names=FALSE, col.names=FALSE , sep=",")
+    utils::write.table(file = destination_file, append=TRUE, row.names=FALSE, col.names=FALSE , sep=",")
 
 }
 
@@ -405,8 +400,8 @@ export_named_df = function(
 
 #' Export a dataset we are directly reading.
 #'
-#' @param path_data: where does the download happen: default current directory
-#' @param target_year: year for which we want to export the data
+#' @param path_data    where does the download happen: default current directory
+#' @param target_year  year for which we want to export the data
 #' @note assumes that file is at "./$target_year.q1_q4.singlefile.csv". This is the expected
 #'   path and file name when the csv file is extracted from the zip file with no renaming.
 #' @return NIL. Exports the data using the helper function export_named_df.
@@ -428,10 +423,10 @@ export_all_data = function (
 
 #' Master code: for selected years, download and export the data.
 #'
-#' @param path_data: where do we store the data
-#' @param year_start: start year for which we want data
-#' @param year_end: end year for which we want data
-#' @param industry: download naics or sic data
+#' @param path_data where do we store the data
+#' @param year_start start year for which we want data
+#' @param year_end end year for which we want data
+#' @param industry download naics or sic data
 #' @return NIL. Gets data for all years in range, splits the data, and then
 #'   exports it into the appropriate files
 #' @export
@@ -468,11 +463,13 @@ get_files_master = function (
 
 #' Download QCEW dataset from directly from the BLS website
 #'
-#' @param target_year: year for which we want to download the data
-#' @param industry: download naics or sic data
-#' @param path_data: where does the download happen: default current directory + tmp
-#' @param frequency: download the quarterly files or the yearly files (default is quarterly)
-#' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
+#' @param target_year year for which we want to download the data
+#' @param industry download naics or sic data
+#' @param path_data where does the download happen: default current directory + tmp
+#' @param frequency download the quarterly files or the yearly files (default is quarterly)
+#' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
+#' @param unzip unzip the file
+#' @param verbose how does the function output intermediate stages
 #' @return file complete path. Downloads the file to the current directory and unzips it.
 download_qcew_data = function(
   target_year,
@@ -524,7 +521,6 @@ download_qcew_data = function(
 
 # output is list of files in directory
     read_list <- list.files( paste0(path_data) )
-
     read_list <- read_list[grep("\\.csv$", read_list)]
 
     return(read_list)
@@ -546,12 +542,12 @@ download_qcew_data = function(
 
 #' Download QCEW dataset (size files 1st quarter) directly from the BLS website
 #'
-#' @param target_year: year for which we want to download the data
-#' @param path_data: where does the download happen: default current directory
-#' @param industry: download naics or sic data
-#' @param url_wayback: allows to specify the path in internet wayback machine that kept some of the archive
-#' @param unzip: default is True, False is useful if you are just downloading the data
-#' @return read_list: String with names of downloaded files
+#' @param target_year year for which we want to download the data
+#' @param path_data   where does the download happen: default current directory
+#' @param industry    download naics or sic data
+#' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
+#' @param unzip       default is True, False is useful if you are just downloading the data
+#' @return read_list  String with names of downloaded files
 #' @note Downloads the file to the current directory and unzips it.
 download_qcew_size_data = function(
   target_year,

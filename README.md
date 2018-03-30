@@ -1,8 +1,8 @@
-`entrydatar`
-R package for data on U.S. firm level entry
+
+entrydatar: A R package for downloading and cleaning data on U.S. firm level entry
 ======
 
-Downloads and aggregates flat tables of entry statistics from the *Quarterly Census of Employment and Wages* and *Business Employment Dynamics program* and the *County Business Patterns*.
+Downloads and aggregates flat tables of entry statistics from the *Quarterly Census of Employment and Wages* and *Business Employment Dynamics program* and the *County Business Patterns*. See details of this file and the vignettes for other commands for other public downloads.
 
 ## Available data
 

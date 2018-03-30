@@ -2,10 +2,10 @@
 title: "Download data from Business Employment Dynamics"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
-# output: rmarkdown::html_vignette
-output:
-  md_document:
-    variant: markdown_github
+output: rmarkdown::html_vignette
+#output:
+ # md_document:
+  #variant: gfm
 vignette: >
   %\VignetteIndexEntry{Download data from Business Employment Dynamics}
   %\VignetteEngine{knitr::rmarkdown}
@@ -18,7 +18,7 @@ Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) wit
 
 For example to start and get the BED industry data:
 
-``` r
+``` {r, results='hide', warning = F, error = F, message = F, eval= F}
 library(entrydatar)
 dt_ind <- get_bed("industry")
 dt_ind
@@ -50,7 +50,7 @@ To find a series it is important to read the series ID, for example `BDS00000000
   + `seasonal_code`: `S` Seasonally adjusted, `U` Not seasonally adjusted
   + `msa_code`:	`00000` National
   + `state_code`: `00` U.S. totals, see [docs](https://download.bls.gov/pub/time.series/bd/bd.state)
-  + county_code		=		000
+  + `county_code`:	`000`
   + `industry_code`: `000000` Total Private, see [doc](https://download.bls.gov/pub/time.series/bd/bd.industry) for breakdown by naics two and three digits.
   + `unitanalysis_code`: `1` Establishment
   + `dataelement_code`: `1` Employment, `2` Number of Establishments
@@ -62,11 +62,11 @@ To find a series it is important to read the series ID, for example `BDS00000000
 
 To be able to get all these series the code is required to download the full flat file which can be quite heavy (requires confirmation).
 
-```r
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
 library(entrydatar)
 dt_ind <- get_bed_detail("industry")
 dt_ind[]
-``
+```
 
 
 

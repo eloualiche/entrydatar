@@ -8,11 +8,13 @@ get_lau_data(which_data = "county", years = seq(1990, 2016),
   path_data = "./", verbose = T)
 }
 \arguments{
-\item{which_data:}{what kind of data download: default are the county files}
+\item{which_data}{what kind of data download: default are the county files}
 
-\item{path_data:}{where does the download happen: default current directory}
+\item{years}{which year do we download, as of now only 1990 to 2016 are available}
 
-\item{years:}{which year do we download, as of now only 1990 to 2016 are available}
+\item{path_data}{where does the download happen: default current directory}
+
+\item{verbose}{sahow intermediate steps}
 }
 \value{
 dt_res

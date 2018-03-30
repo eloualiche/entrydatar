@@ -8,13 +8,13 @@ get_bds_cut(year_start = 1977, year_end = 2014, unit = "firm",
   aggregation = "all")
 }
 \arguments{
-\item{year_start:}{start year for which we want data}
+\item{year_start}{start year for which we want data}
 
-\item{year_end:}{end year for which we want data}
+\item{year_end}{end year for which we want data}
 
-\item{unit:}{establishment level or firm level}
+\item{unit}{establishment level or firm level}
 
-\item{aggregation:}{download the quarterly files or the yearly files (default is quarterly)}
+\item{aggregation}{download the quarterly files or the yearly files (default is quarterly)}
 }
 \value{
 data.table aggregate
@@ -23,7 +23,8 @@ data.table aggregate
 Other code: loads data.table with option to write it for a given cut
 }
 \examples{
+\dontrun{
   dt <- get_bds_cut(year_start = 1980, year_end = 2012,
                     unit = "firm", aggregation = "all")
-                    
+}
 }
