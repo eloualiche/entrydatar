@@ -44,7 +44,11 @@ get_files_cut <- function(
   verbose     = F
 ){
 
-    dt_res <- data.table()
+  # For side-stepping checks in R
+  agglvl_code <- old_industry_code <- industry_code <- sic <- NULL
+
+  # Start of function
+  dt_res <- data.table()
 
     subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                                     loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
@@ -235,9 +239,15 @@ tidy_qcew <- function(
   industry = "naics"
 ){
 
+  # side step checks in R
+  qtr <-avg_wkly_wage <- qtrly_estabs <- lq_qtrly_estabs <- disclosure_code <- qtrly_estabs_count <- NULL
+  industry_code <- month1_emplvl <- month2_emplvl <- month3_emplvl <- area_fips <- NULL
+  own_code <- size_code <- agglvl_code <- emplvl <- total_qtrly_wages <- taxable_qtrly_wages <- qtrly_contributions <- NULL
+
+  # official function starts here
   if (frequency %in% c("month", "all")){
 
-    dt_month <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
+    dt_month <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                        month1_emplvl, month2_emplvl, month3_emplvl,
                        area_fips, own_code, size_code, agglvl_code) ]
     dt_month <- dt_month %>% tidyr::gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
@@ -255,7 +265,7 @@ tidy_qcew <- function(
 
     if (industry == "naics"){
 
-      dt_quarter <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
+      dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                            total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
                            avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code,
                            area_fips, own_code, size_code, agglvl_code) ]
@@ -440,7 +450,7 @@ get_files_master = function (
   for (year in seq(year_start, year_end)) {
 
     message(paste0("Processing data for year ", toString(year)))
-    download_data(target_year = year, path_data = path_data)
+    download_qcew_data(target_year = year, path_data = path_data)
 
     # splitting the data
     export_all_data(target_year = year, path_data = path_data)
