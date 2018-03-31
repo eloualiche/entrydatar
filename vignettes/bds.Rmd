@@ -21,12 +21,12 @@ The two main data resources are the [firm characteristics tables](https://www.ce
 Codebook is available [here](https://www.census.gov/ces/pdf/BDS_2014_Codebook.pdf)
 
 For example to start and get the BED industry data:
-```{r, warning = F, error = F, message = F, eval = T}
+```{r, warning = F, error = F, message = F, eval = F}
 library(entrydatar)
 dt_firm  <- get_bds_cut(1977, 2014, "firm", "all")
-DT::datatable(dt_firm)
+data.table(dt_firm)
 dt_estab <- get_bds_cut(1977, 2014, "establishment", "agesic")
-DT::datatable(dt_estab)
+data.table(dt_estab)
 ```
 
 
