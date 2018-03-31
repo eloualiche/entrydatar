@@ -130,7 +130,8 @@ For example the table of cuts looks as the following for **naics** based industr
 The table of contents to download directly datasets
 
 The data file layout for a general view of what is available:
-
+  
+  - For [downloading](https://www.bls.gov/cew/datatoc.htm) directly the individual files
   - For [table of contents](https://www.bls.gov/cew/datatoc.htm)
   - For [quarterly naics](http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm) and [annual naics](https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm)
   - For [quarterly sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm) and [annual sic](https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm)
@@ -168,7 +169,7 @@ Ownership codes go from 0 to 6:
   - 5 represents the `Private` sector
   - 1 to 4 represent different level of government: 4	for `International Government`; 3	for `Local Government`; 2	for `State Government` and 1	for `Federal Government`
 
-Online docs lies here for [naics](http://www.bls.gov/cew/doc/titles/ownership/ownership_titles.htm) and [sic](http://www.bls.gov/cew/doc/titles/ownership/sic_ownership_titles.htm)
+Online docs for [naics](http://www.bls.gov/cew/doc/titles/ownership/ownership_titles.htm) and [sic](http://www.bls.gov/cew/doc/titles/ownership/sic_ownership_titles.htm)
 
 
 #### Area codes and titles (FIPS)

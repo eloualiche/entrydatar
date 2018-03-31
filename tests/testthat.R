@@ -12,6 +12,5 @@ test_check("entrydatar")
 #  - BED
 #  - LAU
 #  - NBF
-# missing:
 #  - CBP
 #  - QCEW

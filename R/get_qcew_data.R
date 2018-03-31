@@ -20,7 +20,7 @@
 #' @param year_end end year for which we want data
 #' @param industry download naics or sic data
 #' @param frequency download the quarterly files or the yearly files (default is quarterly)
-#' @param download if empty do download the file from the BLS website, if not use a local version
+#' @param download if empty do download the file from the BLS website, if not use a local version with download as path
 #' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
 #' @param write save it somewhere
 #' @param verbose useful for looking all the downloads link (debugging mode)
@@ -75,7 +75,7 @@ get_files_cut <- function(
               df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
           } else {
               message("# Read file locally ... ")
-              system( paste0("tar -xvzf ", "'", download, year_iter, "_qtrly_singlefile.zip' ", "-C ", path_data, subdir ) )
+              system( paste0("tar -xvzf ", "'", download, "/", year_iter, "_qtrly_singlefile.zip' ", "-C ", path_data, subdir ) )
               df <- fread(paste0(path_data, subdir, "/", paste0(year_iter, ".q1-q4.singlefile.csv")) ) #, colClasses = c(disclosure_code = "character") )
           }
 
@@ -84,10 +84,10 @@ get_files_cut <- function(
 
           dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), .SDcols = 2:ncol(dt_split) ]
           dt_split$disclosure_code <- vec_tmp
-                                        # this clean up is not necessary to keep disclosure codes intact
+          # this clean up is not necessary to keep disclosure codes intact
 
-                                        # cleaning up
-                                        # unlink(paste0(path_data, subdir), recursive = T)
+          # cleaning up
+          # unlink(paste0(path_data, subdir), recursive = T)
           message("")
           if (download == ""){
               file.remove( paste0(path_data, subdir, "/", file_name) )

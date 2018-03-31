@@ -22,7 +22,7 @@ get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
 
 \item{path_data}{where do we store the data}
 
-\item{download}{if empty do download the file from the BLS website, if not use a local version}
+\item{download}{if empty do download the file from the BLS website, if not use a local version with download as path}
 
 \item{url_wayback}{allows to specify the path in internet wayback machine that kept some of the archive}
 
