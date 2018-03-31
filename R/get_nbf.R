@@ -5,8 +5,9 @@
 #' @param year_end end year for which we want data
 #' @return data.table aggregate
 #' @examples
+#'   \dontrun{
 #'   dt <- get_nbf(year_start = 1980, year_end = 2012)
-#'
+#'  }
 #' @export
 get_nbf <- function(
   year_start  = 1948,

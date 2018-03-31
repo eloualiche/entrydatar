@@ -47,3 +47,8 @@ dt_final
 \description{
 Download BED dataset from directly from the BLS website
 }
+\examples{
+\dontrun{
+  dt_bed <- get_bed_detail(download = T);
+  }
+}

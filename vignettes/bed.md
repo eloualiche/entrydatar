@@ -70,7 +70,11 @@ a series it is important to read the series ID, for example
 To be able to get all these series the code is required to download the
 full flat file which can be quite heavy (requires confirmation).
 
-\``r library(entrydatar) dt_ind <- get_bed_detail("industry") dt_ind[]`
+```r
+library(entrydatar)
+dt_ind <- get_bed_detail("industry")
+dt_ind[]
+```
 
 ## Other informations
 

@@ -18,6 +18,7 @@ data.table aggregate
 Other code: loads data.table with option to write it for a given cut
 }
 \examples{
+  \dontrun{
   dt <- get_nbf(year_start = 1980, year_end = 2012)
-
+ }
 }

@@ -107,6 +107,10 @@ get_bed = function(
 #' @param read FALSE is default, read RDS files if available (faster than downloading 200Mb file)
 #' @param path_data where does the download happen: default current directory
 #' @return dt_final
+#' @examples
+#' \dontrun{
+#'   dt_bed <- get_bed_detail(download = T);
+#'   }
 #' @export
 get_bed_detail <- function(
   seasonaladj  = "S",
@@ -150,10 +154,10 @@ get_bed_detail <- function(
     if (download == TRUE | d_choice == TRUE){
       message("# Downloading files ...")
       message("# Download full flat file ...")
-      download.file("https://download.bls.gov/pub/time.series/bd/bd.data.1.AllItems",
+      utils::download.file("https://download.bls.gov/pub/time.series/bd/bd.data.1.AllItems",
                     paste0(path_data, "bed_all.txt") )
       message("# Download lookup table ...")
-      download.file("https://download.bls.gov/pub/time.series/bd/bd.series",
+      utils::download.file("https://download.bls.gov/pub/time.series/bd/bd.series",
                     paste0(path_data, "bed_lookup.txt") )
     } else {
       stop("Could not download the flat BED file")

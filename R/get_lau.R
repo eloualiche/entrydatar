@@ -10,9 +10,13 @@
 #'
 #' @param which_data what kind of data download: default are the county files
 #' @param path_data  where does the download happen: default current directory
-#' @param years       which year do we download, as of now only 1990 to 2016 are available
-#' @param verbose    sahow intermediate steps
+#' @param years      which year do we download, as of now only 1990 to 2016 are available
+#' @param verbose    show intermediate steps
 #' @return dt_res
+#' @examples
+#'   \dontrun{
+#'     dt_lau <- get_lau_data(years = c(1995, 2000))
+#'   }
 #' @export
 get_lau_data = function(
   which_data = "county",

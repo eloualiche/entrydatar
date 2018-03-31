@@ -14,7 +14,7 @@ get_lau_data(which_data = "county", years = seq(1990, 2016),
 
 \item{path_data}{where does the download happen: default current directory}
 
-\item{verbose}{sahow intermediate steps}
+\item{verbose}{show intermediate steps}
 }
 \value{
 dt_res
@@ -26,4 +26,9 @@ Group all the functions
 downloads data from the Local Area Unemployment Statistics from the BLS
 #'   Data is split and tidy
 Download LAU County dataset from directly from the BLS website
+}
+\examples{
+  \dontrun{
+    dt_lau <- get_lau_data(years = c(1995, 2000))
+  }
 }
