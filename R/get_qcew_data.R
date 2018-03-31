@@ -101,7 +101,7 @@ get_files_cut <- function(
 
    # ------------------------------------------------------------------------
    # SIZE DATA: downloading only quarter version for now (ignore frequency)
-    } else if ( prod(data_cut >= 20 & data_cut <= 30) ){
+    } else if ( prod(data_cut >= 20 & data_cut < 30) ){
 
         for (year in seq(year_start, year_end)) {
 
