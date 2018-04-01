@@ -15,11 +15,12 @@
 #' Other code: loads data.table with option to write it for a given cut
 #'
 #' @param data_cut see vignette for a list of the cut
-#' @param path_data where do we store the data
 #' @param year_start start year for which we want data
 #' @param year_end end year for which we want data
 #' @param industry download naics or sic data
 #' @param frequency download the quarterly files or the yearly files (default is quarterly)
+#' @param path_data where do we store the data
+#' @param subdir do we create a random dir
 #' @param download if empty do download the file from the BLS website, if not use a local version with download as path
 #' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
 #' @param write save it somewhere
@@ -32,16 +33,17 @@
 #'   }
 #' @export
 get_files_cut <- function(
-  data_cut    = 10,
-  year_start  = 1990,
-  year_end    = 2015,
-  industry    = "naics",
-  frequency   = "quarter",
-  path_data   = "~/Downloads/tmp_data/",
-  download    = "",
-  url_wayback = "",
-  write       = F,
-  verbose     = F
+  data_cut      = 10,
+  year_start    = 1990,
+  year_end      = 2015,
+  industry      = "naics",
+  frequency     = "quarter",
+  path_data     = "~/Downloads/tmp_data/",
+  subdir        = T,
+  download      = "",
+  url_wayback   = "",
+  write         = F,
+  verbose       = F
 ){
 
   # For side-stepping checks in R
@@ -50,12 +52,15 @@ get_files_cut <- function(
   # Start of function
   dt_res <- data.table()
 
+  if (subdir == T){
     subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                                     loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
-      message(paste0("# -----------------------------------------------------\n",
+    message(paste0("# -----------------------------------------------------\n",
                    "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
     dir.create(paste0(path_data, subdir))
-
+  } else {
+    subdir <- ""
+ }
 
   # ------------------------------------------------------------------------
   if(industry == "naics"){
