@@ -6,8 +6,8 @@
 \usage{
 get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
   industry = "naics", frequency = "quarter",
-  path_data = "~/Downloads/tmp_data/", download = "", url_wayback = "",
-  write = F, verbose = F)
+  path_data = "~/Downloads/tmp_data/", subdir = T, download = "",
+  url_wayback = "", write = F, verbose = F)
 }
 \arguments{
 \item{data_cut}{see vignette for a list of the cut}
@@ -21,6 +21,8 @@ get_files_cut(data_cut = 10, year_start = 1990, year_end = 2015,
 \item{frequency}{download the quarterly files or the yearly files (default is quarterly)}
 
 \item{path_data}{where do we store the data}
+
+\item{subdir}{do we create a random dir}
 
 \item{download}{if empty do download the file from the BLS website, if not use a local version with download as path}
 
