@@ -4,7 +4,7 @@ test_that("Get the BED and check variables", {
   skip_on_cran()
 
   # create directory within test
-  unlink("./tmp_test_data")
+  unlink("./tmp_test_data", recursive = T)
   dir.create("./tmp_test_data")
 
   dt_bed <- get_bed("industry")
@@ -16,7 +16,6 @@ test_that("Get the BED and check variables", {
 
   # first row
   expect_equal(min(dt_bed$date_ym), 199209)
-
   #
   dt_bed <- get_bed_detail(download = T, path_data = "./")
   dt_bed <- data.table(dt_bed)

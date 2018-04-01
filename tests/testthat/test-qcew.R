@@ -13,7 +13,7 @@ test_that("Get the QCEW and check variables", {
   file_name_1991 <- entrydatar:::download_qcew_data(
     target_year = c(1991),
     industry = "naics", frequency = "quarter",
-    path_data = "./tmp_test_data/",
+    path_data = "./",
     verbose = T)
 
   # file_name_1992 <- entrydatar:::download_qcew_data(
@@ -23,9 +23,9 @@ test_that("Get the QCEW and check variables", {
   #   verbose = T)
 
   # 10 is national total, 17 is 5-digit
-  # dt_qcew <- get_files_cut(data_cut = c(10, 17), year_start = 1991, year_end = 1992,
-  #                          path_data = "./tmp_test_data/",
-  #                          write = F, download = "./tmp_test_data/")
+   dt_qcew <- get_files_cut(data_cut = c(10, 17), year_start = 1991, year_end = 1992,
+                            path_data = "./",
+                            write = F, download = "./")
   #
   # expect_equal(nrow(dt_qcew[agglvl_code == 10]), 8)
   # expect_equal(nrow(dt_qcew[agglvl_code == 17]), 8656)
