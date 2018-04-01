@@ -9,7 +9,7 @@ test_that("Get the BDS and check variables", {
 
 
    dt_bds <- get_bds_cut(year_start = 1990, year_end = 1991,
-                                    unit = "firm", aggregation = "all")
+                         unit = "firm", aggregation = "all")
 
    # dataset structure
    expect_equal(colnames(dt_bds),
