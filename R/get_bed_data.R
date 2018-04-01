@@ -23,7 +23,7 @@ get_bed = function(
     if (which_data == "industry"){
 
         url <- "http://www.bls.gov/web/cewbd/bd_data_ind3.txt"
-        download.file(url,
+        utils::download.file(url,
                       paste0(path_data, "bed_ind.txt") )
 
         dt_ind <- fread(paste0(path_data, "bed_ind.txt"), skip=1,

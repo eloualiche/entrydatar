@@ -7,7 +7,6 @@ test_that("Get the BED and check variables", {
   unlink("./tmp_test_data")
   dir.create("./tmp_test_data")
 
-
   dt_bed <- get_bed("industry")
 
   # dataset structure
@@ -19,7 +18,7 @@ test_that("Get the BED and check variables", {
   expect_equal(min(dt_bed$date_ym), 199209)
 
   #
-  dt_bed <- get_bed_detail(download = T, path_data = "./tmp_test_data/")
+  dt_bed <- get_bed_detail(download = T, path_data = "./")
   dt_bed <- data.table(dt_bed)
   expect_equal(colnames(dt_bed),
               c("series_id", "value", "date", "date_ym", "series_title"))
