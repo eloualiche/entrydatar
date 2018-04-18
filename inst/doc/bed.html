@@ -14,7 +14,7 @@
 
 <meta name="date" content="2018-04-18" />
 
-<title>Download data from Business Employment Dynamics</title>
+<title>Business Employment Dynamics</title>
 
 
 
@@ -278,19 +278,43 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 
-<h1 class="title toc-ignore">Download data from Business Employment Dynamics</h1>
+<h1 class="title toc-ignore">Business Employment Dynamics</h1>
 <h4 class="author"><em>Erik Loualiche</em></h4>
 <h4 class="date"><em>2018-04-18</em></h4>
 
 
 
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+</style>
+<section id="general-information-on-the-dataset" class="level2">
+<h2>General information on the dataset</h2>
 <p>Downloads data from the BED website. Of main importance is the flat file with firm level count by industry (3 digits naics) every quarter. The flat file is at the bottom of this <a href="http://www.bls.gov/bdm/bdmind3.htm">page</a> under this <a href="http://www.bls.gov/web/cewbd/bd_data_ind3.txt">url</a>.</p>
 <p>Note that there is also a <a href="http://download.bls.gov/pub/time.series/bd/">ftp</a> with other data.</p>
+</section>
+<section id="using-the-package" class="level2">
+<h2>Using the package</h2>
 <p>For example to start and get the BED industry data:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(entrydatar)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">dt_ind &lt;-<span class="st"> </span><span class="kw">get_bed</span>(<span class="st">&quot;industry&quot;</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">dt_ind</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">dt_ind &lt;-<span class="st"> </span><span class="kw">get_bed</span>(<span class="st">&quot;industry&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>data.table</a></code></pre></div>
+</section>
+<section id="where-does-the-data-come-from" class="level2">
+<h2>Where does the data come from</h2>
 <p>Take for example industry <code>naics = 111</code>, <em>Crop Production</em>. The data comes from two tables:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">head</span>(dt_ind[ naics3 <span class="op">==</span><span class="st"> &quot;111&quot;</span>])</a></code></pre></div>
+<pre><code>   date_ym naics3 year period ent_emp note1 exit_emp ent_cnt exit_cnt nent_emp nent_cnt
+1:  199209    111 1992    Q03     4.8     P      4.7    10.9      8.9      0.1      2.0
+2:  199212    111 1992    Q04     4.0     P      5.1     8.2     11.1     -1.1     -2.9
+3:  199303    111 1993    Q01     4.9     P      4.2    10.4      9.3      0.7      1.1
+4:  199306    111 1993    Q02     5.2     P      4.0    10.6      8.6      1.2      2.0
+5:  199309    111 1993    Q03     5.0     P      4.5    10.6      8.4      0.5      2.2
+6:  199312    111 1993    Q04     4.0     P      4.7     7.7     10.6     -0.7     -2.9</code></pre>
 <ul>
 <li><a href="https://www.bls.gov/web/cewbd/table7_1_ind3.txt">Table 7</a>
 <ul>
@@ -299,6 +323,23 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>exit_cnt</code> is <em>Establishment losing jobs, Closing establishments</em></li>
 <li><code>nent_cnt</code> is the difference between the number of opening establishments and the number of closing establishments.</li>
 </ul></li>
+</ul>
+<pre><code>Table 7.  Private sector establishments by direction of employment change,
+          as percent of total establishments(1), seasonally adjusted
+
+Crop Production (Percent)
+                                            Establishments gaining jobs           Establishments losing jobs
+Year  3 months ended  Net change(2)  Total    Expanding      Opening       Total    Contracting       Closing
+                                           establishments establishments         establishments   establishments
+
+1992  September            2.0        43.4       32.5          10.9         41.4       32.5             8.9
+      December            -2.9        37.5       29.3           8.2         43.8       32.7            11.1
+
+1993  March                1.1        42.9       32.5          10.4         39.5       30.2             9.3
+      June                 2.0        43.4       32.8          10.6         39.6       31.0             8.6
+      September            2.2        43.5       32.9          10.6         40.5       32.1             8.4
+      December            -2.9        37.5       29.8           7.7         43.6       33.0            10.6</code></pre>
+<ul>
 <li><a href="https://www.bls.gov/web/cewbd/table3_1_ind3.txt">Table 3</a>
 <ul>
 <li><em>Private sector gross job gains and losses, as a percent of employment, seasonally adjusted</em></li>
@@ -307,10 +348,23 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>nent_emp</code> Net change is the difference between total gross job gains and total gross job losses.</li>
 </ul></li>
 </ul>
-<section id="other" class="level1">
-<h1>Other</h1>
-<section id="in-progress" class="level2">
-<h2>In progress</h2>
+<pre><code>Table 3.  Private sector gross job gains and losses, as a percent of employment(1), seasonally adjusted
+
+Crop Production (Percent)
+                                                  Gross job gains                       Gross job losses
+Year  3 months ended  Net change(2)  Total    Expanding      Opening      Total     Contracting      Closing
+                                           establishments establishments           establishments establishments
+
+1992  September           -1.4       32.4        27.6           4.8        33.8        29.1             4.7
+      December            -2.0       29.1        25.1           4.0        31.1        26.0             5.1
+
+1993  March                0.6       28.7        23.8           4.9        28.1        23.9             4.2
+      June                 3.0       31.7        26.5           5.2        28.7        24.7             4.0
+      September           -0.8       31.2        26.2           5.0        32.0        27.5             4.5
+      December            -0.7       29.4        25.4           4.0        30.1        25.4             4.7</code></pre>
+</section>
+<section id="other-elements-in-the-package-work-in-progress" class="level2">
+<h2>Other elements in the package (Work in Progress)</h2>
 <p>All the flat files are available <a href="https://download.bls.gov/pub/time.series/bd/">here</a>. Of main importance is the <a href="https://download.bls.gov/pub/time.series/bd/bd.txt">doc</a> To find a series it is important to read the series ID, for example <code>BDS0000000000000000210101LQ5</code> which can be broken out into:</p>
 <ul>
 <li>data abbreviation: <code>BD</code></li>
@@ -328,18 +382,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><code>ownership_code</code>: <code>5</code> Private Sector</li>
 </ul>
 <p>To be able to get all these series the code is required to download the full flat file which can be quite heavy (requires confirmation).</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw">library</span>(entrydatar)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">dt_ind &lt;-<span class="st"> </span><span class="kw">get_bed_detail</span>(<span class="st">&quot;industry&quot;</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">dt_ind[]</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw">library</span>(entrydatar)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2">dt_ind &lt;-<span class="st"> </span><span class="kw">get_bed_detail</span>(<span class="st">&quot;industry&quot;</span>)</a>
+<a class="sourceLine" id="cb6-3" data-line-number="3">dt_ind[]</a></code></pre></div>
 </section>
-<section id="other-informations" class="level2">
-<h2>Other informations</h2>
+<section id="other-information" class="level2">
+<h2>Other information</h2>
 <p>Business Employment Dynamics Program Contacts is available via email at: <a href="mailto:BDMInfo@bls.gov">BDMInfo@bls.gov</a> or by phone on 202-691-6553.</p>
 <hr />
 <ol type="1">
 <li>Erik Loualiche</li>
 </ol>
-</section>
 </section>
 
 

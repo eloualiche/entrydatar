@@ -1,5 +1,5 @@
 ---
-title: "Download data from Business Employment Dynamics"
+title: "Business Employment Dynamics"
 author: "Erik Loualiche"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
@@ -12,25 +12,82 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+</style>
+
+```{r global_options, echo = FALSE, include = FALSE}
+options(width = 999)
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
+                      cache = FALSE, tidy = FALSE, size = "small")
+```
+
+
+## General information on the dataset
+
 Downloads data from the BED website. Of main importance is the flat file with firm level count by industry (3 digits naics) every quarter. The flat file is at the bottom of this [page](http://www.bls.gov/bdm/bdmind3.htm) under this [url](http://www.bls.gov/web/cewbd/bd_data_ind3.txt).
 
 Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) with other data.
+
+## Using the package
 
 For example to start and get the BED industry data:
 
 ``` {r, results='hide', warning = F, error = F, message = F, eval= F}
 library(entrydatar)
-dt_ind <- get_bed("industry")
-dt_ind
+dt_ind <- get_bed("industry") %>% data.table
 ```
 
+
+## Where does the data come from
+
 Take for example industry `naics = 111`, *Crop Production*. The data comes from two tables:
+``` {r, results='hide', warning = F, error = F, message = F, eval= F}
+head(dt_ind[ naics3 == "111"])
+```
+```
+   date_ym naics3 year period ent_emp note1 exit_emp ent_cnt exit_cnt nent_emp nent_cnt
+1:  199209    111 1992    Q03     4.8     P      4.7    10.9      8.9      0.1      2.0
+2:  199212    111 1992    Q04     4.0     P      5.1     8.2     11.1     -1.1     -2.9
+3:  199303    111 1993    Q01     4.9     P      4.2    10.4      9.3      0.7      1.1
+4:  199306    111 1993    Q02     5.2     P      4.0    10.6      8.6      1.2      2.0
+5:  199309    111 1993    Q03     5.0     P      4.5    10.6      8.4      0.5      2.2
+6:  199312    111 1993    Q04     4.0     P      4.7     7.7     10.6     -0.7     -2.9
+```
+
+
 
 + [Table 7](https://www.bls.gov/web/cewbd/table7_1_ind3.txt)
   + *Private sector establishments by direction of employment change, as percent of total establishments, seasonally adjusted*
   + `ent_cnt` is *Establishment gaining jobs, Opening establishments*
   + `exit_cnt` is *Establishment losing jobs, Closing establishments*
   + `nent_cnt` is the difference between the number of opening establishments and the number of closing establishments. 
+
+
+```
+Table 7.  Private sector establishments by direction of employment change,
+          as percent of total establishments(1), seasonally adjusted
+
+Crop Production (Percent)
+                                            Establishments gaining jobs           Establishments losing jobs
+Year  3 months ended  Net change(2)  Total    Expanding      Opening       Total    Contracting       Closing
+                                           establishments establishments         establishments   establishments
+
+1992  September            2.0        43.4       32.5          10.9         41.4       32.5             8.9
+      December            -2.9        37.5       29.3           8.2         43.8       32.7            11.1
+
+1993  March                1.1        42.9       32.5          10.4         39.5       30.2             9.3
+      June                 2.0        43.4       32.8          10.6         39.6       31.0             8.6
+      September            2.2        43.5       32.9          10.6         40.5       32.1             8.4
+      December            -2.9        37.5       29.8           7.7         43.6       33.0            10.6
+```
+  
   
 + [Table 3](https://www.bls.gov/web/cewbd/table3_1_ind3.txt)
   + *Private sector gross job gains and losses, as a percent of employment, seasonally adjusted*
@@ -38,10 +95,26 @@ Take for example industry `naics = 111`, *Crop Production*. The data comes from 
   + `exit_emp` is *Gross job losses, Closing establishments*
   + `nent_emp` Net change is the difference between total gross job gains and total gross job losses.
 
+```
+Table 3.  Private sector gross job gains and losses, as a percent of employment(1), seasonally adjusted
 
-# Other
+Crop Production (Percent)
+                                                  Gross job gains                       Gross job losses
+Year  3 months ended  Net change(2)  Total    Expanding      Opening      Total     Contracting      Closing
+                                           establishments establishments           establishments establishments
 
-## In progress
+1992  September           -1.4       32.4        27.6           4.8        33.8        29.1             4.7
+      December            -2.0       29.1        25.1           4.0        31.1        26.0             5.1
+
+1993  March                0.6       28.7        23.8           4.9        28.1        23.9             4.2
+      June                 3.0       31.7        26.5           5.2        28.7        24.7             4.0
+      September           -0.8       31.2        26.2           5.0        32.0        27.5             4.5
+      December            -0.7       29.4        25.4           4.0        30.1        25.4             4.7
+```
+
+
+
+## Other elements in the package (Work in Progress)
 
 All the flat files are available [here](https://download.bls.gov/pub/time.series/bd/). Of main importance is the [doc](https://download.bls.gov/pub/time.series/bd/bd.txt)
 To find a series it is important to read the series ID, for example `BDS0000000000000000210101LQ5` which can be broken out into:
@@ -70,7 +143,7 @@ dt_ind[]
 
 
 
-## Other informations
+## Other information
 
 Business Employment Dynamics Program Contacts is available via email at: BDMInfo@bls.gov or by phone on 202-691-6553.
 

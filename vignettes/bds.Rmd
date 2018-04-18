@@ -15,7 +15,7 @@ vignette: >
 
 ## General information on the dataset
 
-  + Downloads data from the Census Business Dynamics Statistics: (**BDS** website](https://www.census.gov/ces/dataproducts/bds/). 
+  + Downloads data from the Census Business Dynamics Statistics: [**BDS** website](https://www.census.gov/ces/dataproducts/bds/). 
   + The two main data resources are the [firm characteristics tables](https://www.census.gov/ces/dataproducts/bds/data_firm.html) and the [establishment characteristics tables](https://www.census.gov/ces/dataproducts/bds/data_estab.html)
   + Codebook is available [here](https://www.census.gov/ces/pdf/BDS_2014_Codebook.pdf)
 
