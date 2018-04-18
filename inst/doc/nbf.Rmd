@@ -24,6 +24,22 @@ Load it with:
 entrydatar::scb
 ```
 
+The data has both monthly and annual frequency component:
+```
+     date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf
+  1:  194801      101.1 115.7      95462  9380      234.6   13.0
+  2:  194802      101.1 107.5      95462  8329      234.6   25.6
+  3:  194803      101.1 105.0      95462  8349      234.6   17.5
+  4:  194804      101.1 104.5      95462  8396      234.6   15.3
+  5:  194805      101.1 103.7      95462  8064      234.6   13.8
+ ---                                                            
+560:  199408      125.5 125.8     741059 64844    28943.9 2106.8
+561:  199409      125.5 125.3     741059 64564    28943.9 3434.0
+562:  199410      125.5 124.6     741059 60488    28943.9 2023.1
+563:  199411      125.5 127.9     741059 64542    28943.9 2511.8
+564:  199412      125.5 127.3     741059 62908    28943.9 3108.0
+```
+
 There is also a function like the other in this package to access an interval:
 ```{r, warning = F, error = F, message = F}
 entrydatar::get_nbf(1980, 1998)

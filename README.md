@@ -47,11 +47,11 @@ Left to Do on CBP:
      ```get_nbf(years = seq(1948, 1994))```
 
 ## Vignettes:
-  - How to download specific cuts of the [QCEW](vignettes/qcew.md)
-  - How to download a clean version of the [CBP](vignettes/cbp.md)
-  - How to download a clean version of the [BED](vignettes/bed.md)
-  - How to download a clean version of the [BDS](vignettes/bds.md)
-  - How to download a clean version of the [NBF](vignettes/nbf.md)
+  - How to download specific cuts of the [QCEW](vignettes/qcew.Rmd)
+  - How to download a clean version of the [CBP](vignettes/cbp.Rmd)
+  - How to download a clean version of the [BED](vignettes/bed.Rmd)
+  - How to download a clean version of the [BDS](vignettes/bds.Rmd)
+  - How to download a clean version of the [NBF](vignettes/nbf.Rmd)
 
 
 ## Installation
@@ -64,8 +64,9 @@ devtools::install_github("eloualiche/entrydatar")
 
 
 ## Work in progress (to do list)
+  
   - Load QCEW directly from local downloaded files
-
+  - Stable version of Quarterly Workforce Indicator. See vignette for documentation [QWI](vignettes/qwi.Rmd)
 
 
 

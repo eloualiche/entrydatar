@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erik Loualiche" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-18" />
 
 <title>Load from the BEA Survey of Current Business</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Load from the BEA Survey of Current Business</h1>
 <h4 class="author"><em>Erik Loualiche</em></h4>
-<h4 class="date"><em>2018-03-30</em></h4>
+<h4 class="date"><em>2018-04-18</em></h4>
 
 
 
@@ -304,8 +304,21 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 562:  199410      125.5 124.6     741059 60488    28943.9 2023.1
 ## 563:  199411      125.5 127.9     741059 64542    28943.9 2511.8
 ## 564:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
+<p>The data has both monthly and annual frequency component:</p>
+<pre><code>     date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf
+  1:  194801      101.1 115.7      95462  9380      234.6   13.0
+  2:  194802      101.1 107.5      95462  8329      234.6   25.6
+  3:  194803      101.1 105.0      95462  8349      234.6   17.5
+  4:  194804      101.1 104.5      95462  8396      234.6   15.3
+  5:  194805      101.1 103.7      95462  8064      234.6   13.8
+ ---                                                            
+560:  199408      125.5 125.8     741059 64844    28943.9 2106.8
+561:  199409      125.5 125.3     741059 64564    28943.9 3434.0
+562:  199410      125.5 124.6     741059 60488    28943.9 2023.1
+563:  199411      125.5 127.9     741059 64542    28943.9 2511.8
+564:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
 <p>There is also a function like the other in this package to access an interval:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)</a></code></pre></div>
 <pre><code>##      date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf
 ##   1:  198001      129.9 137.9     531519 44230     4634.9  243.1
 ##   2:  198002      129.9 137.1     531519 44175     4634.9  190.8
@@ -320,7 +333,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 180:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
 <p>Note that the data only extends to 1994 (included).</p>
 <p>Quick summary stats of the dataset&quot;</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">skimr<span class="op">::</span><span class="kw">skim</span>(entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)[, .(nbi, nbf, cbf)])</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">skimr<span class="op">::</span><span class="kw">skim</span>(entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)[, .(nbi, nbf, cbf)])</a></code></pre></div>
 <pre><code>## Skim summary statistics
 ##  n obs: 180 
 ##  n variables: 3 

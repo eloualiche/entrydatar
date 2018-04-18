@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erik Loualiche" />
 
-<meta name="date" content="2018-03-30" />
+<meta name="date" content="2018-04-18" />
 
 <title>Download data from Business Dynamics Statistics</title>
 
@@ -280,50 +280,65 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Download data from Business Dynamics Statistics</h1>
 <h4 class="author"><em>Erik Loualiche</em></h4>
-<h4 class="date"><em>2018-03-30</em></h4>
+<h4 class="date"><em>2018-04-18</em></h4>
 
 
 
-<p>Downloads data from the Census BDS <a href="https://www.census.gov/ces/dataproducts/bds/">website</a>.</p>
-<p>The two main data resources are the <a href="https://www.census.gov/ces/dataproducts/bds/data_firm.html">firm characteristics tables</a> and the <a href="https://www.census.gov/ces/dataproducts/bds/data_estab.html">establishment characteristics tables</a></p>
-<p>Codebook is available <a href="https://www.census.gov/ces/pdf/BDS_2014_Codebook.pdf">here</a></p>
+<section id="general-information-on-the-dataset" class="level2">
+<h2>General information on the dataset</h2>
+<ul>
+<li>Downloads data from the Census Business Dynamics Statistics: (<strong>BDS</strong> website](<a href="https://www.census.gov/ces/dataproducts/bds/" class="uri">https://www.census.gov/ces/dataproducts/bds/</a>).</li>
+<li>The two main data resources are the <a href="https://www.census.gov/ces/dataproducts/bds/data_firm.html">firm characteristics tables</a> and the <a href="https://www.census.gov/ces/dataproducts/bds/data_estab.html">establishment characteristics tables</a></li>
+<li>Codebook is available <a href="https://www.census.gov/ces/pdf/BDS_2014_Codebook.pdf">here</a></li>
+</ul>
+</section>
+<section id="using-the-package" class="level2">
+<h2>Using the package</h2>
 <p>For example to start and get the BED industry data:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(entrydatar)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">dt_firm  &lt;-<span class="st"> </span><span class="kw">get_bds_cut</span>(<span class="dv">1977</span>, <span class="dv">2014</span>, <span class="st">&quot;firm&quot;</span>, <span class="st">&quot;all&quot;</span>)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">data.table</span>(dt_firm)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4">dt_estab &lt;-<span class="st"> </span><span class="kw">get_bds_cut</span>(<span class="dv">1977</span>, <span class="dv">2014</span>, <span class="st">&quot;establishment&quot;</span>, <span class="st">&quot;agesic&quot;</span>)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw">data.table</span>(dt_estab)</a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2">dt_firm  &lt;-<span class="st"> </span><span class="kw">get_bds_cut</span>(<span class="dv">1977</span>, <span class="dv">2014</span>, <span class="st">&quot;firm&quot;</span>, <span class="st">&quot;all&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>data.table</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">dt_firm[]</a></code></pre></div>
+<p>Or for another cut, say establishments from age sic (see below for the exact code for each cut)</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dt_estab &lt;-<span class="st"> </span><span class="kw">get_bds_cut</span>(<span class="dv">1977</span>, <span class="dv">2014</span>, <span class="st">&quot;establishment&quot;</span>, <span class="st">&quot;agesic&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span>data.table</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2">dt_estab</a></code></pre></div>
+</section>
 <section id="detailed-documentation" class="level2">
 <h2>Detailed documentation</h2>
-<section id="detail-of-the-data-cuts" class="level3">
-<h3>Detail of the data cuts</h3>
-<section id="by-firm-characteristics" class="level4">
-<h4>By firm characteristics</h4>
-<ol type="1">
-<li>National
+<section id="detail-of-the-data" class="level3">
+<h3>Detail of the data</h3>
+<section id="by-national-firm-characteristics" class="level4">
+<h4>By <strong>national</strong> firm characteristics</h4>
 <ul>
 <li>Economy Wide <a href="http://www2.census.gov/ces/bds/firm/bds_f_all_release.csv"><code>all</code></a></li>
 <li>Sector <a href="http://www2.census.gov/ces/bds/firm/bds_f_sic_release.csv"><code>sic</code></a></li>
 <li>Firm Size <a href="http://www2.census.gov/ces/bds/firm/bds_f_sz_release.csv"><code>sz</code></a></li>
 <li>Initial Firm Size <a href="http://www2.census.gov/ces/bds/firm/bds_f_isz_release.csv"><code>isz</code></a></li>
 <li>Firm Age <a href="http://www2.census.gov/ces/bds/firm/bds_f_age_release.csv"><code>age</code></a></li>
-</ul></li>
-<li>Geography
+</ul>
+</section>
+<section id="by-geography" class="level4">
+<h4>By <strong>geography</strong></h4>
 <ul>
 <li>State <a href="http://www2.census.gov/ces/bds/firm/bds_f_st_release.csv"><code>st</code></a></li>
 <li>Metro <a href="http://www2.census.gov/ces/bds/firm/bds_f_metrononmetro_release.csv"><code>metrononmetro</code></a></li>
 <li>MSA <a href="http://www2.census.gov/ces/bds/firm/bds_f_msa_release.csv"><code>msa</code></a></li>
-</ul></li>
-<li>Age by …
+</ul>
+</section>
+<section id="by-age-interacted-with" class="level4">
+<h4>By <strong>age</strong> interacted with …</h4>
 <ul>
 <li>Age x Size <a href="http://www2.census.gov/ces/bds/firm/bds_f_agesz_release.csv"><code>agesz</code></a></li>
 <li>Age x Initial Size <a href="http://www2.census.gov/ces/bds/firm/bds_f_ageisz_release.csv"><code>ageisz</code></a></li>
 <li>Age x Sector <a href="http://www2.census.gov/ces/bds/firm/bds_f_agesic_release.csv"><code>agesic</code></a></li>
 <li>Age x Metro <a href="http://www2.census.gov/ces/bds/firm/bds_f_agemetrononmetro_release.csv"><code>agemetrononmetro</code></a></li>
-</ul></li>
-<li><p>Size by …</p></li>
-<li><p>Initial size by …</p></li>
-<li><p>Age x X x Y</p></li>
+</ul>
+</section>
+<section id="other-data-cuts-in-progress" class="level4">
+<h4>Other data cuts ( in progress )</h4>
+<ol start="4" type="1">
+<li>Size by …</li>
+<li>Initial size by …</li>
+<li>Age x X x Y</li>
 </ol>
 <hr />
 <ol start="3" type="a">
