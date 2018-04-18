@@ -3,6 +3,8 @@ entrydatar: download and clean data on U.S. firms' entry
 ======
 
 [![Build Status](https://travis-ci.org/eloualiche/entrydatar.svg?branch=master)](https://travis-ci.org/eloualiche/entrydatar)
+[![codecov](https://codecov.io/gh/eloualiche/entrydatar/branch/master/graph/badge.svg)](https://codecov.io/gh/eloualiche/entrydatar)
+
 
 
 Downloads and aggregates flat tables of entry statistics from the *Quarterly Census of Employment and Wages* and *Business Employment Dynamics program* and the *County Business Patterns*. See details of this file and the vignettes for other commands for other public downloads.

@@ -23,10 +23,9 @@ get_bed = function(
     if (which_data == "industry"){
 
         url <- "http://www.bls.gov/web/cewbd/bd_data_ind3.txt"
-        utils::download.file(url,
-                      paste0(path_data, "bed_ind.txt") )
-
-        dt_ind <- fread(paste0(path_data, "bed_ind.txt"), skip=1,
+        #utils::download.file(url,
+        #              paste0(path_data, "bed_ind.txt") )
+        dt_ind <- fread(url, skip=1,
                         colClasses = c("character", "integer", "character", "numeric", "character", "character") )
 
         setnames(dt_ind, c("series_id", "year", "period", "entry", "note1", "note2") )
@@ -75,8 +74,8 @@ get_bed = function(
 
     # df[, dateq := statar::as.quarterly(ISOdate(floor(date_ym/100), date_ym %% 100, 1) )  ]
 
-    # cleaning up
-    file.remove( paste0(path_data, "bed_ind.txt" ) )
+    # cleaning up (not necessary as we now directly read the url)
+    # file.remove( paste0(path_data, "bed_ind.txt" ) )
 
     # return dataset
     return( df )

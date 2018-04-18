@@ -63,7 +63,7 @@ head(dt_ind[ naics3 == "111"])
 
 
 
-+ [Table 7](https://www.bls.gov/web/cewbd/table7_1_ind3.txt)
+#### [Table 7](https://www.bls.gov/web/cewbd/table7_1_ind3.txt)
   + *Private sector establishments by direction of employment change, as percent of total establishments, seasonally adjusted*
   + `ent_cnt` is *Establishment gaining jobs, Opening establishments*
   + `exit_cnt` is *Establishment losing jobs, Closing establishments*
@@ -71,9 +71,6 @@ head(dt_ind[ naics3 == "111"])
 
 
 ```
-Table 7.  Private sector establishments by direction of employment change,
-          as percent of total establishments(1), seasonally adjusted
-
 Crop Production (Percent)
                                             Establishments gaining jobs           Establishments losing jobs
 Year  3 months ended  Net change(2)  Total    Expanding      Opening       Total    Contracting       Closing
@@ -89,15 +86,13 @@ Year  3 months ended  Net change(2)  Total    Expanding      Opening       Total
 ```
   
   
-+ [Table 3](https://www.bls.gov/web/cewbd/table3_1_ind3.txt)
+#### [Table 3](https://www.bls.gov/web/cewbd/table3_1_ind3.txt)
   + *Private sector gross job gains and losses, as a percent of employment, seasonally adjusted*
   + `ent_emp` is *Gross job gains, Opening establishments*
   + `exit_emp` is *Gross job losses, Closing establishments*
   + `nent_emp` Net change is the difference between total gross job gains and total gross job losses.
 
 ```
-Table 3.  Private sector gross job gains and losses, as a percent of employment(1), seasonally adjusted
-
 Crop Production (Percent)
                                                   Gross job gains                       Gross job losses
 Year  3 months ended  Net change(2)  Total    Expanding      Opening      Total     Contracting      Closing
@@ -112,6 +107,45 @@ Year  3 months ended  Net change(2)  Total    Expanding      Opening      Total 
       December            -0.7       29.4        25.4           4.0        30.1        25.4             4.7
 ```
 
+
+### Some more details about where the data actually comes from:
+
+#### [Table 5](https://www.bls.gov/web/cewbd/table5_1_ind3.txt)
+
+```
+Crop Production                                                                      
+                                            Establishments gaining jobs           Establishments losing jobs
+Year  3 months ended  Net change(1)  Total    Expanding      Opening       Total    Contracting       Closing
+                                           establishments establishments         establishments   establishments
+
+1992  September            769      16,623     12,452         4,171       15,874     12,472           3,402
+      December          -1,065      14,226     11,098         3,128       16,587     12,394           4,193
+```
+
+  + *Number of private sector establishments by direction of employment change, seasonally adjusted*
+  + The variable `ent_cnt` (and respectively `exit_cnt` and `nent_cnt`) is the ratio of *establishments gaining jobs: opening establishments* over the total number of establishments both *gaining jobs* and *losing jobs* adjusted for their share in the total number of establishments in the economy
+  + Example for 1992Q3: Opening establishments is 4171. Total establishments gaining jobs is 16623. The fraction of total establishments gaining jobs is 43.4% (see Table 7). So the entry rate is 4171 / (16623 / 0.434) = 10.9%
+
+
+#### [Table 1](https://www.bls.gov/web/cewbd/table5_1_ind3.txt)
+  
+```
+Crop Production                                                                      
+                                                  Gross job gains                       Gross job losses
+Year  3 months ended  Net change(1)  Total    Expanding      Opening      Total     Contracting      Closing
+                                           establishments establishments           establishments establishments
+
+1992  September         -7,856    187,375     159,621        27,754     195,231     168,200          27,031
+      December         -11,035    160,672     138,617        22,055     171,707     143,712          27,995
+```
+
+  + *Number of private sector establishments by direction of employment change, seasonally adjusted*
+  + The variable `ent_emp` (and respectively `exit_emp` and `nent_emp`) is the ratio of *establishments gaining jobs: opening establishments* over the total number of establishments both *gaining jobs* and *losing jobs* adjusted for their share in the total employment of establishments in the economy
+  + Example for 1992Q3: Employment gains for opening establishments is 27,754. The fraction of total establishments gaining jobs is 32.4% (as a fraction of employment, see Table 3). So the employment weighted entry rate is 27754 / (187375 * 0.324) = 4.6%.
+
+
+
+---------------------
 
 
 ## Other elements in the package (Work in Progress)
