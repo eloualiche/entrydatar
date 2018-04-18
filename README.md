@@ -69,8 +69,8 @@ devtools::install_github("eloualiche/entrydatar")
 
 ## Work in progress (to do list)
   
-  [ ] Load QCEW directly from local downloaded files
-  [ ] Stable version of Quarterly Workforce Indicator. See vignette for documentation [QWI](vignettes/qwi.Rmd)
+  + [ ] Load QCEW directly from local downloaded files
+  + [ ] Stable version of Quarterly Workforce Indicator. See vignette for documentation [QWI](vignettes/qwi.Rmd)
 
 
 
