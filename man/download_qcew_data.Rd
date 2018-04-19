@@ -5,7 +5,8 @@
 \title{Download QCEW dataset from directly from the BLS website}
 \usage{
 download_qcew_data(target_year, industry = "naics", path_data = "./",
-  frequency = "quarter", url_wayback = "", unzip = T, verbose = F)
+  frequency = "quarter", url_wayback = "", unzip = T, download = T,
+  verbose = F)
 }
 \arguments{
 \item{target_year}{year for which we want to download the data}
@@ -19,6 +20,8 @@ download_qcew_data(target_year, industry = "naics", path_data = "./",
 \item{url_wayback}{allows to specify the path in internet wayback machine that kept some of the archive}
 
 \item{unzip}{unzip the file}
+
+\item{download}{default is TRUE, FALSE only returns the url}
 
 \item{verbose}{how does the function output intermediate stages}
 }

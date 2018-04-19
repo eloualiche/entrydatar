@@ -73,11 +73,15 @@ get_files_cut <- function(
           message(paste0("\n# Processing data for year ", toString(year_iter)," and ", industry, " industry type."))
           if (download == ""){
               message("# Download in progress ... ")
+              # read the file directly from the remote url
               file_name <- download_qcew_data(target_year = year_iter,
                                               industry = industry, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
-                                              url_wayback = url_wayback, verbose = verbose)
-              df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
+                                              url_wayback = url_wayback,
+                                              download = F, verbose = verbose)
+              # df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
+              df <- fread.zip.url(file_name)
+
           } else {
               message("# Read file locally ... ")
               system( paste0("tar -xvzf ", "'", download, "/", year_iter, "_qtrly_singlefile.zip' ", "-C ", path_data, subdir ) )
@@ -484,6 +488,7 @@ get_files_master = function (
 #' @param frequency download the quarterly files or the yearly files (default is quarterly)
 #' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
 #' @param unzip unzip the file
+#' @param download default is TRUE, FALSE only returns the url
 #' @param verbose how does the function output intermediate stages
 #' @return file complete path. Downloads the file to the current directory and unzips it.
 download_qcew_data = function(
@@ -493,6 +498,7 @@ download_qcew_data = function(
   frequency   = "quarter",
   url_wayback = "",
   unzip       = T,
+  download    = T,
   verbose     = F
 ){
 
@@ -528,17 +534,21 @@ download_qcew_data = function(
         message(paste0("# Downloading from url .... ", url_prefix))
     }
     url = paste0(dir_name, zip_file_name)
-    download.file(url,
-                  paste0(path_data, zip_file_name) )           # download file to path_data
-    if (unzip == T){
-        unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+
+    # return file or the url:
+    if (download == F){
+      return(url)
+    } else if (download == T){
+        download.file(url,
+                    paste0(path_data, zip_file_name) )           # download file to path_data
+        if (unzip == T){
+          unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
+        }
+    # output is list of files in directory
+      read_list <- list.files( paste0(path_data) )
+      read_list <- read_list[grep("\\.csv$", read_list)]
+      return(read_list)
     }
-
-# output is list of files in directory
-    read_list <- list.files( paste0(path_data) )
-    read_list <- read_list[grep("\\.csv$", read_list)]
-
-    return(read_list)
 
 } # end of download_qcew_data
 
@@ -623,3 +633,37 @@ download_qcew_size_data = function(
  return(read_list)
 
 } # end of download_qcew_size_data
+
+
+
+
+#' Other code: read zipped url, copied from https://stackoverflow.com/a/24586478
+#'
+#' @param url see vignette for a list of the cut
+#' @param filename for multiple files in the archive
+#' @param FUN default to fread from data.table but you could use anything
+#' @return data.table of the remote file
+#' @examples
+#'   \dontrun{
+#'   dt <- get_files_cut(http://data.bls.gov/cew/data/files/2000/csv/2000_qtrly_singlefile.zip)
+#'   }
+fread.zip.url <- function(url, filename = NULL, FUN = fread, ...) {
+  zipfile <- tempfile()
+  download.file(url = url, destfile = zipfile, quiet = TRUE)
+  zipdir <- tempfile()
+  dir.create(zipdir)
+  unzip(zipfile, exdir = zipdir) # files="" so extract all
+  files <- list.files(zipdir)
+  if (is.null(filename)) {
+    if (length(files) == 1) {
+      filename <- files
+    } else {
+      stop("multiple files in zip, but no filename specified: ", paste(files, collapse = ", "))
+    }
+  } else { # filename specified
+    stopifnot(length(filename) ==1)
+    stopifnot(filename %in% files)
+  }
+  file <- paste(zipdir, files[1], sep="/")
+  do.call(FUN, args = c(list(file.path(zipdir, filename)), list(...)))
+} # end of fread.zip.url

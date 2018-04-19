@@ -53,6 +53,14 @@ test_that("Get the QCEW and check variables", {
                 "qtrly_estabs", "lq_qtrly_estabs", "disclosure_code"))
 
 
+  # =====================================================================================
+  # OTHER USEFUL FUNCTIONS
+  file_name <- download_qcew_data(target_year = 2000, industry = "naics", frequency = "quarter",
+                                  path_data = "", url_wayback = "",
+                                  download = F) # key thing here is to test the new read directly the zip files
+  expect_equal(typeof(file_name), "character")
+
+
   # # =====================================================================================
   # # 23 is Supersector x national x size
   # dt_qcew <- get_files_cut(data_cut = 23, year_start = 1991, year_end =1992,
