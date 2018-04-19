@@ -21,6 +21,7 @@ get_bed = function(
 
   # Avoid notes when checking package due to nse:
   series_id <- emp <- entry <- NULL
+  ent_cnt <- ent_emp <-  ent_lvl_cnt <- ent_lvl_emp <- tot_count <- tot_emp <- NULL
 
     if (which_data == "industry"){
 

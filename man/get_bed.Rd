@@ -4,12 +4,14 @@
 \alias{get_bed}
 \title{Group all the functions}
 \usage{
-get_bed(which_data = "industry", path_data = "./")
+get_bed(which_data = "industry", level = FALSE, path_data = NULL)
 }
 \arguments{
 \item{which_data}{what kind of data download: default is the main industry file}
 
-\item{path_data}{where does the download happen: default current directory}
+\item{level}{also keep the level of the variables (number of estabs and employment counts)}
+
+\item{path_data}{where does the download happen: default current directory (irrelevant since we read mostly from url)}
 }
 \value{
 df
