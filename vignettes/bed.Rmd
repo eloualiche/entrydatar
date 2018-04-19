@@ -35,6 +35,7 @@ Downloads data from the BED website. Of main importance is the flat file with fi
 
 Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) with other data.
 
+
 ## Using the package
 
 For example to start and get the BED industry data:
@@ -42,6 +43,24 @@ For example to start and get the BED industry data:
 ``` {r, results='hide', warning = F, error = F, message = F, eval= F}
 library(entrydatar)
 dt_ind <- get_bed("industry") %>% data.table
+```
+
+Or if you also want to process the levels (employment and count of establishments):
+
+```
+> get_bed("industry", level = T) %>% data.table
+      date_ym naics3 year period ent_emp note1 exit_emp ent_cnt exit_cnt nent_emp nent_cnt ent_lvl_emp exit_lvl_emp ent_lvl_cnt exit_lvl_cnt  tot_count     tot_emp
+   1:  199209    111 1992    Q03     4.8     P      4.7    10.9      8.9      0.1      2.0       27754        27031        4171         3402  38266.055   578208.33
+   2:  199209    112 1992    Q03     2.3     P      1.6     4.7      4.1      0.7      0.6        3532         2499         736          631  15659.574   153565.22
+   3:  199209    113 1992    Q03     3.0     P      3.7     7.1      8.3     -0.7     -1.2        2698         3353         851         1000  11985.915    89933.33
+   4:  199209    114 1992    Q03    13.2     P     10.1    20.4     15.4      3.1      5.0        1655         1259         457          344   2240.196    12537.88
+   5:  199209    115 1992    Q03     9.8     P      7.8    10.5      9.7      2.0      0.8       25944        20799        1337         1232  12733.333   264734.69
+  ---                                                                                                                                                              
+8696:  201706    721 2017    Q02     0.9     P      0.9     3.6      4.0      0.0     -0.4       18235        17749        2278         2518  63277.778  2026111.11
+8697:  201706    722 2017    Q02     1.9     P      1.4     3.6      3.5      0.5      0.1      219145       158658       20349        19916 565250.000 11533947.37
+8698:  201706    811 2017    Q02     1.6     P      1.6     3.9      4.0      0.0     -0.1       21313        21280        7819         8057 200487.179  1332062.50
+8699:  201706    812 2017    Q02     1.9     P      1.7     4.3      4.3      0.2      0.0       27266        25570        8321         8283 193511.628  1435052.63
+8700:  201706    813 2017    Q02     1.1     P      1.0     3.0      3.2      0.1     -0.2       14714        13594        3934         4156 131133.333  1337636.36
 ```
 
 
@@ -149,6 +168,7 @@ Year  3 months ended  Net change(1)  Total    Expanding      Opening      Total 
 
 
 ## Other elements in the package (Work in Progress)
+
 
 All the flat files are available [here](https://download.bls.gov/pub/time.series/bd/). Of main importance is the [doc](https://download.bls.gov/pub/time.series/bd/bd.txt)
 To find a series it is important to read the series ID, for example `BDS0000000000000000210101LQ5` which can be broken out into:

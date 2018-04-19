@@ -9,12 +9,14 @@
 #' Download BED dataset from directly from the BLS website
 #'
 #' @param which_data what kind of data download: default is the main industry file
-#' @param path_data  where does the download happen: default current directory
+#' @param level      also keep the level of the variables (number of estabs and employment counts)
+#' @param path_data  where does the download happen: default current directory (irrelevant since we read mostly from url)
 #' @return df
 #' @export
 get_bed = function(
   which_data = "industry",
-  path_data = "./"
+  level      = FALSE,
+  path_data  = NULL
 ){
 
   # Avoid notes when checking package due to nse:
@@ -22,46 +24,36 @@ get_bed = function(
 
     if (which_data == "industry"){
 
-        url <- "http://www.bls.gov/web/cewbd/bd_data_ind3.txt"
-        #utils::download.file(url,
-        #              paste0(path_data, "bed_ind.txt") )
+      url <- "http://www.bls.gov/web/cewbd/bd_data_ind3.txt"
+      if (!is.null(path_data)){
+        utils::download.file(url,
+                      paste0(path_data, "bed_ind.txt") )
+        dt_ind <- fread(paste0(path_data, "bed_ind.txt"), skip = 1,
+                        colClasses = c("character", "integer", "character", "numeric", "character", "character"))
+      } else {
         dt_ind <- fread(url, skip=1,
                         colClasses = c("character", "integer", "character", "numeric", "character", "character") )
+      }
 
-        setnames(dt_ind, c("series_id", "year", "period", "entry", "note1", "note2") )
-        dt_ind <- dt_ind[, !"note2", with=FALSE]
+      setnames(dt_ind, c("series_id", "year", "period", "entry", "note1", "note2") )
+      dt_ind <- dt_ind[, !"note2", with=FALSE]
 
-        dt_ind <- dt_ind[ grepl("BDS0000000000......1[12]000[36]RQ5*", series_id) ]  #use regex to get the 4 series at same time
-        dt_ind$naics3 <- as.integer( substr( dt_ind$series_id, 17, 19) )
-        dt_ind$emp  <- as.integer( substr( dt_ind$series_id, 21, 21) == "1" )
-        dt_ind$open <- as.integer( substr( dt_ind$series_id, 25, 25) == "3" )
-        dt_ind$date_ym <- dt_ind$year*100 + as.integer(substr(dt_ind$period,2,3))*3
+      dt_r_ind <- dt_ind[ grepl("BDS0000000000......1[12]000[36]RQ5*", series_id) ]  #use regex to get the 4 series at same time
+      dt_r_ind$naics3  <- as.integer( substr( dt_r_ind$series_id, 17, 19) )
+      dt_r_ind$emp     <- as.integer( substr( dt_r_ind$series_id, 21, 21) == "1" )
+      dt_r_ind$open    <- as.integer( substr( dt_r_ind$series_id, 25, 25) == "3" )
+      dt_r_ind$date_ym <- dt_r_ind$year*100 + as.integer(substr(dt_r_ind$period,2,3))*3
 
-        dt_ind
 
-    ########################################################
-    ## play with industries
-    ## list_naics3 <- levels(factor(dt_ind$naics3))
-    ## download industry definition from us census and append them: https://www.census.gov/cgi-bin/sssd/naics/naicsrch?chart=2012
-    ## setnames(census_ind,c("seq", "naics3", "ind_def") )
-    ## census_ind <- census_ind[, !"seq", with=FALSE]
-    ## census_ind$naics3 <- as.integer( census_ind$naics3)
-    ## # merge with the industry BLS file
-    ## dt_ind <- dt_ind %>% left_join( census_ind, by="naics3" ) %>% data.table
-
-# test to check if this matches the BLS website definitions: http://www.bls.gov/bdm/bdmind3.htm
-    ## dt_ind[ emp==0 & naics3==311 ]
-    ## dt_ind[ emp==1 & naics3==311 ]
-# match
-
-    dt_ind[, series_id:= NULL ]
-    df1 <- dt_ind[ emp==1 & open ==1, !c("emp","open") , with=FALSE ] %>%
+    # GET THE RATES
+    dt_r_ind[, series_id:= NULL ]
+    df1 <- dt_r_ind[ emp==1 & open ==1, !c("emp","open"), with=FALSE ] %>%
         dplyr::rename( ent_emp = entry )
-    df2 <- dt_ind[ emp==1 & open ==0, !c("year","period","emp","open","note1") ,with=FALSE] %>%
+    df2 <- dt_r_ind[ emp==1 & open ==0, !c("year","period","emp","open","note1"), with=FALSE] %>%
         dplyr::rename( exit_emp = entry )
-    df3 <- dt_ind[ emp==0 & open ==1, !c("year","period","emp","open","note1") ,with=FALSE] %>%
+    df3 <- dt_r_ind[ emp==0 & open ==1, !c("year","period","emp","open","note1"), with=FALSE] %>%
         dplyr::rename( ent_cnt = entry )
-    df4 <- dt_ind[ emp==0 & open ==0, !c("year","period","emp","open","note1") ,with=FALSE] %>%
+    df4 <- dt_r_ind[ emp==0 & open ==0, !c("year","period","emp","open","note1"), with=FALSE] %>%
         dplyr::rename( exit_cnt = entry )
 
     df <- merge( df1, df2, by = c("date_ym", "naics3"),  all.y=FALSE)
@@ -71,8 +63,34 @@ get_bed = function(
     df$nent_emp <- df$ent_emp - df$exit_emp
     df$nent_cnt <- df$ent_cnt - df$exit_cnt
 
+    if (level == TRUE){
 
-    # df[, dateq := statar::as.quarterly(ISOdate(floor(date_ym/100), date_ym %% 100, 1) )  ]
+      dt_l_ind <- dt_ind[ grepl("BDS0000000000......1[12]000[36]LQ5*", series_id) ]  #use regex to get the 4 series at same time
+      dt_l_ind$naics3  <- as.integer( substr( dt_l_ind$series_id, 17, 19) )
+      dt_l_ind$emp     <- as.integer( substr( dt_l_ind$series_id, 21, 21) == "1" )
+      dt_l_ind$open    <- as.integer( substr( dt_l_ind$series_id, 25, 25) == "3" )
+      dt_l_ind$date_ym <- dt_l_ind$year*100 + as.integer(substr(dt_l_ind$period,2,3))*3
+
+      dt_l_ind[, series_id:= NULL ]
+      df1 <- dt_l_ind[ emp==1 & open ==1, !c("emp","open"), with=FALSE ] %>%
+        dplyr::rename( ent_lvl_emp = entry )
+      df2 <- dt_l_ind[ emp==1 & open ==0, !c("year","period","emp","open","note1"), with=FALSE] %>%
+        dplyr::rename( exit_lvl_emp = entry )
+      df3 <- dt_l_ind[ emp==0 & open ==1, !c("year","period","emp","open","note1"), with=FALSE] %>%
+        dplyr::rename( ent_lvl_cnt = entry )
+      df4 <- dt_l_ind[ emp==0 & open ==0, !c("year","period","emp","open","note1"), with=FALSE] %>%
+        dplyr::rename( exit_lvl_cnt = entry )
+
+      df_l <- merge( df1, df2, by = c("date_ym", "naics3"),   all.y=FALSE)
+      df_l <- merge( df_l, df3, by = c("date_ym", "naics3"),  all.y=FALSE)
+      df_l <- merge( df_l, df4, by = c("date_ym", "naics3"),  all.y=FALSE)
+
+      df <- merge(df, df_l[, c("year", "period", "note1") := NULL ], by = c("date_ym", "naics3"))
+
+      df[, tot_count := (ent_lvl_cnt / ent_cnt * 100) ]
+      df[, tot_emp   := (ent_lvl_emp / ent_emp * 100) ]
+
+    }
 
     # cleaning up (not necessary as we now directly read the url)
     # file.remove( paste0(path_data, "bed_ind.txt" ) )
