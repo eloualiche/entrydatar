@@ -319,38 +319,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 564:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
 <p>There is also a function like the other in this package to access an interval:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)</a></code></pre></div>
-<pre><code>##      date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf
-##   1:  198001      129.9 137.9     531519 44230     4634.9  243.1
-##   2:  198002      129.9 137.1     531519 44175     4634.9  190.8
-##   3:  198003      129.9 134.9     531519 43359     4634.9  274.2
-##   4:  198004      129.9 129.8     531519 42240     4634.9  428.2
-##   5:  198005      129.9 128.5     531519 42710     4634.9  381.1
-##  ---                                                            
-## 176:  199408      125.5 125.8     741059 64844    28943.9 2106.8
-## 177:  199409      125.5 125.3     741059 64564    28943.9 3434.0
-## 178:  199410      125.5 124.6     741059 60488    28943.9 2023.1
-## 179:  199411      125.5 127.9     741059 64542    28943.9 2511.8
-## 180:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
 <p>Note that the data only extends to 1994 (included).</p>
-<p>Quick summary stats of the dataset&quot;</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">skimr<span class="op">::</span><span class="kw">skim</span>(entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)[, .(nbi, nbf, cbf)])</a></code></pre></div>
-<pre><code>## Skim summary statistics
-##  n obs: 180 
-##  n variables: 3 
-## 
-## Variable type: integer 
-##   variable missing complete   n     mean     sd   min      p25 median
-## 1      nbi       0      180 180 54048.79 5149.2 40648 50663.25  54809
-##        p75   max     hist
-## 1 57616.75 65691 ▁▂▃▆▇▇▂▂
-## 
-## Variable type: numeric 
-##   variable missing complete   n    mean      sd   min     p25 median
-## 1      cbf       0      180 180 3276.13 2699.21 190.8 1614.83 2684  
-## 2      nbf       0      180 180  121.34    4.42 112    118.5   121.1
-##       p75     max     hist
-## 1 3941.58 15757.6 ▇▇▂▂▁▁▁▁
-## 2  124.53   137.9 ▂▃▇▅▃▁▁▁</code></pre>
+<p>Quick summary stats:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span>skimr<span class="op">::</span><span class="kw">skim</span>(entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)[, <span class="kw">lapply</span>(.SD, as.numeric), <span class="dt">.SDcols =</span> <span class="kw">c</span>(<span class="st">&quot;nbi&quot;</span>, <span class="st">&quot;nbf&quot;</span>, <span class="st">&quot;cbf&quot;</span>)])</a>
+<a class="sourceLine" id="cb5-2" data-line-number="2">Skim summary statistics</a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"> n obs<span class="op">:</span><span class="st"> </span><span class="dv">180</span> </a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"> n variables<span class="op">:</span><span class="st"> </span><span class="dv">3</span> </a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6">Variable type<span class="op">:</span><span class="st"> </span>numeric </a>
+<a class="sourceLine" id="cb5-7" data-line-number="7">  variable missing complete   n     mean      sd     min      p25  median      p75     max     hist</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="dv">1</span>      cbf       <span class="dv">0</span>      <span class="dv">180</span> <span class="dv">180</span>  <span class="fl">3276.13</span> <span class="fl">2699.21</span>   <span class="fl">190.8</span>  <span class="fl">1614.83</span>  <span class="dv">2684</span>    <span class="fl">3941.58</span> <span class="fl">15757.6</span> ▇▇▂▂▁▁▁▁</a>
+<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="dv">2</span>      nbf       <span class="dv">0</span>      <span class="dv">180</span> <span class="dv">180</span>   <span class="fl">121.34</span>    <span class="fl">4.42</span>   <span class="dv">112</span>     <span class="fl">118.5</span>    <span class="fl">121.1</span>   <span class="fl">124.53</span>   <span class="fl">137.9</span> ▂▃▇▅▃▁▁▁</a>
+<a class="sourceLine" id="cb5-10" data-line-number="10"><span class="dv">3</span>      nbi       <span class="dv">0</span>      <span class="dv">180</span> <span class="dv">180</span> <span class="fl">54048.79</span> <span class="fl">5149.2</span>  <span class="dv">40648</span>   <span class="fl">50663.25</span> <span class="dv">54809</span>   <span class="fl">57616.75</span> <span class="dv">65691</span>   ▁▂▃▆▇▇▂▂</a></code></pre></div>
 <hr />
 <p>From the <a href="https://www.bea.gov/scb/pdf/NATIONAL/BUSCYCLE/1996/0296cpgs.pdf">original file</a>, we have the sources of the information gathered here:</p>
 <ul>

@@ -215,21 +215,22 @@ dt_naics
 For example the table of cuts looks as the following for **naics** based industries is as follows:
 
 ```{r, eval = F}
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------
-#|                           | Geographic/Size LevelCode Format | National | National by size | CSA | MSA | Statewide | Statewide, by size | County | MicroSA |
-#|---------------------------|----------------------------------|----------|------------------|-----|-----|-----------|--------------------|--------|---------|
-#| Industry Ownership Level  |                                  | 1x       | 2x               | 3x  | 4x  | 5x        | 6x                 | 7x     | 8x      |
-#|                           |                                  |          |                  |     |     |           |                    |        |         |
-#| Total, All Ownerships     | x0                               | 10       | -                | 30  | 40  | 50        | -                  | 70     | 80      |
-#| Total, by Ownership       | x1                               | 11       | 21               | -   | 41  | 51        | 61                 | 71     | -       |
-#| Domain, by Ownership      | x2                               | 12       | 22               | -   | 42  | 52        | 62                 | 72     | -       |
-#| SuperSector, by Ownership | x3                               | 13       | 23               | -   | 43  | 53        | 63                 | 73     | -       |
-#| Sector, by Ownership      | x4                               | 14       | 24               | -   | 44  | 54        | 64                 | 74     | -       |
-#| 3-digit, by Ownership     | x5                               | 15       | 25               | -   | 45  | 55        | -                  | 75     | -       |
-#| 4-digit, by Ownership     | x6                               | 16       | 26               | -   | 46  | 56        | -                  | 76     | -       |
-#| 5-digit, by Ownership     | x7                               | 17       | 27               | -   | 47  | 57        | -                  | 77     | -       |
-#| 6-digit, by Ownership     | x8                               | 18       | 28               | -   | 48  | 58        | -                  | 78     | -       |
-#--------------------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------------------------
+#|                           | Geographic/Size   | National | National | CSA | MSA | Statewide | Statewide | County | MicroSA |
+#|                           |  LevelCode Format |          |  by size |     |     |           |  by size  |        |         |
+#|---------------------------|-------------------|----------|--- ------|-----|-----|-----------|-----------|--------|---------|
+#| Industry Ownership Level  |                   | 1x       | 2x       | 3x  | 4x  | 5x        | 6x        | 7x     | 8x      |
+#|                           |                   |          |          |     |     |           |           |        |         |
+#| Total, All Ownerships     | x0                | 10       | -        | 30  | 40  | 50        | -         | 70     | 80      |
+#| Total, by Ownership       | x1                | 11       | 21       | -   | 41  | 51        | 61        | 71     | -       |
+#| Domain, by Ownership      | x2                | 12       | 22       | -   | 42  | 52        | 62        | 72     | -       |
+#| SuperSector, by Ownership | x3                | 13       | 23       | -   | 43  | 53        | 63        | 73     | -       |
+#| Sector, by Ownership      | x4                | 14       | 24       | -   | 44  | 54        | 64        | 74     | -       |
+#| 3-digit, by Ownership     | x5                | 15       | 25       | -   | 45  | 55        | -         | 75     | -       |
+#| 4-digit, by Ownership     | x6                | 16       | 26       | -   | 46  | 56        | -         | 76     | -       |
+#| 5-digit, by Ownership     | x7                | 17       | 27       | -   | 47  | 57        | -         | 77     | -       |
+#| 6-digit, by Ownership     | x8                | 18       | 28       | -   | 48  | 58        | -         | 78     | -       |
+#------------------------------------------------------------------------------------------------------------------------------
 ```
 
 
