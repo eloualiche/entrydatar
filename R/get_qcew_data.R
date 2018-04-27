@@ -325,6 +325,7 @@ tidy_qcew <- function(
 #' @param dt        input dataset from get_files_cut
 #' @param industry  download naics or sic data
 #' @param frequency download either quarterly, monthly or all data
+#' @param verbose   do we print the years to see how fast we are going
 #' @note returns a data.table file that is formatted according to tidy standard
 #'   typically this will be year x sub_year (quarter or month) x size x own_code x industry
 #'   the file can be aggregated as such
@@ -338,28 +339,26 @@ tidy_qcew <- function(
 tidy_qcew_year <- function(
   dt,
   frequency = "all",
-  industry = "naics"
+  industry  = "naics",
+  verbose   = TRUE
 ){
 
   year_list <- as.vector(unique(dt$year))
   dt_res <- data.table()
 
   for (i_year in 1:length(year_list) ){
-
+    if (verbose == TRUE){
+      message("Processing year ... ", i_year)
+    }
     sub_year <- year_list[i_year]
-
     dt_tmp <- dt[ year == sub_year ]
-
     dt_tmp <- tidy_qcew(dt_tmp,
                 frequency = frequency, industry = industry)
-
     dt_res <- rbind(dt_res, dt_tmp)
-
   }
 
   return( dt_res )
-
-}
+} # end of tidy_qcew_year
 
 
 

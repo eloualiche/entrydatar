@@ -31,7 +31,7 @@ knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE,
 
 ## General information on the dataset
 
-Downloads data from the BED website. Of main importance is the flat file with firm level count by industry (3 digits naics) every quarter. This [page](http://www.bls.gov/bdm/bdmind3.htm) includes all the individual industry tables and the flat file is at the bottom under this [url](http://www.bls.gov/web/cewbd/bd_data_ind3.txt).
+Downloads data from the BED website. Of main importance is the flat file with establishment level count by industry (3 digits naics) every quarter. This [page](http://www.bls.gov/bdm/bdmind3.htm) includes all the individual industry tables and the flat file is at the bottom under this [url](http://www.bls.gov/web/cewbd/bd_data_ind3.txt).
 
 Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) with other data.
 

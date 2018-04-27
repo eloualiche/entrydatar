@@ -109,7 +109,7 @@ Informative flags are the `empflag` about data suppression. It denotes employmen
 | `C`                        | Corporations                           |
 | `Z`                        | S-Corporations                         |
 | `S`                        | Sole Proprietorships                   |
-| `P`                        | Partnernhips                           |
+| `P`                        | Partnerships                           |
 | `N`                        | Non-Profits                            |
 | `G`                        | Government                             |
 | `O`                        | Other                                  |

@@ -25,7 +25,7 @@ Downloads and aggregates flat tables of entry statistics from the *Quarterly Cen
 ### Business Employment Dynamics (BED)
 
   + See the [BLS website](http://www.bls.gov/bdm/home.htm) for more information
-  + Firm level entry data.
+  + Establishment level entry data.
   + Data is available at the naics (3 digits level) from 1992Q3 to 2015Q1.
   + We download an industry flat file directly from the [BLS](http://www.bls.gov/web/cewbd/bd_data_ind3.txt)
 
