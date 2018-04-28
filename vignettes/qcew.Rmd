@@ -245,7 +245,15 @@ The data file layout for a general view of what is available:
   - For [quarterly naics](http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm) and [annual naics](https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm)
   - For [quarterly sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm) and [annual sic](https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm)
   
+  
+#### Availability 
+The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:
 
+  1. There is no disaggregated data for size X industry before 1990 in the case of **naics**. The layout of files on the [download page](http://www.bls.gov/cew/datatoc.htm) is somewhat misleading.
+  2. For the **sic by industry** files the data from standard sources only goes back to 1984. I have yet to implement the function that also downloads and get the data from 1975 to 1983. They are arranged in individual industry files. 
+      + For the year 1983 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`
+      + For the year 1984 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`, `30`, `31`
+      + The missing cuts pre-1984 are: `16`, `17`, `30`, `31`
 
 
 ### Data codes
@@ -256,7 +264,7 @@ The data file layout for a general view of what is available:
     + **naics** [table](../data_raw/naics_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm)
     + **sic** [table](../data_raw/sic_agglevel.csv); original [BLS webpage](http://www.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm)
     + **Supersectors** and **Sector**: head over to the [BLS webpage](https://www.bls.gov/cew/supersector.htm)
-- Note that there is no disaggregated data for size X industry before 1990 in the case of **naics**. The layout of files on the [download page](http://www.bls.gov/cew/datatoc.htm) is somewhat misleading.
+
 
 #### Size Classes
   - For [naics](http://www.bls.gov/cew/doc/titles/size/size_titles.htm)

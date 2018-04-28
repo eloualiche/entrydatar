@@ -465,6 +465,19 @@ In the second part we give rudimentary documentations of the feature that are of
 <li>For <a href="http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm">quarterly naics</a> and <a href="https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm">annual naics</a></li>
 <li>For <a href="http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm">quarterly sic</a> and <a href="https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm">annual sic</a></li>
 </ul>
+<section id="availability" class="level4">
+<h4>Availability</h4>
+<p>The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:</p>
+<ol type="1">
+<li>There is no disaggregated data for size X industry before 1990 in the case of <strong>naics</strong>. The layout of files on the <a href="http://www.bls.gov/cew/datatoc.htm">download page</a> is somewhat misleading.</li>
+<li>For the <strong>sic by industry</strong> files the data from standard sources only goes back to 1984. I have yet to implement the function that also downloads and get the data from 1975 to 1983. They are arranged in individual industry files.
+<ul>
+<li>For the year 1983 the available cuts are: <code>01</code>, <code>02</code>, <code>03</code>, <code>04</code>, <code>05</code>, <code>06</code>, <code>13</code>, <code>14</code>, <code>15</code>, <code>18</code>, <code>19</code>, <code>20</code>, <code>21</code>, <code>22</code>, <code>23</code>, <code>26</code>, <code>27</code>, <code>28</code>, <code>29</code></li>
+<li>For the year 1984 the available cuts are: <code>01</code>, <code>02</code>, <code>03</code>, <code>04</code>, <code>05</code>, <code>06</code>, <code>13</code>, <code>14</code>, <code>15</code>, <code>16</code>, <code>17</code>, <code>18</code>, <code>19</code>, <code>20</code>, <code>21</code>, <code>22</code>, <code>23</code>, <code>26</code>, <code>27</code>, <code>28</code>, <code>29</code>, <code>30</code>, <code>31</code></li>
+<li>The missing cuts pre-1984 are: <code>16</code>, <code>17</code>, <code>30</code>, <code>31</code></li>
+</ul></li>
+</ol>
+</section>
 <section id="data-codes" class="level3">
 <h3>Data codes</h3>
 <section id="aggregation-levels" class="level4">
@@ -476,7 +489,6 @@ In the second part we give rudimentary documentations of the feature that are of
 <li><strong>sic</strong> <a href="../data_raw/sic_agglevel.csv">table</a>; original <a href="http://www.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm">BLS webpage</a></li>
 <li><strong>Supersectors</strong> and <strong>Sector</strong>: head over to the <a href="https://www.bls.gov/cew/supersector.htm">BLS webpage</a></li>
 </ul></li>
-<li>Note that there is no disaggregated data for size X industry before 1990 in the case of <strong>naics</strong>. The layout of files on the <a href="http://www.bls.gov/cew/datatoc.htm">download page</a> is somewhat misleading.</li>
 </ul>
 </section>
 <section id="size-classes" class="level4">
