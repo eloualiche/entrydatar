@@ -17,7 +17,7 @@ test_that("Get the QCEW and check variables", {
     verbose = T)
 
   # 10 is national total, 17 is 5-digit
-   dt_qcew <- get_files_cut(data_cut = c(10, 17), year_start = 1991, year_end = 1992,
+   dt_qcew <- get_qcew_cut(data_cut = c(10, 17), year_start = 1991, year_end = 1992,
                             path_data = ".", subdir = F,
                             write = F, download = "")
   #
@@ -63,11 +63,11 @@ test_that("Get the QCEW and check variables", {
 
   # # =====================================================================================
   # # 23 is Supersector x national x size
-  # dt_qcew <- get_files_cut(data_cut = 23, year_start = 1991, year_end =1992,
+  # dt_qcew <- get_qcew_cut(data_cut = 23, year_start = 1991, year_end =1992,
   #                          path_data = "./tmp_test_data/", write = T)
   #
   # # 2. check the sic data works as well
-  # dt_qcew <- get_files_cut(data_cut = 14, year_start = 1991, year_end =1993,
+  # dt_qcew <- get_qcew_cut(data_cut = 14, year_start = 1991, year_end =1993,
   #                          industry = "sic",
   #                          path_data = "./tmp_test_data/", write = T)
 

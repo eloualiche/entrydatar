@@ -28,7 +28,7 @@
 ## ## #' @param verbose: useful for looking all the downloads link (debugging mode)
 ## ## #' @return data.table aggregate
 ## ## #' @examples
-## ## #'   dt <- get_files_cut(data_cut = 10, year_start = 1990, year_end =1993,
+## ## #'   dt <- get_qwi_cut(data_cut = 10, year_start = 1990, year_end =1993,
 ## ## #'                       path_data = "~/Downloads/", write = T)
 ## ## #' @export
 ## ## get_qwi_cut <- function(
@@ -224,7 +224,7 @@
 
 ## ## #' Tidying the dataset for regression use (or merge)
 ## ## #'
-## ## #' @param dt: input dataset from get_files_cut
+## ## #' @param dt: input dataset from get_qwi_cut
 ## ## #' @param industry: download naics or sic data
 ## ## #' @param frequency: download either quarterly, monthly or all data
 ## ## #' @note returns a data.table file that is formatted according to tidy standard

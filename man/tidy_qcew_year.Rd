@@ -4,14 +4,16 @@
 \alias{tidy_qcew_year}
 \title{Tidying the dataset for regression use (or merge): operate year by year to keep memory to manageable levels.}
 \usage{
-tidy_qcew_year(dt, frequency = "all", industry = "naics")
+tidy_qcew_year(dt, frequency = "all", industry = "naics", verbose = TRUE)
 }
 \arguments{
-\item{dt}{input dataset from get_files_cut}
+\item{dt}{input dataset from get_qcew_cut}
 
 \item{frequency}{download either quarterly, monthly or all data}
 
 \item{industry}{download naics or sic data}
+
+\item{verbose}{do we print the years to see how fast we are going}
 }
 \value{
 data.table dt_res

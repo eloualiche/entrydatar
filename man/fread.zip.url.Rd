@@ -21,6 +21,6 @@ Other code: read zipped url, copied from https://stackoverflow.com/a/24586478
 }
 \examples{
   \dontrun{
-  dt <- get_files_cut(http://data.bls.gov/cew/data/files/2000/csv/2000_qtrly_singlefile.zip)
+  dt <- fread.zip.url(http://data.bls.gov/cew/data/files/2000/csv/2000_qtrly_singlefile.zip)
   }
 }

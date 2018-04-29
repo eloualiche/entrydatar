@@ -7,7 +7,7 @@
 tidy_qcew(dt, frequency = "all", industry = "naics")
 }
 \arguments{
-\item{dt}{input dataset from get_files_cut}
+\item{dt}{input dataset from get_qcew_cut}
 
 \item{frequency}{download either quarterly, monthly or all data}
 

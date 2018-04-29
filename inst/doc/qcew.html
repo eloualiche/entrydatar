@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erik Loualiche" />
 
-<meta name="date" content="2018-04-27" />
+<meta name="date" content="2018-04-29" />
 
 <title>Download data from the Quarterly Census of Employment and Wages (QCEW)</title>
 
@@ -280,7 +280,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Download data from the Quarterly Census of Employment and Wages (QCEW)</h1>
 <h4 class="author"><em>Erik Loualiche</em></h4>
-<h4 class="date"><em>2018-04-27</em></h4>
+<h4 class="date"><em>2018-04-29</em></h4>
 
 
 
@@ -299,11 +299,11 @@ In the second part we give rudimentary documentations of the feature that are of
 <h1>Downloading data from the QCEW</h1>
 <p>To get read to download data, we load some libraries that the package might have forgotten to call (the package works with all tables in a <code>data.table</code> format)</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(dplyr); <span class="kw">library</span>(data.table); </a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(entrydatar); </a></code></pre></div>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(entrydatar)</a></code></pre></div>
 <section id="general-download" class="level2">
 <h2>General download</h2>
 <p>For example if we are interested in downloading aggregate level data we use the cut <code>10</code>. Please see documentation below for a definition of what is availabe and the mapping of the different cuts of QCEW.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dt_agg &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(       </a>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">dt_agg &lt;-<span class="st"> </span><span class="kw">get_qcew_cut</span>(       </a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">    <span class="dt">data_cut =</span> <span class="dv">10</span>,     </a>
 <a class="sourceLine" id="cb2-3" data-line-number="3">    <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span><span class="dv">1993</span>,    </a>
 <a class="sourceLine" id="cb2-4" data-line-number="4">    <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)</a></code></pre></div>
@@ -329,7 +329,7 @@ In the second part we give rudimentary documentations of the feature that are of
 <a class="sourceLine" id="cb3-20" data-line-number="20"><span class="dv">16</span> US000            <span class="dv">0</span>   <span class="fl">10.0</span>   <span class="fl">10.0</span>      <span class="dv">0</span>  <span class="dv">1993</span>  <span class="fl">4.00</span> <span class="st">&quot;&quot;</span>     <span class="fl">6.75</span>e⁶ <span class="fl">1.11</span>e⁸ <span class="fl">1.11</span>e⁸ <span class="fl">1.12</span>e⁸ <span class="fl">8.06</span>e¹¹     <span class="dv">0</span>     <span class="dv">0</span>   <span class="dv">556</span>    <span class="ot">NA</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>     <span class="dv">0</span>     <span class="dv">0</span>  <span class="fl">1.00</span>    <span class="ot">NA</span> <span class="dv">176528</span>  <span class="fl">2.70</span>  <span class="fl">2.42</span>e⁶  <span class="fl">2.20</span>   <span class="fl">2.54</span>e⁶  <span class="fl">2.30</span>   <span class="fl">2.80</span>e⁶  <span class="fl">2.60</span>  <span class="fl">2.76</span>e¹⁰  <span class="fl">3.50</span>   <span class="dv">0</span>           <span class="dv">0</span>  <span class="dv">0</span>          <span class="dv">0</span>   <span class="fl">6.00</span>  <span class="fl">1.10</span></a></code></pre></div>
 <p>Note that the dataset can be large. Downloading most of the industry 3 and 4 digits cuts across counties and MSAs ends up with 57mn rows. Saving it in <code>.rds</code> formats takes around 2gb of memory.</p>
 <p>On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut <code>28</code>:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">dt_naics &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(        </a>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">dt_naics &lt;-<span class="st"> </span><span class="kw">get_qcew_cut</span>(        </a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  <span class="dt">data_cut =</span> <span class="dv">28</span>,       </a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>, </a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">  <span class="dt">year_start =</span> <span class="dv">1990</span>, <span class="dt">year_end =</span> <span class="dv">2015</span>,       </a>
@@ -353,7 +353,7 @@ In the second part we give rudimentary documentations of the feature that are of
 <section id="faster-download-with-annual-frequencies" class="level2">
 <h2>Faster download with annual frequencies</h2>
 <p>The BLS provides quarterly as well as annual averages, which are lighter. There is now an option to download directly the annual average using a frequency option. The default is quarterly, so everything should be backward compatible. Let’s see first with the quarterly data (<em>warning</em> it is slow):</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">dt_naics &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(     </a>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">dt_naics &lt;-<span class="st"> </span><span class="kw">get_qcew_cut</span>(     </a>
 <a class="sourceLine" id="cb6-2" data-line-number="2">  <span class="dt">data_cut =</span> <span class="dv">16</span>,     </a>
 <a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,  <span class="dt">frequency =</span> <span class="st">&quot;quarter&quot;</span>,  </a>
 <a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="dt">year_start =</span> <span class="dv">2000</span>, <span class="dt">year_end =</span> <span class="dv">2005</span>,    </a>
@@ -374,7 +374,7 @@ In the second part we give rudimentary documentations of the feature that are of
 <a class="sourceLine" id="cb7-14" data-line-number="14"><span class="dv">10</span> US000         <span class="fl">1.00</span>   <span class="dv">2211</span>   <span class="fl">16.0</span>      <span class="dv">0</span>  <span class="dv">2000</span>  <span class="fl">2.00</span> <span class="st">&quot;&quot;</span>      <span class="dv">141</span>    <span class="fl">1.24</span>e⁴ <span class="fl">1.24</span>e⁴ <span class="fl">1.24</span>e⁴ <span class="fl">1.83</span>e⁸     <span class="dv">0</span>     <span class="dv">0</span>  <span class="dv">1138</span>    <span class="ot">NA</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>  <span class="fl">1.00</span>     <span class="dv">0</span>     <span class="dv">0</span>  <span class="fl">1.00</span>    <span class="ot">NA</span> <span class="fl">-2.00</span> <span class="op">-</span><span class="st"> </span><span class="fl">1.40</span>   <span class="fl">49.0</span>    <span class="fl">0.400</span>    <span class="fl">5.00</span>   <span class="dv">0</span>       <span class="fl">6.00</span>   <span class="dv">0</span>     <span class="fl">2.54</span>e⁷  <span class="fl">16.1</span>       <span class="dv">0</span>     <span class="dv">0</span>     <span class="dv">0</span>     <span class="dv">0</span>  <span class="dv">157</span>     <span class="fl">16.0</span>  </a>
 <a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co"># ... with 18,018 more rows</span></a></code></pre></div>
 <p>Now let’s download the data only at annual frequency (similar to the size cuts from earlier):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dt_naics_year &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(     </a>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">dt_naics_year &lt;-<span class="st"> </span><span class="kw">get_qcew_cut</span>(     </a>
 <a class="sourceLine" id="cb8-2" data-line-number="2">  <span class="dt">data_cut =</span> <span class="dv">16</span>,     </a>
 <a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,  <span class="dt">frequency =</span> <span class="st">&quot;year&quot;</span>,  </a>
 <a class="sourceLine" id="cb8-4" data-line-number="4">  <span class="dt">year_start =</span> <span class="dv">2000</span>, <span class="dt">year_end =</span> <span class="dv">2005</span>,    </a>
@@ -424,7 +424,7 @@ In the second part we give rudimentary documentations of the feature that are of
 <a class="sourceLine" id="cb12-4" data-line-number="4">wayback_suffix &lt;-<span class="st"> </span><span class="dv">20141101135821</span>  </a>
 <a class="sourceLine" id="cb12-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6"><span class="co"># execute adding the wayback option</span></a>
-<a class="sourceLine" id="cb12-7" data-line-number="7">dt_naics &lt;-<span class="st"> </span><span class="kw">get_files_cut</span>(</a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">dt_naics &lt;-<span class="st"> </span><span class="kw">get_qcew_cut</span>(</a>
 <a class="sourceLine" id="cb12-8" data-line-number="8">  <span class="dt">data_cut =</span> <span class="dv">28</span>,</a>
 <a class="sourceLine" id="cb12-9" data-line-number="9">  <span class="dt">industry =</span> <span class="st">&quot;naics&quot;</span>,</a>
 <a class="sourceLine" id="cb12-10" data-line-number="10">  <span class="dt">year_start =</span> <span class="dv">1990</span>,  <span class="dt">year_end =</span> <span class="dv">2015</span>,       <span class="co"># try not to ask for data from the future        </span></a>
@@ -437,7 +437,9 @@ In the second part we give rudimentary documentations of the feature that are of
 <h1>Documentation</h1>
 <section id="cuts-in-qcew" class="level2">
 <h2><a name="tablecut">Cuts in QCEW</a></h2>
-<p>For example the table of cuts looks as the following for <strong>naics</strong> based industries is as follows:</p>
+<section id="naics-aggregation-levels" class="level4">
+<h4>NAICS Aggregation levels</h4>
+<p>The table of cuts looks as the following for <strong>NAICS</strong> based industries is as follows. See the reference <a href="../data_raw/naics_agglevel.csv">table</a> and official BLS <a href="https://data.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm">documentation</a> for more details.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co">#------------------------------------------------------------------------------------------------------------------------------</span></a>
 <a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co">#|                           | Geographic/Size   | National | National | CSA | MSA | Statewide | Statewide | County | MicroSA |</span></a>
 <a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#|                           |  LevelCode Format |          |  by size |     |     |           |  by size  |        |         |</span></a>
@@ -455,6 +457,18 @@ In the second part we give rudimentary documentations of the feature that are of
 <a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co">#| 6-digit, by Ownership     | x8                | 18       | 28       | -   | 48  | 58        | -         | 78     | -       |</span></a>
 <a class="sourceLine" id="cb13-16" data-line-number="16"><span class="co">#------------------------------------------------------------------------------------------------------------------------------</span></a></code></pre></div>
 </section>
+<section id="sic-aggregation-levels" class="level4">
+<h4>SIC Aggregation levels</h4>
+<p>Be careful as the SIC aggregation levels are different than for NAICS. See the reference <a href="../data_raw/sic_agglevel.csv">table</a> and official BLS <a href="https://data.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm">documentation</a> for more details.</p>
+<p>The division follows</p>
+<ul>
+<li><code>01</code> to <code>11</code>: National level; all sectors down to 4 digits; aggregated and by size classes</li>
+<li><code>12</code> to <code>17</code>: MSA level; all sectors down to 4 digits; aggregated (no split by size classes available)</li>
+<li><code>18</code> to <code>25</code>: State level; all sectors down to 4 digits; aggregated and by size classes (only some size split are available)</li>
+<li><code>12</code> to <code>17</code>: County level; all sectors down to 4 digits; aggregated (no split by size classes available)</li>
+</ul>
+</section>
+</section>
 <section id="general-documentation" class="level2">
 <h2><a name="generaldoc">General documentation</a></h2>
 <p>The table of contents to download directly datasets</p>
@@ -465,8 +479,8 @@ In the second part we give rudimentary documentations of the feature that are of
 <li>For <a href="http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm">quarterly naics</a> and <a href="https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm">annual naics</a></li>
 <li>For <a href="http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm">quarterly sic</a> and <a href="https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm">annual sic</a></li>
 </ul>
-<section id="availability" class="level4">
-<h4>Availability</h4>
+<section id="availability-warning" class="level3">
+<h3>Availability Warning</h3>
 <p>The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:</p>
 <ol type="1">
 <li>There is no disaggregated data for size X industry before 1990 in the case of <strong>naics</strong>. The layout of files on the <a href="http://www.bls.gov/cew/datatoc.htm">download page</a> is somewhat misleading.</li>

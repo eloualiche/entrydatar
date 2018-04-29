@@ -40,14 +40,14 @@ The vignette is organized as:
 To get read to download data, we load some libraries that the package might have forgotten to call (the package works with all tables in a `data.table` format)
 ```{r, results='hide', warning = F, error = F, message = F}
 library(dplyr); library(data.table); 
-library(entrydatar); 
+library(entrydatar)
 ```
 
 ## General download
 
 For example if we are interested in downloading aggregate level data we use the cut `10`. Please see documentation below for a definition of what is availabe and the mapping of the different cuts of QCEW.
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
-dt_agg <- get_files_cut(       
+dt_agg <- get_qcew_cut(       
     data_cut = 10,     
     year_start = 1990, year_end =1993,    
     path_data = "~/Downloads/", write = F)
@@ -79,7 +79,7 @@ Note that the dataset can be large. Downloading most of the industry 3 and 4 dig
 
 On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut `28`:
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
-dt_naics <- get_files_cut(        
+dt_naics <- get_qcew_cut(        
   data_cut = 28,       
   industry = "naics", 
   year_start = 1990, year_end = 2015,       
@@ -109,7 +109,7 @@ as_tibble(dt_naics)
 The BLS provides quarterly as well as annual averages, which are lighter. There is now an option to download directly the annual average using a frequency option. The default is quarterly, so everything should be backward compatible.
 Let's see first with the quarterly data (*warning* it is slow):
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
-dt_naics <- get_files_cut(     
+dt_naics <- get_qcew_cut(     
   data_cut = 16,     
   industry = "naics",  frequency = "quarter",  
   year_start = 2000, year_end = 2005,    
@@ -135,7 +135,7 @@ as_tibble(dt_naics)
 
 Now let's download the data only at annual frequency (similar to the size cuts from earlier):
 ```{r, results='hide', warning = F, error = F, message = F, eval = F}
-dt_naics_year <- get_files_cut(     
+dt_naics_year <- get_qcew_cut(     
   data_cut = 16,     
   industry = "naics",  frequency = "year",  
   year_start = 2000, year_end = 2005,    
@@ -196,7 +196,7 @@ wayback_suffix <- "https://web.archive.org/web/20141101135821"  # suffix for Nov
 wayback_suffix <- 20141101135821  
 
 # execute adding the wayback option
-dt_naics <- get_files_cut(
+dt_naics <- get_qcew_cut(
   data_cut = 28,
   industry = "naics",
   year_start = 1990,  year_end = 2015,       # try not to ask for data from the future        
@@ -211,8 +211,8 @@ dt_naics
 
 ## <a name="tablecut">Cuts in QCEW</a>
 
-
-For example the table of cuts looks as the following for **naics** based industries is as follows:
+#### NAICS Aggregation levels
+The table of cuts looks as the following for **NAICS** based industries is as follows. See the reference [table](../data_raw/naics_agglevel.csv) and official BLS [documentation](https://data.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm) for more details.
 
 ```{r, eval = F}
 #------------------------------------------------------------------------------------------------------------------------------
@@ -233,6 +233,17 @@ For example the table of cuts looks as the following for **naics** based industr
 #------------------------------------------------------------------------------------------------------------------------------
 ```
 
+#### SIC Aggregation levels
+Be careful as the SIC aggregation levels are different than for NAICS. See the reference [table](../data_raw/sic_agglevel.csv) and official BLS [documentation](https://data.bls.gov/cew/doc/titles/agglevel/sic_agglevel_titles.htm) for more details.
+
+The division follows 
+
+  + `01` to `11`: National level; all sectors down to 4 digits; aggregated and by size classes
+  + `12` to `17`: MSA level; all sectors down to 4 digits; aggregated (no split by size classes available)
+  + `18` to `25`: State level; all sectors down to 4 digits; aggregated and by size classes (only some size split are available)
+  + `12` to `17`: County level; all sectors down to 4 digits; aggregated (no split by size classes available)
+
+
 
 ## <a name = "generaldoc">General documentation</a>
 
@@ -246,7 +257,7 @@ The data file layout for a general view of what is available:
   - For [quarterly sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm) and [annual sic](https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm)
   
   
-#### Availability 
+### Availability Warning
 The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:
 
   1. There is no disaggregated data for size X industry before 1990 in the case of **naics**. The layout of files on the [download page](http://www.bls.gov/cew/datatoc.htm) is somewhat misleading.
