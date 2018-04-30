@@ -264,8 +264,7 @@ The BLS Table can be misleading at times. And all of the files are not created e
   2. For the **sic by industry** files the data from standard sources only goes back to 1984. I have yet to implement the function that also downloads and get the data from 1975 to 1983. They are arranged in individual industry files. 
       + For the year 1983 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`
       + For the year 1984 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`, `30`, `31`
-      + The missing cuts pre-1984 are: `16`, `17`, `30`, `31`
-
+      + The missing cuts pre-1984 are: `16`, `17` (MSA 3 and 4 digits SIC) and `30`, `31` (County 3 and 4 digits SIC)
 
 ### Data codes
 
