@@ -16,7 +16,7 @@ download_qcew_size_data(target_year, industry = "naics", path_data = "./",
 
 \item{url_wayback}{allows to specify the path in internet wayback machine that kept some of the archive}
 
-\item{unzip}{default is True, False is useful if you are just downloading the data}
+\item{unzip_dir}{default is True, False is useful if you are just downloading the data}
 }
 \value{
 read_list  String with names of downloaded files

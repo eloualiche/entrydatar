@@ -7,6 +7,8 @@
 #' @importFrom dplyr "%>%"
 #' @importFrom dplyr rename
 #'
+#' @importFrom purrr map_chr
+#'
 #' @importFrom random randomStrings
 #' @importFrom readxl read_excel
 #'

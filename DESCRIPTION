@@ -1,6 +1,6 @@
 Package: entrydatar
 Type: Package
-Title: Download and process data of firm entry
+Title: Download and process data of firm entry from BLS, Census, etc...
 Version: 0.1
 Date: 2015-11-15
 Authors@R: person("Erik", "Loualiche", email = "erikl@mit.edu", role = c("aut", "cre"))
@@ -17,6 +17,7 @@ Imports:
     functional (>= 0.6),
     tidyr,
     plyr       (>= 1.8.3),
+    purrr,
     random,
     readxl,
     statar,

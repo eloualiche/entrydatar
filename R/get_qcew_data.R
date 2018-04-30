@@ -91,7 +91,7 @@ get_qcew_cut <- function(
           }
           dt_split <- df[ agglvl_code %in% data_cut ]
           vec_tmp <- dt_split$disclosure_code          # only character
-          dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), 
+          dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric),
                                .SDcols = 2:ncol(dt_split) ]
           dt_split$disclosure_code <- vec_tmp
           # this clean up is not necessary to keep disclosure codes intact
@@ -113,7 +113,7 @@ get_qcew_cut <- function(
    # SIZE DATA: downloading only quarter version for now (ignore frequency)
     } else if ( prod(data_cut >= 20 & data_cut < 30) ){
         for (year in seq(year_start, year_end)) {
-            message(paste0("Processing data for year ", toString(year)," and ", 
+            message(paste0("Processing data for year ", toString(year)," and ",
                            industry, " industry type. Size subdivision"))
             file_name <- download_qcew_size_data(target_year = year,
                                                  industry = industry,
@@ -121,7 +121,7 @@ get_qcew_cut <- function(
                                                  url_wayback = url_wayback)
             df <- fread( paste0(path_data, subdir, "/", file_name) )
             dt_split <- df[ agglvl_code %in% data_cut ]
-            dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), 
+            dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric),
                                  .SDcols = 2:ncol(dt_split) ]
             # setnames(dt_split, c("qtrly_estabs_count", "lq_qtrly_estabs_count"),
             # c("qtrly_estabs", "lq_qtrly_estabs") )
@@ -136,14 +136,14 @@ get_qcew_cut <- function(
     }
   }     # end of flow for DOWNLOADING NAICS
   # --------------------------------------------------------------------------------------
-  
+
 # --------------------------------------------------------------------------------------
 # SIC INDUSTRY
 # --------------------------------------------------------------------------------------
   if(industry == "sic"){
 
     # do not allow both size and non-size at the same time:
-    if (prod(data_cut %in% c(7,8,9,10,11,12,24,25)) + 
+    if (prod(data_cut %in% c(7,8,9,10,11,12,24,25)) +
           prod(data_cut %in% setdiff(seq(1,30),c(7,8,9,10,11,12,24,25))) == 2){
       stop("Cannot download both size and Non-size files for SIC QCEW:\n",
            "         Please do split your query")
@@ -155,20 +155,20 @@ get_qcew_cut <- function(
                "character", "character", "integer64", "integer64", "integer64", "integer64",
                "integer64", "integer64", "integer64", "integer64")
 
-    
-    # START WITH NON SIZE DOWNLOAD 
-      # no size cuts since files are separated     
+
+    # START WITH NON SIZE DOWNLOAD
+      # no size cuts since files are separated
     if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
-      
+
         for (i_cut in 1:length(data_cut)){  # pad with zeroes
           if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
         }
-      
+
       # Download the data in iteration
       for (year_iter in seq(year_start, year_end)) {
           message(paste0("Processing data for year ", toString(year_iter)," and ", industry, " industry type."))
-        
-        if (year_iter < 1984){ # OLD DOWNLOAD 
+
+        if (year_iter < 1984){ # OLD DOWNLOAD
 
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
@@ -185,13 +185,13 @@ get_qcew_cut <- function(
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
           ## dt_split[ is.na(as.numeric(industry_code)),  sic := NA ]
           ## dt_split[ !is.na(as.numeric(industry_code)), sic := as.numeric(industry_code) ]
-          dt_split[, sic := as.numeric(industry_code) ]          
+          dt_split[, sic := as.numeric(industry_code) ]
 
           # cleaning up
           file.remove( paste0(path_data, subdir, "/", file_name) )
           message("")
           dt_res <- rbind(dt_res, dt_split, fill = T)
-          
+
         } # end of pre-1984 conditioning
 
         if (year_iter >= 1984){
@@ -202,36 +202,36 @@ get_qcew_cut <- function(
           df <- fread(paste0(path_data, subdir, "/", file_name),
                       colClasses = c("character", "integer64", "character", "character", "integer64", "integer64",
                                      "integer64", "character", "integer64", "integer64", "integer64", "integer64",
-                                     "integer64", "integer64", "integer64", "integer64") )   
+                                     "integer64", "integer64", "integer64", "integer64") )
           dt_split <- df[ agglvl_code %in% data_cut ]
           dt_split[, old_industry_code := industry_code ]
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
-          dt_split[, sic := as.numeric(industry_code) ]          
+          dt_split[, sic := as.numeric(industry_code) ]
           ## dt_split[ !is.na(as.numeric(industry_code)), sic := as.numeric(industry_code) ]
           ## dt_split[ is.na(as.numeric(industry_code)),  sic := NA ]
-          
+
           # cleaning up
           file.remove( paste0(path_data, subdir, "/", file_name) )
           message("")
           dt_res <- rbind(dt_res, dt_split, fill = T)
-          
+
         }
-        
+
       } # end of looop over  the years from 1984 to year_end
 
     }
-        
-    
+
+
   } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){   # SIZE DATA: no frequency here either
-    
+
     for (i_cut in 1:length(data_cut)){  # pad with zeroes
       if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
     }
-    
+
     for (year in seq(year_start, year_end)) {
-      message(paste0("Processing data for year ", toString(year)," and ", 
+      message(paste0("Processing data for year ", toString(year)," and ",
                      industry, " industry type. Size subdivision"))
-      
+
       if (year_iter < 1984){ # OLD DOWNLOAD
 
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
@@ -249,7 +249,7 @@ get_qcew_cut <- function(
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
           dt_split[ is.na(as.numeric(industry_code)),  sic := NA ]
           dt_split[ !is.na(as.numeric(industry_code)), sic := as.numeric(industry_code) ]
-          ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric), 
+          ## dt_split <- dt_split[, colnames(dt_split)[2:ncol(dt_split)] := lapply(.SD, as.numeric),
           ##                        .SDcols = 2:ncol(dt_split) ]
           # cleaning up
           file.remove( paste0(path_data, subdir, "/", file_name) )
@@ -275,12 +275,12 @@ get_qcew_cut <- function(
         message("")
         dt_res <- rbind(dt_res, dt_split, fill = T)
 
-      } 
+      }
 
     } # end of loop over the years
-    
-  }   # end of loop for size split data   
-  
+
+  }   # end of loop for size split data
+
 
   #}
   # cleaning up
@@ -653,7 +653,7 @@ download_qcew_sic_data = function(
   download    = T,
   verbose     = F
 ){
-  
+
     if (frequency %in% c("quarter", "Q")){
         freq_string = "qtrly"
     } else if (frequency %in% c("year", "Y")){
@@ -677,7 +677,7 @@ download_qcew_sic_data = function(
   } else if (target_year < 1984){
     zip_file_name = paste0("sic_", toString(target_year), "_",
                            freq_string, "_by_industry.zip")
-    dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")    
+    dir_name      = paste0(url_prefix, toString(target_year), "/sic/csv/")
 
   }
 
@@ -696,26 +696,26 @@ download_qcew_sic_data = function(
         if (unzip_dir == T){
           unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
         }
-        
+
         # output is list of files in directory: if directory is clean
         if (target_year >= 1984){
           read_list <- list.files( paste0(path_data) )
-          
+
         } else if (target_year < 1984){
-          
+
           if (freq_string == "qtrly"){
             read_list <- list.files( paste0(path_data, "sic.", target_year, ".q1-q4.by_industry/") )
           } else if (freq_string == "annual"){
             read_list <- list.files( paste0(path_data, "sic.", target_year, ".annual.by_industry/") )
           }
-          
+
           read_list <- purrr::map_chr(read_list, ~ paste0("/sic.", target_year, ".q1-q4.by_industry/", .))
         }
-        
-        read_list <- read_list[grep("\\.csv$", read_list)]                                
+
+        read_list <- read_list[grep("\\.csv$", read_list)]
         return(read_list)
     }
-  
+
 } # end of download_qcew_sic_data
 
 
@@ -739,7 +739,7 @@ download_qcew_sic_data = function(
 #' @param path_data   where does the download happen: default current directory
 #' @param industry    download naics or sic data
 #' @param url_wayback allows to specify the path in internet wayback machine that kept some of the archive
-#' @param unzip       default is True, False is useful if you are just downloading the data
+#' @param unzip_dir   default is True, False is useful if you are just downloading the data
 #' @return read_list  String with names of downloaded files
 #' @note Downloads the file to the current directory and unzips it.
 download_qcew_size_data = function(
@@ -768,7 +768,7 @@ download_qcew_size_data = function(
 
     download.file(url,
                   paste0(path_data, zip_file_name) )           # download file to path_data
-    if (unzip == T){
+    if (unzip_dir == T){
         unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
     }
 
