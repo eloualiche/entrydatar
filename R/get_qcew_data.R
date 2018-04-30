@@ -195,7 +195,7 @@ get_qcew_cut <- function(
         } # end of pre-1984 conditioning
 
         if (year_iter >= 1984){
-          file_name <- entrydatar:::download_qcew_sic_data(target_year = year_iter, frequency = frequency,
+          file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
                                               url_wayback = url_wayback)
           # pre 1984: file names are not aggregated in one file: loop over them
@@ -805,17 +805,24 @@ download_qcew_size_data = function(
 
 
 
-#' Other code: read zipped url, copied from https://stackoverflow.com/a/24586478
+#' Other code: read zipped url
+#' @note This code is directly copied from https://stackoverflow.com/a/24586478
 #'
 #' @param url see vignette for a list of the cut
 #' @param filename for multiple files in the archive
 #' @param FUN default to fread from data.table but you could use anything
+#' @param ... arguments passed to the function call (typically fread)
 #' @return data.table of the remote file
 #' @examples
 #'   \dontrun{
 #'   dt <- fread.zip.url(http://data.bls.gov/cew/data/files/2000/csv/2000_qtrly_singlefile.zip)
 #'   }
-fread.zip.url <- function(url, filename = NULL, FUN = fread, ...) {
+fread.zip.url <-
+  function(url,
+           filename = NULL,
+           FUN = fread,
+           ...) {
+
   zipfile <- tempfile()
   download.file(url = url, destfile = zipfile, quiet = TRUE)
   zipdir <- tempfile()

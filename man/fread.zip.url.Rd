@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_qcew_data.R
 \name{fread.zip.url}
 \alias{fread.zip.url}
-\title{Other code: read zipped url, copied from https://stackoverflow.com/a/24586478}
+\title{Other code: read zipped url}
 \usage{
 fread.zip.url(url, filename = NULL, FUN = fread, ...)
 }
@@ -12,12 +12,17 @@ fread.zip.url(url, filename = NULL, FUN = fread, ...)
 \item{filename}{for multiple files in the archive}
 
 \item{FUN}{default to fread from data.table but you could use anything}
+
+\item{...}{arguments passed to the function call (typically fread)}
 }
 \value{
 data.table of the remote file
 }
 \description{
-Other code: read zipped url, copied from https://stackoverflow.com/a/24586478
+Other code: read zipped url
+}
+\note{
+This code is directly copied from https://stackoverflow.com/a/24586478
 }
 \examples{
   \dontrun{
