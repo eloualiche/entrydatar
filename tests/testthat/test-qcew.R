@@ -17,9 +17,10 @@ test_that("Get the QCEW and check variables", {
     verbose = T)
 
   # 10 is national total, 17 is 5-digit
-   dt_qcew <- get_qcew_cut(data_cut = c(10, 17), year_start = 1991, year_end = 1992,
-                            path_data = ".", subdir = F,
-                            write = F, download = "")
+   dt_qcew <- get_qcew_cut(data_cut = c(10, 17),
+                           year_start = 1991, year_end = 1992,
+                           path_data = ".", subdir = F,
+                           write = F, download = "")
   #
   expect_equal(nrow(dt_qcew[agglvl_code == 10]), 8)
   expect_equal(nrow(dt_qcew[agglvl_code == 17]), 8656)
@@ -51,7 +52,20 @@ test_that("Get the QCEW and check variables", {
                c("year", "quarter", "industry_code", "own_code", "area_fips", "size_code", "agglvl_code",
                  "month", "emplvl", "total_qtrly_wages", "taxable_qtrly_wages", "qtrly_contributions", "avg_wkly_wage",
                 "qtrly_estabs", "lq_qtrly_estabs", "disclosure_code"))
+  # =====================================================================================
+  # TEST THE SIC FOR OLD AND NEWS FILES
+  dt_sic_qcew <- get_qcew_cut(data_cut=c(06),
+                              year_start = 1983, year_end = 1984,
+                              industry = "sic", frequency = "quarter",
+                              subdir = F, path_data = ".",
+                              write = F, download = "")
 
+  expect_equal(nrow(dt_sic_qcew[agglvl_code == "06"]), 11639)
+  expect_equal(colnames(dt_sic_qcew),
+               c("area_fips", "own_code", "industry_code", "agglvl_code", "size_code", "year", "qtr",
+                 "disclosure_code", "qtrly_estabs_count", "month1_emplvl", "month2_emplvl", "month3_emplvl",
+                 "total_qtrly_wages", "taxable_qtrly_wages", "qtrly_contributions", "avg_wkly_wage",
+                 "old_industry_code", "sic"))
 
   # =====================================================================================
   # OTHER USEFUL FUNCTIONS
