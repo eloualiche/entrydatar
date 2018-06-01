@@ -1,0 +1,169 @@
+---
+title: "How to build a shock using lagged industry shares (Bartik)"
+author: "Erik Loualiche"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+#output:
+#  md_document:
+#    variant: markdown_github
+vignette: >
+  %\VignetteIndexEntry{Build a shock using lagged industry shares (Bartik)}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+The goal here is to use lagged industry shares at the regional level and aggregate changes in an output variable to generate cross-regional variation.
+We will show the example of employment which is easily done with the [*County Business Pattern (CBP)*](./cbp.Rmd)
+
+There are essentially two steps:
+
+1. Downloading and cleaning the data
+2. Estimating  the shares and aggregate changes to construct the shock.
+
+We are going to use the following libraries
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+library(data.table)
+library(stringr)
+library(Hmisc)
+library(statar)
+library(entrydatar)
+```
+
+
+### 1. Downloading the data
+
+The CBP includes sic code from 1986 to 1997 and naics code from 1998 to 2016. This forces us to break the aggregation of the dataset into two parts. 
+
+#### SIC Code level
+
+Then we create a small function that downloads the data for a given year and process it keeping only the variables we are interested:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+read_cbp_sic <- function(year_target){
+  
+  # Download the data from the census at the county level
+  dt1 <- download_all_cbp(year_target, year_target, aggregation_level = "county")
+  
+  # clean the data
+  dt1[, fips := as.numeric(fipstate)*1000 + as.numeric(fipscty) ]
+  dt1 <- dt1[ !is.na(as.numeric(sic)) ]
+  
+  # impute employment for each size class
+  dt1[ empflag == "A", emp := 10     ]
+  dt1[ empflag == "B", emp := 60     ]
+  dt1[ empflag == "C", emp := 175    ]
+  dt1[ empflag == "E", emp := 375    ]
+  dt1[ empflag == "F", emp := 750    ]
+  dt1[ empflag == "G", emp := 1750   ]
+  dt1[ empflag == "H", emp := 3750   ]
+  dt1[ empflag == "I", emp := 7500   ]
+  dt1[ empflag == "J", emp := 17500  ]
+  dt1[ empflag == "K", emp := 37500  ]
+  dt1[ empflag == "L", emp := 75000  ]
+  dt1[ empflag == "M", emp := 100000 ]
+  
+  # aggregate and clean up
+  dt1[, fips := paste0(fipstate, fipscty) ]
+  dt1 <- dt1[, .(emp = sum(emp, na.rm = T)), by = list(fips, sic)][ order(sic, fips) ]
+  dt1[, fipsemp := sum(emp, na.rm = T), by = list(fips) ]
+  dt1[, date_y := year_target ]
+  
+  return(dt1)
+}
+```
+
+Then we download for every years where we have sic codes:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_emp_sic <- data.table()
+for (year_iter in seq(1986, 1997)){
+    dt_emp_sic <- rbind(dt_emp_sic, read_cbp_sic(year_iter))
+}
+dt_emp_sic[]
+```
+
+
+#### NAICS Code level
+
+Then we create a small function that downloads the data for a given year and process it keeping only the variables we are interested:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+read_cbp_naics <- function(year_target){
+  
+  # Download the data from the census at the county level
+  dt1 <- download_all_cbp(year_target, year_target, aggregation_level = "county")
+  
+  # clean the data and only keep 4 digits naics codes
+  dt1[, naics := gsub("\\D", "", naics) ]
+  dt1 <- dt1[ str_length(naics) == 4 ]
+  
+  # impute employment for each size class
+  dt1[ empflag == "A", emp := 10     ]
+  dt1[ empflag == "B", emp := 60     ]
+  dt1[ empflag == "C", emp := 175    ]
+  dt1[ empflag == "E", emp := 375    ]
+  dt1[ empflag == "F", emp := 750    ]
+  dt1[ empflag == "G", emp := 1750   ]
+  dt1[ empflag == "H", emp := 3750   ]
+  dt1[ empflag == "I", emp := 7500   ]
+  dt1[ empflag == "J", emp := 17500  ]
+  dt1[ empflag == "K", emp := 37500  ]
+  dt1[ empflag == "L", emp := 75000  ]
+  dt1[ empflag == "M", emp := 100000 ]
+  
+  # aggregate and clean up
+  dt1[, fips := paste0(fipstate, fipscty) ]
+  dt1 <- dt1[, .(emp = sum(emp, na.rm = T)), by = .(fips, naics)][ order(naics, fips) ]
+  dt1[, fipsemp := sum(emp, na.rm = T), by = list(fips) ]
+  dt1[, date_y := year_target ]
+  
+  return(dt1)
+}
+```
+
+Then we download for every years where we have naics codes:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_emp_naics <- data.table()
+for (year_iter in seq(1998, 2016)){
+    dt_emp_naics <- rbind(dt_emp_naics, read_cbp_naics(year_iter))
+}
+dt_emp_naics[]
+```
+
+
+### Create the cross-regional variation
+
+First we create the shares of employment for a given industry in the region:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_emp_sic[, share_ind_cty := emp / fipsemp ]
+dt_emp_sic[, l_share_ind_cty := tlag(share_ind_cty, 1, time = date_y), by = .(fips, sic) ]
+
+dt_emp_naics[, share_ind_cty := emp / fipsemp ]
+dt_emp_naics[, l_share_ind_cty := tlag(share_ind_cty, 1, time = date_y), by = .(fips, naics) ]
+```
+
+Then we create a variable that include employment in all regions except the current one and estimate the growth of employment
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_emp_sic[, fipsemp_clean := fipsemp - emp ]
+dt_emp_sic[, d_fipsemp     := log(fipsemp_clean / tlag(fipsemp_clean, 1, time = date_y)), by = .(fips, sic) ]
+
+dt_emp_naics[, fipsemp_clean := fipsemp - emp ]
+dt_emp_naics[, d_fipsemp     := log(fipsemp_clean / tlag(fipsemp_clean, 1, time = date_y) ), by = .(fips, naics) ]
+```
+
+Finally we weight the aggregate change in employment at the industry level by the local industry shares from above:
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_emp_sic[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ]
+dt_emp_naics[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ]
+```
+
+To obtain the whole time series we simply append them together
+```{r, results='hide', warning = F, error = F, message = F, eval= F}
+dt_bartik <-
+  rbind(dt_emp_sic[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ],
+        dt_emp_naics[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ])
+dt_bartik[]      
+```
+
+
+
+
+---------------------------
+(c) Erik Loualiche

@@ -13,9 +13,12 @@ vignette: >
 ---
 
 
-We download data from the County Business Pattern (CBP). Data is available for the period from 1986 to 2014 at an annual frequency.    
-The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses.    
+We download data from the County Business Pattern (CBP). Data is available for the period from **1986** to **2014** at an annual frequency. 
+
+The most detailed cut of the data incorporates size, county (zipcode since 1994) and industry (4 digits) employment and businesses.    
+
 The data is directly retrieved from the Census [website](http://www.census.gov/programs-surveys/cbp.html)
+
 
 For example if we would like the raw data:
 ```{r, results='hide', warning = F, error = F, message = F, eval= F}

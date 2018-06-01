@@ -61,13 +61,17 @@ Downloads and aggregates flat tables of entry statistics from the *Quarterly Cen
 
 ## Installation
 
-  +  Install the current version from [github](https://github.mit.edu/erikl/entrydatar) with
+  +  Install the current version from [github](https://github.com/eloualiche/entrydatar) with
 
 ```{r}
 library(devtools)
 devtools::install_github("eloualiche/entrydatar")
 ```
 
+## Examples
+
+  + How to construct a *Bartik shock* using the [CBP](vignettes/bartik.Rmd)
+  
 
 ## Work in progress (to do list)
   

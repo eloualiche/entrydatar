@@ -1,0 +1,11 @@
+pandoc: 2.1.3
+pkgdown: 1.0.0.9000
+pkgdown_sha: d7c658122bfbd143552cd28585f867dd344302ad
+articles:
+  bds: bds.html
+  bed: bed.html
+  cbp: cbp.html
+  nbf: nbf.html
+  qcew: qcew.html
+  qwi: qwi.html
+

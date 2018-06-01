@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erik Loualiche" />
 
-<meta name="date" content="2018-04-30" />
+<meta name="date" content="2018-05-31" />
 
 <title>Download data from the County Business Pattern (CBP)</title>
 
@@ -280,13 +280,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Download data from the County Business Pattern (CBP)</h1>
 <h4 class="author"><em>Erik Loualiche</em></h4>
-<h4 class="date"><em>2018-04-30</em></h4>
+<h4 class="date"><em>2018-05-31</em></h4>
 
 
 
-<p>We download data from the County Business Pattern (CBP). Data is available for the period from 1986 to 2014 at an annual frequency.<br />
-The most detailed cut of the data incorporates size, country and industry (4 digits) employment and businesses.<br />
-The data is directly retrieved from the Census <a href="http://www.census.gov/programs-surveys/cbp.html">website</a></p>
+<p>We download data from the County Business Pattern (CBP). Data is available for the period from <strong>1986</strong> to <strong>2014</strong> at an annual frequency.</p>
+<p>The most detailed cut of the data incorporates size, county (zipcode since 1994) and industry (4 digits) employment and businesses.</p>
+<p>The data is directly retrieved from the Census <a href="http://www.census.gov/programs-surveys/cbp.html">website</a></p>
 <p>For example if we would like the raw data:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">library</span>(entrydatar)</a>
 <a class="sourceLine" id="cb1-2" data-line-number="2">dt_raw &lt;-<span class="st"> </span><span class="kw">download_all_cbp</span>(<span class="dv">1990</span>, <span class="dv">1990</span>)</a>
