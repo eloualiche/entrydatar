@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erik Loualiche" />
 
-<meta name="date" content="2018-05-31" />
+<meta name="date" content="2018-07-24" />
 
 <title>Download data from the Quarterly Census of Employment and Wages (QCEW)</title>
 
@@ -22,7 +22,7 @@
 <style type="text/css">
 a.sourceLine { display: inline-block; line-height: 1.25; }
 a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
+a.sourceLine:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode { white-space: pre; position: relative; }
 div.sourceCode { margin: 1em 0; }
@@ -35,13 +35,11 @@ code.sourceCode { white-space: pre-wrap; }
 a.sourceLine { text-indent: -1em; padding-left: 1em; }
 }
 pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
+  { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
   { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -280,7 +278,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 <h1 class="title toc-ignore">Download data from the Quarterly Census of Employment and Wages (QCEW)</h1>
 <h4 class="author"><em>Erik Loualiche</em></h4>
-<h4 class="date"><em>2018-05-31</em></h4>
+<h4 class="date"><em>2018-07-24</em></h4>
 
 
 
@@ -292,6 +290,7 @@ In the second part we give rudimentary documentations of the feature that are of
 <li>Documentation
 <ul>
 <li>Table of data cuts: <sup><a href="#tablecut">here</a></sup></li>
+<li>What is available: <a href="#availability">here</a></li>
 <li>General documentation: <sup><a href="#generaldoc">here</a></sup></li>
 </ul></li>
 </ol>
@@ -431,6 +430,7 @@ In the second part we give rudimentary documentations of the feature that are of
 <a class="sourceLine" id="cb12-11" data-line-number="11">  <span class="dt">url_wayback =</span> wayback_suffix,</a>
 <a class="sourceLine" id="cb12-12" data-line-number="12">  <span class="dt">path_data =</span> <span class="st">&quot;~/Downloads/&quot;</span>, <span class="dt">write =</span> F)</a>
 <a class="sourceLine" id="cb12-13" data-line-number="13">dt_naics</a></code></pre></div>
+<hr />
 </section>
 </section>
 <section id="documentation" class="level1">
@@ -467,11 +467,11 @@ In the second part we give rudimentary documentations of the feature that are of
 <li><code>18</code> to <code>25</code>: State level; all sectors down to 4 digits; aggregated and by size classes (only some size split are available)</li>
 <li><code>12</code> to <code>17</code>: County level; all sectors down to 4 digits; aggregated (no split by size classes available)</li>
 </ul>
+<hr />
 </section>
 </section>
-<section id="general-documentation" class="level2">
-<h2><a name="generaldoc">General documentation</a></h2>
-<p>The table of contents to download directly datasets</p>
+<section id="what-is-available" class="level2">
+<h2><a name="availability">What is available</a></h2>
 <p>The data file layout for a general view of what is available:</p>
 <ul>
 <li>For <a href="https://www.bls.gov/cew/datatoc.htm">downloading</a> directly the individual files</li>
@@ -479,6 +479,30 @@ In the second part we give rudimentary documentations of the feature that are of
 <li>For <a href="http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm">quarterly naics</a> and <a href="https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm">annual naics</a></li>
 <li>For <a href="http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm">quarterly sic</a> and <a href="https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm">annual sic</a></li>
 </ul>
+<section id="naics-files" class="level3">
+<h3>NAICS files</h3>
+<p>Some cuts are limited to an annual frequency (first quarter only) while some have a quarterly frequency (with monthly reports for employment)</p>
+<ul>
+<li>Annual frequency cuts are:
+<ul>
+<li>National by size: <code>21, 22, 23, 24, 25, 26, 27, 28</code></li>
+<li>State by size: <code>61, 62, 63, 64</code></li>
+</ul></li>
+<li>Quarterly frequency: <em>everything else</em></li>
+</ul>
+</section>
+<section id="sic-files" class="level3">
+<h3>SIC files</h3>
+<p>Same as for NAICS. Collections stops in 2000. Size starts only in 1997.</p>
+<ul>
+<li>Annual frequency cuts are availabe only for size from 1997 to 2000:
+<ul>
+<li>National by size: <code>7, 8, 9, 10, 11</code></li>
+<li>State by size: <code>24, 25</code></li>
+</ul></li>
+<li>Quarterly frequency: <em>everything else</em></li>
+</ul>
+</section>
 <section id="availability-warning" class="level3">
 <h3>Availability Warning</h3>
 <p>The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:</p>
@@ -491,7 +515,19 @@ In the second part we give rudimentary documentations of the feature that are of
 <li>The missing cuts pre-1984 are: <code>16</code>, <code>17</code> (MSA 3 and 4 digits SIC) and <code>30</code>, <code>31</code> (County 3 and 4 digits SIC)</li>
 </ul></li>
 </ol>
+<hr />
 </section>
+</section>
+<section id="general-documentation" class="level2">
+<h2><a name="generaldoc">General documentation</a></h2>
+<p>The table of contents to download directly datasets</p>
+<p>The data file layout for a general view of what is available:</p>
+<ul>
+<li>For <a href="https://www.bls.gov/cew/datatoc.htm">downloading</a> directly the individual files</li>
+<li>For <a href="https://www.bls.gov/cew/datatoc.htm">table of contents</a></li>
+<li>For <a href="http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm">quarterly naics</a> and <a href="https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm">annual naics</a></li>
+<li>For <a href="http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm">quarterly sic</a> and <a href="https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm">annual sic</a></li>
+</ul>
 <section id="data-codes" class="level3">
 <h3>Data codes</h3>
 <section id="aggregation-levels" class="level4">

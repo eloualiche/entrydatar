@@ -30,8 +30,9 @@ The vignette is organized as:
 1. Downloading data from the QCEW
 2. Documentation
    + Table of data cuts: <sup>[here](#tablecut)</sup>
+   + What is available: [here](#availability)
    + General documentation: <sup>[here](#generaldoc)</sup>
-
+   
 
 
 
@@ -207,6 +208,9 @@ dt_naics
 
 
 
+---------------------------------
+
+
 # Documentation 
 
 ## <a name="tablecut">Cuts in QCEW</a>
@@ -244,6 +248,44 @@ The division follows
   + `12` to `17`: County level; all sectors down to 4 digits; aggregated (no split by size classes available)
 
 
+---------------------------------
+
+## <a name = "availability">What is available</a>
+
+The data file layout for a general view of what is available:
+  
+  - For [downloading](https://www.bls.gov/cew/datatoc.htm) directly the individual files
+  - For [table of contents](https://www.bls.gov/cew/datatoc.htm)
+  - For [quarterly naics](http://www.bls.gov/cew/doc/layouts/csv_quarterly_layout.htm) and [annual naics](https://data.bls.gov/cew/doc/layouts/csv_annual_layout.htm)
+  - For [quarterly sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm) and [annual sic](https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm)
+  
+### NAICS files
+Some cuts are limited to an annual frequency (first quarter only) while some have a quarterly frequency (with monthly reports for employment)
+
+  - Annual frequency cuts are: 
+    + National by size: `21, 22, 23, 24, 25, 26, 27, 28`
+    + State by size: `61, 62, 63, 64`
+  - Quarterly frequency: *everything else*
+
+### SIC files
+Same as for NAICS. Collections stops in 2000. Size starts only in 1997.
+
+  - Annual frequency cuts are availabe only for size from 1997 to 2000: 
+    + National by size: `7, 8, 9, 10, 11`
+    + State by size: `24, 25` 
+  - Quarterly frequency: *everything else*
+  
+### Availability Warning
+The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:
+
+  1. There is no disaggregated data for size X industry before 1990 in the case of **naics**. The layout of files on the [download page](http://www.bls.gov/cew/datatoc.htm) is somewhat misleading.
+  2. For the **sic by industry** files the data from standard sources only goes back to 1984. I have yet to implement the function that also downloads and get the data from 1975 to 1983. They are arranged in individual industry files. 
+      + For the year 1983 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`
+      + For the year 1984 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`, `30`, `31`
+      + The missing cuts pre-1984 are: `16`, `17` (MSA 3 and 4 digits SIC) and `30`, `31` (County 3 and 4 digits SIC)
+
+
+---------------------------------
 
 ## <a name = "generaldoc">General documentation</a>
 
@@ -257,15 +299,6 @@ The data file layout for a general view of what is available:
   - For [quarterly sic](http://www.bls.gov/cew/doc/layouts/sic_csv_quarterly_layout.htm) and [annual sic](https://data.bls.gov/cew/doc/layouts/sic_csv_annual_layout.htm)
   
   
-### Availability Warning
-The BLS Table can be misleading at times. And all of the files are not created equals. I am working on harmonizing all of the data pulls but there seems to be a lot of exceptions. Here are warnings I found important:
-
-  1. There is no disaggregated data for size X industry before 1990 in the case of **naics**. The layout of files on the [download page](http://www.bls.gov/cew/datatoc.htm) is somewhat misleading.
-  2. For the **sic by industry** files the data from standard sources only goes back to 1984. I have yet to implement the function that also downloads and get the data from 1975 to 1983. They are arranged in individual industry files. 
-      + For the year 1983 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`
-      + For the year 1984 the available cuts are: `01`, `02`, `03`, `04`, `05`, `06`, `13`, `14`, `15`, `16`, `17`, `18`, `19`, `20`, `21`, `22`, `23`, `26`, `27`, `28`, `29`, `30`, `31`
-      + The missing cuts pre-1984 are: `16`, `17` (MSA 3 and 4 digits SIC) and `30`, `31` (County 3 and 4 digits SIC)
-
 ### Data codes
 
 #### Aggregation levels

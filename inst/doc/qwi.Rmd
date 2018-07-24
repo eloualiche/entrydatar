@@ -7,7 +7,7 @@ output: rmarkdown::html_vignette
 #  md_document:
 #    variant: markdown_github
 vignette: >
-  %\VignetteIndexEntry{Download data from the Quarterly Census of Employment and Wages (QCEW)}
+  %\VignetteIndexEntry{Download data from the Quarterly Workforce Indicator (QWI)}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ In this vignette we provide examples of how to use entrydatar to download precis
 
 In the second part we give rudimentary documentations of the feature that are of principal interest to work with the data.
 
-For an overview of the QCEW, head over to the [Census website](https://lehd.ces.census.gov/data/)
+For an overview of the QWI, head over to the [Census website](https://lehd.ces.census.gov/data/)
 
 ## Download
 

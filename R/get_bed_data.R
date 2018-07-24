@@ -102,12 +102,12 @@ get_bed = function(
 
     }
 
-} # end of download_data
+} # end of get_bed
+# ------------------------------------------------------------------------
 
 
 
-
-#' Download BED dataset from directly from the BLS website
+#' Download BED dataset directly from the BLS website
 #'
 #' @param seasonaladj seasonality adjustment of the data; S (default) or U
 #' @param msa msa code; 00000 (default) for national
@@ -142,7 +142,7 @@ get_bed_detail <- function(
   dataclass    = "07",
   ratelevel    = "L", # `L` Level, `R` Rate
   periodicity  = "Q", # `A` Annual, `Q` Quarterly
-  ownership    = 5,   #  `5` Private Sector
+  ownership    = 5,   # `5` Private Sector
   download     = F,
   read         = F,
   path_data    = "./"
@@ -220,4 +220,5 @@ get_bed_detail <- function(
     # return dataset
     return( dt_final )
 
-} # end of download_data
+} # end of get_bed_detail
+# ------------------------------------------------------------------------
