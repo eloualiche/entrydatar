@@ -29,9 +29,9 @@ The vignette is organized as:
 
 1. Downloading data from the QCEW
 2. Documentation
-   + Table of data cuts: <sup>[here](#tablecut)</sup>
-   + What is available: [here](#availability)
-   + General documentation: <sup>[here](#generaldoc)</sup>
+   + [Table of data cuts](#tablecut)
+   + [What is available](#availability)
+   + [General documentation](#generaldoc)
    
 
 
