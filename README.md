@@ -59,6 +59,11 @@ Downloads and aggregates flat tables of entry statistics from the *Quarterly Cen
   + How to download a clean version of the [NBF](vignettes/nbf.Rmd)
 
 
+## Examples
+
+  + How to construct a *Bartik shock* using the [CBP](vignettes/bartik.Rmd)
+  
+
 ## Installation
 
   +  Install the current version from [github](https://github.com/eloualiche/entrydatar) with
@@ -68,10 +73,6 @@ library(devtools)
 devtools::install_github("eloualiche/entrydatar")
 ```
 
-## Examples
-
-  + How to construct a *Bartik shock* using the [CBP](vignettes/bartik.Rmd)
-  
 
 ## Work in progress (to do list)
   

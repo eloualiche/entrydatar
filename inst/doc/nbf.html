@@ -303,23 +303,23 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 ## 563:  199411      125.5 127.9     741059 64542    28943.9 2511.8
 ## 564:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
 <p>The data has both monthly and annual frequency component:</p>
-<pre><code>     date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf
-  1:  194801      101.1 115.7      95462  9380      234.6   13.0
-  2:  194802      101.1 107.5      95462  8329      234.6   25.6
-  3:  194803      101.1 105.0      95462  8349      234.6   17.5
-  4:  194804      101.1 104.5      95462  8396      234.6   15.3
-  5:  194805      101.1 103.7      95462  8064      234.6   13.8
- ---                                                            
-560:  199408      125.5 125.8     741059 64844    28943.9 2106.8
-561:  199409      125.5 125.3     741059 64564    28943.9 3434.0
-562:  199410      125.5 124.6     741059 60488    28943.9 2023.1
-563:  199411      125.5 127.9     741059 64542    28943.9 2511.8
-564:  199412      125.5 127.3     741059 62908    28943.9 3108.0</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">     date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="dv">1</span><span class="op">:</span><span class="st">  </span><span class="dv">194801</span>      <span class="fl">101.1</span> <span class="fl">115.7</span>      <span class="dv">95462</span>  <span class="dv">9380</span>      <span class="fl">234.6</span>   <span class="fl">13.0</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="dv">2</span><span class="op">:</span><span class="st">  </span><span class="dv">194802</span>      <span class="fl">101.1</span> <span class="fl">107.5</span>      <span class="dv">95462</span>  <span class="dv">8329</span>      <span class="fl">234.6</span>   <span class="fl">25.6</span></a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dv">3</span><span class="op">:</span><span class="st">  </span><span class="dv">194803</span>      <span class="fl">101.1</span> <span class="fl">105.0</span>      <span class="dv">95462</span>  <span class="dv">8349</span>      <span class="fl">234.6</span>   <span class="fl">17.5</span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dv">4</span><span class="op">:</span><span class="st">  </span><span class="dv">194804</span>      <span class="fl">101.1</span> <span class="fl">104.5</span>      <span class="dv">95462</span>  <span class="dv">8396</span>      <span class="fl">234.6</span>   <span class="fl">15.3</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">  <span class="dv">5</span><span class="op">:</span><span class="st">  </span><span class="dv">194805</span>      <span class="fl">101.1</span> <span class="fl">103.7</span>      <span class="dv">95462</span>  <span class="dv">8064</span>      <span class="fl">234.6</span>   <span class="fl">13.8</span></a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"> <span class="op">---</span><span class="st">                                                            </span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="dv">560</span><span class="op">:</span><span class="st">  </span><span class="dv">199408</span>      <span class="fl">125.5</span> <span class="fl">125.8</span>     <span class="dv">741059</span> <span class="dv">64844</span>    <span class="fl">28943.9</span> <span class="fl">2106.8</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="dv">561</span><span class="op">:</span><span class="st">  </span><span class="dv">199409</span>      <span class="fl">125.5</span> <span class="fl">125.3</span>     <span class="dv">741059</span> <span class="dv">64564</span>    <span class="fl">28943.9</span> <span class="fl">3434.0</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="dv">562</span><span class="op">:</span><span class="st">  </span><span class="dv">199410</span>      <span class="fl">125.5</span> <span class="fl">124.6</span>     <span class="dv">741059</span> <span class="dv">60488</span>    <span class="fl">28943.9</span> <span class="fl">2023.1</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="dv">563</span><span class="op">:</span><span class="st">  </span><span class="dv">199411</span>      <span class="fl">125.5</span> <span class="fl">127.9</span>     <span class="dv">741059</span> <span class="dv">64542</span>    <span class="fl">28943.9</span> <span class="fl">2511.8</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="dv">564</span><span class="op">:</span><span class="st">  </span><span class="dv">199412</span>      <span class="fl">125.5</span> <span class="fl">127.3</span>     <span class="dv">741059</span> <span class="dv">62908</span>    <span class="fl">28943.9</span> <span class="fl">3108.0</span></a></code></pre></div>
 <p>There is also a function like the other in this package to access an interval:</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)</a></code></pre></div>
 <p>Note that the data only extends to 1994 (included).</p>
 <p>Quick summary stats:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="op">&gt;</span><span class="st"> </span>skimr<span class="op">::</span><span class="kw">skim</span>(entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)[, <span class="kw">lapply</span>(.SD, as.numeric), <span class="dt">.SDcols =</span> <span class="kw">c</span>(<span class="st">&quot;nbi&quot;</span>, <span class="st">&quot;nbf&quot;</span>, <span class="st">&quot;cbf&quot;</span>)])</a>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">skimr<span class="op">::</span><span class="kw">skim</span>(entrydatar<span class="op">::</span><span class="kw">get_nbf</span>(<span class="dv">1980</span>, <span class="dv">1998</span>)[, <span class="kw">lapply</span>(.SD, as.numeric), <span class="dt">.SDcols =</span> <span class="kw">c</span>(<span class="st">&quot;nbi&quot;</span>, <span class="st">&quot;nbf&quot;</span>, <span class="st">&quot;cbf&quot;</span>)])</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">Skim summary statistics</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"> n obs<span class="op">:</span><span class="st"> </span><span class="dv">180</span> </a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"> n variables<span class="op">:</span><span class="st"> </span><span class="dv">3</span> </a>

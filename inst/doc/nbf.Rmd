@@ -25,7 +25,7 @@ entrydatar::scb
 ```
 
 The data has both monthly and annual frequency component:
-```
+```r
      date_ym nbf_annual   nbf nbi_annual   nbi cbf_annual    cbf
   1:  194801      101.1 115.7      95462  9380      234.6   13.0
   2:  194802      101.1 107.5      95462  8329      234.6   25.6
@@ -41,15 +41,15 @@ The data has both monthly and annual frequency component:
 ```
 
 There is also a function like the other in this package to access an interval:
-```{r, warning = F, error = F, message = F, eval = F}
+```r
 entrydatar::get_nbf(1980, 1998)
 ```
 
 Note that the data only extends to 1994 (included).
 
 Quick summary stats:
-```{r, warning = F, error = F, message = F, eval=F}
-> skimr::skim(entrydatar::get_nbf(1980, 1998)[, lapply(.SD, as.numeric), .SDcols = c("nbi", "nbf", "cbf")])
+```r
+skimr::skim(entrydatar::get_nbf(1980, 1998)[, lapply(.SD, as.numeric), .SDcols = c("nbi", "nbf", "cbf")])
 Skim summary statistics
  n obs: 180 
  n variables: 3 

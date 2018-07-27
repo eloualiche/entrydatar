@@ -21,7 +21,7 @@ There are essentially two steps:
 2. Estimating  the shares and aggregate changes to construct the shock.
 
 We are going to use the following libraries
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 library(data.table)
 library(stringr)
 library(Hmisc)
@@ -37,7 +37,7 @@ The CBP includes sic code from 1986 to 1997 and naics code from 1998 to 2016. Th
 #### SIC Code level
 
 Then we create a small function that downloads the data for a given year and process it keeping only the variables we are interested:
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 read_cbp_sic <- function(year_target){
   
   # Download the data from the census at the county level
@@ -72,7 +72,7 @@ read_cbp_sic <- function(year_target){
 ```
 
 Then we download for every years where we have sic codes:
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 dt_emp_sic <- data.table()
 for (year_iter in seq(1986, 1997)){
     dt_emp_sic <- rbind(dt_emp_sic, read_cbp_sic(year_iter))
@@ -84,7 +84,7 @@ dt_emp_sic[]
 #### NAICS Code level
 
 Then we create a small function that downloads the data for a given year and process it keeping only the variables we are interested:
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 read_cbp_naics <- function(year_target){
   
   # Download the data from the census at the county level
@@ -119,7 +119,7 @@ read_cbp_naics <- function(year_target){
 ```
 
 Then we download for every years where we have naics codes:
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 dt_emp_naics <- data.table()
 for (year_iter in seq(1998, 2016)){
     dt_emp_naics <- rbind(dt_emp_naics, read_cbp_naics(year_iter))
@@ -131,7 +131,7 @@ dt_emp_naics[]
 ### Create the cross-regional variation
 
 First we create the shares of employment for a given industry in the region:
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 dt_emp_sic[, share_ind_cty := emp / fipsemp ]
 dt_emp_sic[, l_share_ind_cty := tlag(share_ind_cty, 1, time = date_y), by = .(fips, sic) ]
 
@@ -140,7 +140,7 @@ dt_emp_naics[, l_share_ind_cty := tlag(share_ind_cty, 1, time = date_y), by = .(
 ```
 
 Then we create a variable that include employment in all regions except the current one and estimate the growth of employment
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 dt_emp_sic[, fipsemp_clean := fipsemp - emp ]
 dt_emp_sic[, d_fipsemp     := log(fipsemp_clean / tlag(fipsemp_clean, 1, time = date_y)), by = .(fips, sic) ]
 
@@ -149,13 +149,13 @@ dt_emp_naics[, d_fipsemp     := log(fipsemp_clean / tlag(fipsemp_clean, 1, time 
 ```
 
 Finally we weight the aggregate change in employment at the industry level by the local industry shares from above:
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 dt_emp_sic[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ]
 dt_emp_naics[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ]
 ```
 
 To obtain the whole time series we simply append them together
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 dt_bartik <-
   rbind(dt_emp_sic[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ],
         dt_emp_naics[, .(d_emp = wtd.mean(d_fipsemp, l_share_ind_cty, na.rm = T)), by = .(date_y, fips) ])

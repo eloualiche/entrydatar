@@ -53,7 +53,7 @@ dt_agg <- get_qcew_cut(
     year_start = 1990, year_end =1993,    
     path_data = "~/Downloads/", write = F)
 ```
-```{r, eval = F}
+```r
 as_tibble(dt_agg)
 # A tibble: 16 x 42
    area_fips own_code indus… agglv… size_…  year   qtr discl… qtrly… month… month… month… total_… taxa… qtrl… avg_… lq_d… lq_q… lq_m… lq_m… lq_m… lq_t… lq_t… lq_q… lq_a… oty_… oty_q… oty_… oty_mo… oty_m… oty_mo… oty_m… oty_mo… oty_m… oty_to… oty_t… oty_tax… oty_… oty_qt… oty_… oty_a… oty_…
@@ -116,7 +116,7 @@ dt_naics <- get_qcew_cut(
   year_start = 2000, year_end = 2005,    
   path_data = "~/Downloads/", write = F)
 ```
-```{r, eval = F}
+```r
 as_tibble(dt_naics)
 # A tibble: 18,028 x 42
    area_fips own_code indus… agglv… size_…  year   qtr discl… qtrly_… month… month… month… total… taxa… qtrl… avg_… lq_d… lq_q… lq_m… lq_m… lq_m… lq_t… lq_t… lq_q… lq_a… oty_… oty_… oty_q… oty_mo… oty_mo… oty_mo… oty_m… oty_mo… oty_m… oty_to… oty_to… oty_… oty_… oty_… oty_… oty_av… oty_av…
@@ -142,7 +142,7 @@ dt_naics_year <- get_qcew_cut(
   year_start = 2000, year_end = 2005,    
   path_data = "~/Downloads/", write = F)
 ```
-```{r, eval = F}
+```r
 as_tibble(dt_naics_year)
 # A tibble: 4,507 x 38
    area_fips own_code industry_code agglvl_code size_code  year   qtr disclosure_code annual… annual… total_… taxab… annua… annua… avg_a… lq_di… lq_a… lq_a… lq_t… lq_t… lq_a… lq_a… lq_a… oty_… oty_… oty_a… oty_an… oty_ann… oty_to… oty_tot… oty_… oty_… oty_… oty_… oty_a… oty_a… oty_… oty_a…
@@ -218,7 +218,7 @@ dt_naics
 #### NAICS Aggregation levels
 The table of cuts looks as the following for **NAICS** based industries is as follows. See the reference [table](../data_raw/naics_agglevel.csv) and official BLS [documentation](https://data.bls.gov/cew/doc/titles/agglevel/agglevel_titles.htm) for more details.
 
-```{r, eval = F}
+```r
 #------------------------------------------------------------------------------------------------------------------------------
 #|                           | Geographic/Size   | National | National | CSA | MSA | Statewide | Statewide | County | MicroSA |
 #|                           |  LevelCode Format |          |  by size |     |     |           |  by size  |        |         |

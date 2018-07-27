@@ -23,10 +23,12 @@ vignette: >
 ## Using the package
 
 For example to start and get the BED industry data:
-```{r, warning = F, error = F, message = F, eval = F}
+```r
 library(entrydatar)
 dt_firm  <- get_bds_cut(1977, 2014, "firm", "all")
 dt_firm %>% as_tibble
+```
+```r
 # A tibble: 38 x 25
     year   firms  estabs      emp    denom estabs_entry estabs_entry_rate estabs_exit estabs_exit_rate job_creation job_creation_births job_creation_continuers job_cr… job_c… job_de… job_des… job_des… job_de… job_d… net_jo… net_jo… real… firmd… firmd… firmd…
    <int>   <int>   <int>    <int>    <int>        <int>             <dbl>       <int>            <dbl>        <int>               <int>                   <int>   <dbl>  <dbl>   <int>    <int>    <int>   <dbl>  <dbl>   <int>   <dbl> <dbl>  <int>  <int>  <int>
@@ -44,9 +46,11 @@ dt_firm %>% as_tibble
 ```
 
 Or for another cut, say establishments from age sic (see below for the exact code for each cut)
-```{r, warning = F, error = F, message = F, eval = F}
+```r
 dt_estab <- get_bds_cut(1977, 2014, "establishment", "agesic")
 dt_estab %>% as_tibble
+```
+```r
 # A tibble: 3,249 x 28
     year  sic1 age4              Firms Estabs      Emp    Denom Estabs_Entry Estabs_Entry_Rate Estabs_Exit Estabs_Exit_Rate Job_Creation Job_Creation_Births Job_Cr… Job_C… Job_… Job_D… Job_D… Job_D… Job_… Job_… Net_Jo… Net_Job… Real… d_fl… firm… firm… firmd…
    <int> <int> <chr>             <int>  <int>    <int>    <int>        <int>             <dbl>       <int>            <dbl>        <int>               <int>   <int>  <dbl> <dbl>  <int>  <int>  <int> <dbl> <dbl>   <int>    <dbl> <dbl> <int> <int> <int>  <dbl>

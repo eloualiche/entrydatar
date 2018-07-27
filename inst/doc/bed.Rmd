@@ -40,15 +40,16 @@ Note that there is also a [ftp](http://download.bls.gov/pub/time.series/bd/) wit
 
 For example to start and get the BED industry data:
 
-``` {r, results='hide', warning = F, error = F, message = F, eval= F}
+``` r
 library(entrydatar)
 dt_ind <- get_bed("industry", level = T) 
 ```
 
 Or if you also want to process the levels (employment and count of establishments):
 
-```{r, eval = F}
+```r
 dt_ind[]
+
       date_ym naics3 year period ent_emp note1 exit_emp ent_cnt exit_cnt nent_emp nent_cnt ent_lvl_emp exit_lvl_emp ent_lvl_cnt exit_lvl_cnt  tot_count     tot_emp
    1:  199209    111 1992    Q03     4.8     P      4.7    10.9      8.9      0.1      2.0       27754        27031        4171         3402  38266.055   578208.33
    2:  199209    112 1992    Q03     2.3     P      1.6     4.7      4.1      0.7      0.6        3532         2499         736          631  15659.574   153565.22
@@ -67,8 +68,9 @@ dt_ind[]
 ## Where does the data come from
 
 Take for example industry `naics = 111`, *Crop Production*. The data comes from two tables:
-``` {r, results='hide', warning = F, error = F, message = F, eval= F}
-> head(dt_ind[ naics3 == "111"])
+```r
+head(dt_ind[ naics3 == "111"])
+
    date_ym naics3 year period ent_emp note1 exit_emp ent_cnt exit_cnt nent_emp nent_cnt ent_lvl_emp exit_lvl_emp ent_lvl_cnt exit_lvl_cnt tot_count  tot_emp
 1:  199209    111 1992    Q03     4.8     P      4.7    10.9      8.9      0.1      2.0       27754        27031        4171         3402  38266.06 578208.3
 2:  199212    111 1992    Q04     4.0     P      5.1     8.2     11.1     -1.1     -2.9       22055        27995        3128         4193  38146.34 551375.0
@@ -187,7 +189,7 @@ To find a series it is important to read the series ID, for example `BDS00000000
 
 To be able to get all these series the code is required to download the full flat file which can be quite heavy (requires confirmation).
 
-```{r, results='hide', warning = F, error = F, message = F, eval= F}
+```r
 library(entrydatar)
 dt_ind <- get_bed_detail("industry")
 dt_ind[]
