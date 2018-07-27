@@ -39,7 +39,7 @@ The vignette is organized as:
 # Downloading data from the QCEW
 
 To get read to download data, we load some libraries that the package might have forgotten to call (the package works with all tables in a `data.table` format)
-```{r, results='hide', warning = F, error = F, message = F}
+```r
 library(dplyr); library(data.table); 
 library(entrydatar)
 ```
@@ -47,7 +47,7 @@ library(entrydatar)
 ## General download
 
 For example if we are interested in downloading aggregate level data we use the cut `10`. Please see documentation below for a definition of what is availabe and the mapping of the different cuts of QCEW.
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```r
 dt_agg <- get_qcew_cut(       
     data_cut = 10,     
     year_start = 1990, year_end =1993,    
@@ -79,14 +79,14 @@ as_tibble(dt_agg)
 Note that the dataset can be large. Downloading most of the industry 3 and 4 digits cuts across counties and MSAs ends up with 57mn rows. Saving it in `.rds` formats takes around 2gb of memory.
 
 On the other hand for something more precise, say nationally by size cuts at the 6 digits industry level we would call the cut `28`:
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```r
 dt_naics <- get_qcew_cut(        
   data_cut = 28,       
   industry = "naics", 
   year_start = 1990, year_end = 2015,       
   path_data = "~/Downloads/", write = F)
 ```
-```{r, eval = F}
+```r
 as_tibble(dt_naics)
 # A tibble: 208,667 x 47
    area… own_… indus… aggl… size…  year   qtr disc… area… own_… indu… aggl… size… qtrly… month… month… month… total… taxa… qtrl… avg_… lq_d… lq_q… lq_m… lq_m… lq_m… lq_t… lq_t… lq_q… lq_a… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_… oty_…
@@ -109,7 +109,7 @@ as_tibble(dt_naics)
 
 The BLS provides quarterly as well as annual averages, which are lighter. There is now an option to download directly the annual average using a frequency option. The default is quarterly, so everything should be backward compatible.
 Let's see first with the quarterly data (*warning* it is slow):
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```r
 dt_naics <- get_qcew_cut(     
   data_cut = 16,     
   industry = "naics",  frequency = "quarter",  
@@ -135,7 +135,7 @@ as_tibble(dt_naics)
 ```
 
 Now let's download the data only at annual frequency (similar to the size cuts from earlier):
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```r
 dt_naics_year <- get_qcew_cut(     
   data_cut = 16,     
   industry = "naics",  frequency = "year",  
@@ -164,7 +164,7 @@ as_tibble(dt_naics_year)
 ## Tidy the data
 
 The data is still raw from the BLS download. We can clean the data in two ways: a monthly dataset with employment by categories and a quarterly dataset with only number of firms. Finally we allow an option for aggregating both types. Note this function works only for the quarterly version of the data.
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```r
 dt_naics_tidy <- tidy_qcew(dt_naics, frequency = "month")
 ```
 ```{r, eval = F}
@@ -190,7 +190,7 @@ as_tibble(dt_naics_tidy)
 
 I included an option to specify a snapshot of the data take through the url wayback machine: thanks To [Gabriel Chodorow-Reich](http://scholar.harvard.edu/chodorow-reich) for suggesting the idea.<sup>[1](#fn1)</sup>
 Specify a suffix found from the internet wayback machine on the BLS website and add it as an argument in the download function:
-```{r, results='hide', warning = F, error = F, message = F, eval = F}
+```r
 # Enter the address directly from the html address
 wayback_suffix <- "https://web.archive.org/web/20141101135821"  # suffix for November 1st, 2014
 # Or enter the exact date at which date it has been crawled:

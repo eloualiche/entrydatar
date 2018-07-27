@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_bed_data.R
 \name{get_bed_detail}
 \alias{get_bed_detail}
-\title{Download BED dataset from directly from the BLS website}
+\title{Download BED dataset directly from the BLS website}
 \usage{
 get_bed_detail(seasonaladj = "S", msa = "00000", state = "00",
   county = "000", industry = "000000", unitanalysis = 1,
@@ -45,7 +45,7 @@ get_bed_detail(seasonaladj = "S", msa = "00000", state = "00",
 dt_final
 }
 \description{
-Download BED dataset from directly from the BLS website
+Download BED dataset directly from the BLS website
 }
 \examples{
 \dontrun{
