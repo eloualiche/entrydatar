@@ -167,7 +167,7 @@ The data is still raw from the BLS download. We can clean the data in two ways: 
 ```r
 dt_naics_tidy <- tidy_qcew(dt_naics, frequency = "month")
 ```
-```{r, eval = F}
+```r
 as_tibble(dt_naics_tidy)
 # A tibble: 54,084 x 9
     year quarter industry_code area_fips own_code size_code agglvl_code month emplvl

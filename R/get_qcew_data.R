@@ -304,7 +304,7 @@ get_qcew_cut <- function(
 
 
 
-
+################################################################################################################
 #' Tidying the dataset for regression use (or merge)
 #'
 #' @param dt input dataset from get_qcew_cut
@@ -329,14 +329,13 @@ tidy_qcew <- function(
 ){
 
   # side step checks in R
-  qtr <-avg_wkly_wage <- qtrly_estabs <- lq_qtrly_estabs <- disclosure_code <- qtrly_estabs_count <- NULL
+  qtr <- avg_wkly_wage <- qtrly_estabs <- lq_qtrly_estabs <- disclosure_code <- qtrly_estabs_count <- NULL
   industry_code <- month1_emplvl <- month2_emplvl <- month3_emplvl <- area_fips <- NULL
   own_code <- size_code <- agglvl_code <- emplvl <- total_qtrly_wages <- taxable_qtrly_wages <- qtrly_contributions <- NULL
 
   # official function starts here
   if (frequency %in% c("month", "all")){
-
-    dt_month <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
+    dt_month <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
                        month1_emplvl, month2_emplvl, month3_emplvl,
                        area_fips, own_code, size_code, agglvl_code) ]
     dt_month <- dt_month %>% tidyr::gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
@@ -347,50 +346,37 @@ tidy_qcew <- function(
     if (frequency == "month"){
       dt_tidy <- dt_month
     }
-
   }
 
   if (frequency %in% c("quarter", "all")){
-
     if (industry == "naics"){
-
       dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
                            total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
                            avg_wkly_wage, qtrly_estabs, lq_qtrly_estabs, disclosure_code,
                            area_fips, own_code, size_code, agglvl_code) ]
-
-
     } else if (industry == "sic"){
-
-      dt_quarter <- dt[, list(year, quarter = as.numeric(qtr), industry_code,
-                              total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
-                              avg_wkly_wage, qtrly_estabs = qtrly_estabs_count,
-                              area_fips, own_code, size_code, agglvl_code) ]
-
-    }
-
-    setorder(dt_quarter, agglvl_code, industry_code, year, quarter)
-
-    if (frequency == "quarter"){
-
-       setorder(dt_quarter, own_code, area_fips, agglvl_code, industry_code, size_code, year, month)
+      dt_quarter <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
+                           total_qtrly_wages, taxable_qtrly_wages, qtrly_contributions,
+                            avg_wkly_wage, qtrly_estabs = qtrly_estabs_count,
+                            area_fips, own_code, size_code, agglvl_code) ]
+   }
+   setorder(dt_quarter, agglvl_code, industry_code, year, quarter)
+   if (frequency == "quarter"){
+       setorder(dt_quarter, own_code, area_fips, agglvl_code, industry_code, size_code, year)
        dt_tidy <- dt_quarter
-
     }
-
   }
 
   if (frequency == "all"){
-
     dt_tidy <- merge(dt_month, dt_quarter, all.x = T,
                      by = c("year", "quarter", "industry_code", "own_code", "area_fips", "size_code", "agglvl_code") )
     setorder(dt_tidy, own_code, area_fips, agglvl_code, industry_code, size_code, year, month)
-
   }
 
   return( dt_tidy )
 
-}
+} # END OF tidy_qcew
+################################################################################################################
 
 
 
@@ -398,8 +384,7 @@ tidy_qcew <- function(
 
 
 
-
-
+################################################################################################################
 #' Tidying the dataset for regression use (or merge): operate year by year to keep memory to manageable levels.
 #'
 #' @param dt        input dataset from get_qcew_cut
@@ -423,14 +408,14 @@ tidy_qcew_year <- function(
   verbose   = TRUE
 ){
 
-  year_list <- as.vector(unique(dt$year))
+  year_list <- unique(dt_sic[["year"]])
   dt_res <- data.table()
 
   for (i_year in 1:length(year_list) ){
-    if (verbose == TRUE){
-      message("Processing year ... ", i_year)
-    }
     sub_year <- year_list[i_year]
+    if (verbose == TRUE){
+      message("Processing year ... ", sub_year)
+    }
     dt_tmp <- dt[ year == sub_year ]
     dt_tmp <- tidy_qcew(dt_tmp,
                 frequency = frequency, industry = industry)
@@ -439,6 +424,7 @@ tidy_qcew_year <- function(
 
   return( dt_res )
 } # end of tidy_qcew_year
+####################################################################################
 
 
 
@@ -446,9 +432,7 @@ tidy_qcew_year <- function(
 
 
 
-
-
-
+####################################################################################
 #' Export the downloaded table into a csv file.
 #'
 #' @param year  filename for .csv file. Note that you need to pass in the
