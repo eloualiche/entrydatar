@@ -46,7 +46,6 @@ downloads data from the Quarterly Census for Employment and Wages
 : we intend to have a single file for each aggregation level, but it is
 more convenient to merge the individual files using an external command line
 tool like cat
-
 Other code: loads data.table with option to write it for a given cut
 }
 \examples{

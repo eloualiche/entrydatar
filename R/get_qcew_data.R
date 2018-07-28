@@ -55,7 +55,8 @@ get_qcew_cut <- function(
     subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                                     loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
     message(paste0("# -----------------------------------------------------\n",
-                   "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "))
+                   "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "),
+                   "\n\n")
     dir.create(paste0(path_data, subdir))
   } else {
     subdir <- ""
@@ -159,7 +160,7 @@ get_qcew_cut <- function(
 
       # Download the data in iteration
       for (year_iter in seq(year_start, year_end)) {
-          message(paste0("Processing data for year ", toString(year_iter)," and ", industry, " industry type."))
+          message(paste0("# Processing data for year ", toString(year_iter)," and ", industry, " industry type."))
 
         if (year_iter < 1984){          # OLD DOWNLOAD
 
@@ -238,7 +239,7 @@ get_qcew_cut <- function(
     }
 
     for (year in seq(year_start, year_end)) {
-      message(paste0("Processing data for year ", toString(year)," and ",
+      message(paste0("# Processing data for year ", toString(year)," and ",
                      industry, " industry type. Size subdivision"))
 
       if (year_iter < 1984){ # OLD DOWNLOAD
@@ -347,9 +348,13 @@ tidy_qcew <- function(
     dt_month <- dt[, .(year, quarter = as.numeric(qtr), industry_code,
                        month1_emplvl, month2_emplvl, month3_emplvl,
                        area_fips, own_code, size_code, agglvl_code) ]
-    dt_month <- dt_month %>% tidyr::gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
-    dt_month[, `:=`(month = as.numeric(gsub("[^\\d]+", "", month, perl=TRUE)) ) ]
-    dt_month[, month := (quarter-1)*3 + month ]
+
+    dt_month <- data.table::melt(dt_month,
+       id.vars=c("year", "quarter", "industry_code", "area_fips", "own_code", "size_code", "agglvl_code"),
+       measure.vars = c("month1_emplvl", "month2_emplvl", "month3_emplvl"),
+       variable.name = c("month"))
+    # slower tidyr::gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
+    dt_month[, month := (quarter-1)*3 + as.numeric(substr(month, 6, 6))  ]
     setorder(dt_month, agglvl_code, industry_code, year, month)
 
     if (frequency == "month"){
