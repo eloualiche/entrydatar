@@ -76,6 +76,7 @@ devtools::install_github("eloualiche/entrydatar")
 
 ## Work in progress (to do list)
   
+  + [ ] Tidy qcew move from gather to melt?
   + [ ] Load QCEW directly from local downloaded files
   + [ ] Stable version of Quarterly Workforce Indicator. See vignette for documentation [QWI](vignettes/qwi.Rmd)
 

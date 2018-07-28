@@ -153,9 +153,9 @@ get_qcew_cut <- function(
       # no size cuts since files are separated
     if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
 
-        for (i_cut in 1:length(data_cut)){  # pad with zeroes and transform data_cut vector into string
-          if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
-        }
+      data_cut <-  # pad with zeroes and transform data_cut vector into string
+      purrr::map_chr(data_cut,
+                     function(x) paste0(stringr::str_sub("0", 0, 2-stringr::str_length(x)), x))
 
       # Download the data in iteration
       for (year_iter in seq(year_start, year_end)) {
@@ -169,7 +169,7 @@ get_qcew_cut <- function(
                                               url_wayback = url_wayback)
 
           # pre 1984: file names are not aggregated in one file: loop over them
-          if (verbose == T){ message("# Read and process all files in dir ...")}
+          if (verbose == T){ message("# Reading all files in dir ...")}
           colvec_sic_pre = c("character", "integer64", "character", "character", "integer64", "character",
                              "character", "character", "character", "character", "character",
                              "character", "character", "integer64", "integer64", "integer64", "integer64",
@@ -201,14 +201,14 @@ get_qcew_cut <- function(
                                               path_data = paste0(path_data, subdir, "/"),
                                               url_wayback = url_wayback)
 
-          if (verbose == T){ message("# Reading files in dir ...")}
+          if (verbose == T){ message("# Reading file ...")}
           col_vec_sic_post = c("character", "integer64", "character", "character", "integer64", "character",
                                "character", "character", "integer64", "integer64", "integer64", "integer64",
                                "integer64", "integer64", "integer64", "integer64")
           dt_split <- fread(paste0(path_data, subdir, "/", file_name),
                             colClasses = col_vec_sic_post)
 
-          if (verbose == T){ message("# Processing all files in dir ...")}
+          if (verbose == T){ message("# Processing file ...")}
           dt_split <- dt_split[ agglvl_code %in% data_cut ]
           dt_split[, old_industry_code := industry_code ]
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
