@@ -172,9 +172,15 @@ get_qcew_cut <- function(
           # pre 1984: file names are not aggregated in one file: loop over them
           if (verbose == T){ message("# Reading all files in dir ...")}
           colvec_sic_pre = c("character", "integer64", "character", "character", "integer64", "character",
-                             "character", "character", "character", "character", "character",
-                             "character", "character", "integer64", "integer64", "integer64", "integer64",
-                             "integer64", "integer64", "integer64", "integer64")
+                             "character", "character",
+                             "integer64", "character", "character",  "character", "character",
+                             "integer64", "integer64", "integer64", "integer64", "integer64", "integer64",
+                             "integer64", "character")
+          #                  "area_fips", "own_code",  "industry_code", "agglvl_code", "size_code", "year"
+          #                  "qtr", "disclosure_code",
+          #                  "area_title", "own_title", "industry_title", "agglvl_title", "size_title",
+          #                  "qtrly_estabs_count", "month1_emplvl", "month2_emplvl", "month3_emplvl", "total_qtrly_wages", "taxable_qtrly_wages",
+          #                  "qtrly_contributions" "avg_wkly_wage"
           read_sic_pre <- function(x){
             fread(paste0(path_data, subdir, x),
                   colClasses=colvec_sic_pre,
@@ -205,7 +211,10 @@ get_qcew_cut <- function(
           if (verbose == T){ message("# Reading file ...")}
           col_vec_sic_post = c("character", "integer64", "character", "character", "integer64", "character",
                                "character", "character", "integer64", "integer64", "integer64", "integer64",
-                               "integer64", "integer64", "integer64", "integer64")
+                               "integer64", "integer64", "integer64", "character")
+          #                   c("area_fips", "own_code", "industry_code", "agglvl_code", "size_code",  "year"
+          #                     "qtr", "disclosure_code", "qtrly_estabs_count", "month1_emplvl", "month2_emplvl", "month3_emplvl",
+          #                     "total_qtrly_wages", "taxable_qtrly_wages", "qtrly_contributions", "avg_wkly_wage")
           dt_split <- fread(paste0(path_data, subdir, "/", file_name),
                             colClasses = col_vec_sic_post)
 
@@ -352,7 +361,7 @@ tidy_qcew <- function(
     dt_month <- data.table::melt(dt_month,
        id.vars=c("year", "quarter", "industry_code", "area_fips", "own_code", "size_code", "agglvl_code"),
        measure.vars = c("month1_emplvl", "month2_emplvl", "month3_emplvl"),
-       variable.name = c("month"))
+       variable.name = c("month"), value.name = "emplvl")
     # slower tidyr::gather(month, emplvl, month1_emplvl:month3_emplvl) %>% data.table
     dt_month[, month := (quarter-1)*3 + as.numeric(substr(month, 6, 6))  ]
     setorder(dt_month, agglvl_code, industry_code, year, month)
@@ -422,7 +431,7 @@ tidy_qcew_year <- function(
   verbose   = TRUE
 ){
 
-  year_list <- unique(dt_sic[["year"]])
+  year_list <- unique(dt[["year"]])
   dt_res <- data.table()
 
   for (i_year in 1:length(year_list) ){
@@ -706,10 +715,8 @@ download_qcew_sic_data = function(
           } else if (freq_string == "annual"){
             read_list <- list.files( paste0(path_data, "sic.", target_year, ".annual.by_industry/") )
           }
-
           read_list <- purrr::map_chr(read_list, ~ paste0("/sic.", target_year, ".q1-q4.by_industry/", .))
         }
-
         read_list <- read_list[grep("\\.csv$", read_list)]
         return(read_list)
     }
