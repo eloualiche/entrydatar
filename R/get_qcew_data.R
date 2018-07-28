@@ -6,7 +6,6 @@
 #' @note: we intend to have a single file for each aggregation level, but it is
 #' more convenient to merge the individual files using an external command line
 #' tool like cat
-#'
 
 
 
@@ -155,7 +154,6 @@ get_qcew_cut <- function(
                "character", "character", "integer64", "integer64", "integer64", "integer64",
                "integer64", "integer64", "integer64", "integer64")
 
-
     # START WITH NON SIZE DOWNLOAD
       # no size cuts since files are separated
     if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
@@ -168,19 +166,29 @@ get_qcew_cut <- function(
       for (year_iter in seq(year_start, year_end)) {
           message(paste0("Processing data for year ", toString(year_iter)," and ", industry, " industry type."))
 
-        if (year_iter < 1984){ # OLD DOWNLOAD
+        if (year_iter < 1984){          # OLD DOWNLOAD
 
+          if (verbose == T){ message("# Download ...") }
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
                                               url_wayback = url_wayback)
+
           # pre 1984: file names are not aggregated in one file: loop over them
-          df <- data.table()
-          for (file_iter in file_name){
-            dt_tmp <- fread(paste0(path_data, subdir, file_iter),
-                            colClasses = colvec, select = c(seq(1,8), seq(14,21)) )
-            df <- rbind(df, dt_tmp)
+          if (verbose == T){ message("# Read and process all files in dir ...")}
+          colvec_sic_pre = c("character", "integer64", "character", "character", "integer64", "character",
+                             "character", "character", "character", "character", "character",
+                             "character", "character", "integer64", "integer64", "integer64", "integer64",
+                             "integer64", "integer64", "integer64", "integer64")
+          read_sic_pre <- function(x){
+            fread(paste0(path_data, subdir, x),
+                  colClasses=colvec_sic_pre,
+                  select = c(seq(1,8), seq(14,21)),
+                  verbose=F)
           }
-          dt_split <- df[ agglvl_code %in% data_cut ]
+          dt_split <- bind_rows(lapply(file_name, read_sic_pre))  # faster than loop
+
+          dt_split[, agglvl_code := as.integer(agglvl_code) ]
+          dt_split <- dt_split[ agglvl_code %in% data_cut ]
           dt_split[, old_industry_code := industry_code ]
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
           ## dt_split[ is.na(as.numeric(industry_code)),  sic := NA ]
@@ -195,34 +203,37 @@ get_qcew_cut <- function(
         } # end of pre-1984 conditioning
 
         if (year_iter >= 1984){
+          if (verbose == T){ message("# Download ...") }
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
                                               url_wayback = url_wayback)
-          # pre 1984: file names are not aggregated in one file: loop over them
-          df <- fread(paste0(path_data, subdir, "/", file_name),
-                      colClasses = c("character", "integer64", "character", "character", "integer64", "integer64",
-                                     "integer64", "character", "integer64", "integer64", "integer64", "integer64",
-                                     "integer64", "integer64", "integer64", "integer64") )
-          dt_split <- df[ agglvl_code %in% data_cut ]
+
+          if (verbose == T){ message("# Reading files in dir ...")}
+          col_vec_sic_post = c("character", "integer64", "character", "character", "integer64", "character",
+                               "character", "character", "integer64", "integer64", "integer64", "integer64",
+                               "integer64", "integer64", "integer64", "integer64")
+          dt_split <- fread(paste0(path_data, subdir, "/", file_name),
+                            colClasses = col_vec_sic_post)
+
+          if (verbose == T){ message("# Processing all files in dir ...")}
+          dt_split[, agglvl_code := as.integer(agglvl_code) ]
+          dt_split <- dt_split[ agglvl_code %in% data_cut ]
           dt_split[, old_industry_code := industry_code ]
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
           dt_split[, sic := as.numeric(industry_code) ]
-          ## dt_split[ !is.na(as.numeric(industry_code)), sic := as.numeric(industry_code) ]
-          ## dt_split[ is.na(as.numeric(industry_code)),  sic := NA ]
 
-          # cleaning up
+          # cleaning up and aggregate
           file.remove( paste0(path_data, subdir, "/", file_name) )
           message("")
           dt_res <- rbind(dt_res, dt_split, fill = T)
 
-        }
-
-      } # end of looop over  the years from 1984 to year_end
-
-    }
+        } # End of post 1984
+      } # End of loop over  the years from 1984 to year_end
+    }   # End of non-size download
 
 
-  } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){   # SIZE DATA: no frequency here either
+  # SIZE DATA: no frequency here either
+  } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
 
     for (i_cut in 1:length(data_cut)){  # pad with zeroes
       if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
