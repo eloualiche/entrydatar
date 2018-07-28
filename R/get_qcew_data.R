@@ -180,7 +180,7 @@ get_qcew_cut <- function(
                   select = c(seq(1,8), seq(14,21)),
                   verbose=F)
           }
-          dt_split <- bind_rows(lapply(file_name, read_sic_pre))  # faster than loop
+          dt_split <- data.table::rbindlist(lapply(file_name, read_sic_pre))  # faster than loop
 
           if (verbose == T){ message("# Processing all files in dir ...")}
           dt_split <- dt_split[ agglvl_code %in% data_cut ]
