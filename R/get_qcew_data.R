@@ -148,17 +148,12 @@ get_qcew_cut <- function(
            "         Please do split your query")
     }
 
-    # constant useful for after
-    colvec = c("character", "integer64", "character", "character", "integer64", "integer64",
-               "character", "character", "character", "character", "character",
-               "character", "character", "integer64", "integer64", "integer64", "integer64",
-               "integer64", "integer64", "integer64", "integer64")
 
     # START WITH NON SIZE DOWNLOAD
       # no size cuts since files are separated
     if ( prod( !(data_cut %in% c(7,8,9,10,11,12,24,25)) ) ){       # no size
 
-        for (i_cut in 1:length(data_cut)){  # pad with zeroes
+        for (i_cut in 1:length(data_cut)){  # pad with zeroes and transform data_cut vector into string
           if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
         }
 
@@ -187,12 +182,10 @@ get_qcew_cut <- function(
           }
           dt_split <- bind_rows(lapply(file_name, read_sic_pre))  # faster than loop
 
-          dt_split[, agglvl_code := as.integer(agglvl_code) ]
+          if (verbose == T){ message("# Processing all files in dir ...")}
           dt_split <- dt_split[ agglvl_code %in% data_cut ]
           dt_split[, old_industry_code := industry_code ]
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
-          ## dt_split[ is.na(as.numeric(industry_code)),  sic := NA ]
-          ## dt_split[ !is.na(as.numeric(industry_code)), sic := as.numeric(industry_code) ]
           dt_split[, sic := as.numeric(industry_code) ]
 
           # cleaning up
@@ -216,7 +209,6 @@ get_qcew_cut <- function(
                             colClasses = col_vec_sic_post)
 
           if (verbose == T){ message("# Processing all files in dir ...")}
-          dt_split[, agglvl_code := as.integer(agglvl_code) ]
           dt_split <- dt_split[ agglvl_code %in% data_cut ]
           dt_split[, old_industry_code := industry_code ]
           dt_split[, industry_code := gsub("[[:alpha:]]", "", stringr::str_sub(old_industry_code, 6, -1) ) ]
@@ -235,6 +227,12 @@ get_qcew_cut <- function(
   # SIZE DATA: no frequency here either
   } else if ( prod(data_cut %in% c(7,8,9,10,11,12,24,25)) ){
 
+    # constant useful for after
+    colvec_size = c("character", "integer64", "character", "character", "integer64", "integer64",
+               "character", "character", "character", "character", "character",
+               "character", "character", "integer64", "integer64", "integer64", "integer64",
+               "integer64", "integer64", "integer64", "integer64")
+
     for (i_cut in 1:length(data_cut)){  # pad with zeroes
       if (data_cut[i_cut] < 10){ data_cut[i_cut] <- paste0("0", data_cut[i_cut]) }
     }
@@ -252,7 +250,7 @@ get_qcew_cut <- function(
           df <- data.table()
           for (file_iter in file_name){
             dt_tmp <- fread(paste0(path_data, subdir, file_iter),
-                            colClasses = colvec, select = c(seq(1,8), seq(14,21)) )
+                            colClasses = colvec_size, select = c(seq(1,8), seq(14,21)) )
             df <- rbind(df, dt_tmp)
           }
           dt_split <- df[ agglvl_code %in% data_cut ]
@@ -275,7 +273,7 @@ get_qcew_cut <- function(
                                              path_data = paste0(path_data, subdir, "/"),
                                              url_wayback = url_wayback)
         df <- fread( paste0(path_data, subdir, "/", file_name),
-                    colClasses = colvec, select = c(seq(1,8), seq(14,21)) )
+                    colClasses = colvec_size, select = c(seq(1,8), seq(14,21)) )
         dt_split <- df[ agglvl_code %in% data_cut ]
         dt_split[, old_industry_code := industry_code ]
         dt_split[, industry_code := gsub("[[:alpha:]]", "", str_sub(old_industry_code, 6, -1) ) ]
