@@ -167,7 +167,7 @@ get_qcew_cut <- function(
           if (verbose == T){ message("# Download ...") }
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
-                                              url_wayback = url_wayback)
+                                              url_wayback = url_wayback, verbose = verbose)
 
           # pre 1984: file names are not aggregated in one file: loop over them
           if (verbose == T){ message("# Reading all files in dir ...")}
@@ -206,7 +206,7 @@ get_qcew_cut <- function(
           if (verbose == T){ message("# Download ...") }
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
-                                              url_wayback = url_wayback)
+                                              url_wayback = url_wayback, verbose = verbose)
 
           if (verbose == T){ message("# Reading file ...")}
           col_vec_sic_post = c("character", "integer64", "character", "character", "integer64", "character",
@@ -255,7 +255,7 @@ get_qcew_cut <- function(
 
           file_name <- download_qcew_sic_data(target_year = year_iter, frequency = frequency,
                                               path_data = paste0(path_data, subdir, "/"),
-                                              url_wayback = url_wayback)
+                                              url_wayback = url_wayback, verbose = verbose)
           # pre 1984: file names are not aggregated in one file: loop over them
           df <- data.table()
           for (file_iter in file_name){
@@ -597,7 +597,7 @@ download_qcew_data = function(
         stop(paste0("Wrong frequency input .... ", frequency))
     }
 
-    url_prefix <- "http://data.bls.gov/cew/data/files/"
+    url_prefix <- "https://data.bls.gov/cew/data/files/"
     if (url_wayback != ""){
         url_prefix = url_wayback
         url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")
@@ -661,6 +661,7 @@ download_qcew_sic_data = function(
   verbose     = F
 ){
 
+
     if (frequency %in% c("quarter", "Q")){
         freq_string = "qtrly"
     } else if (frequency %in% c("year", "Y")){
@@ -669,7 +670,7 @@ download_qcew_sic_data = function(
         stop(paste0("Wrong frequency input .... ", frequency))
     }
 
-    url_prefix <- "http://data.bls.gov/cew/data/files/"
+    url_prefix <- "https://data.bls.gov/cew/data/files/"
     if (url_wayback != ""){
         url_prefix = url_wayback
         url_prefix <- paste0("https://web.archive.org/web/20141101135821/", "http://www.bls.gov/cew/data/files/")
@@ -689,7 +690,8 @@ download_qcew_sic_data = function(
   }
 
   if (verbose == T){
-    message(paste0("# Downloading from url .... ", url_prefix))
+    message(paste0("# Downloading from url ... ", url_prefix, "\n",
+                   "#   Files ... ", zip_file_name))
   }
   url_target = paste0(dir_name, zip_file_name)
 
@@ -755,7 +757,7 @@ download_qcew_size_data = function(
   unzip_dir   = T
   ){
 
-  url_prefix <- "http://data.bls.gov/cew/data/files/"
+  url_prefix <- "https://data.bls.gov/cew/data/files/"
   if (url_wayback != ""){
     url_wayback <- (gsub("[^\\d]+", "", url_wayback, perl=TRUE))  # extract the date from the wayback call (so we can also just input a date)
     url_wayback <- paste0("https://web.archive.org/web/", url_wayback, "/")
@@ -820,7 +822,7 @@ download_qcew_size_data = function(
 #' @return data.table of the remote file
 #' @examples
 #'   \dontrun{
-#'   dt <- fread.zip.url(http://data.bls.gov/cew/data/files/2000/csv/2000_qtrly_singlefile.zip)
+#'   dt <- fread.zip.url(https://data.bls.gov/cew/data/files/2000/csv/2000_qtrly_singlefile.zip)
 #'   }
 fread.zip.url <-
   function(url,
