@@ -617,7 +617,8 @@ download_qcew_data = function(
     }
 
     if (verbose == T){
-        message(paste0("# Downloading from url .... ", url_prefix))
+      message(paste0("# Downloading from url ... ", url_prefix, "\n",
+                     "#   File ... ", zip_file_name))
     }
     url = paste0(dir_name, zip_file_name)
 
@@ -691,7 +692,7 @@ download_qcew_sic_data = function(
 
   if (verbose == T){
     message(paste0("# Downloading from url ... ", url_prefix, "\n",
-                   "#   Files ... ", zip_file_name))
+                   "#   File ... ", zip_file_name))
   }
   url_target = paste0(dir_name, zip_file_name)
 
