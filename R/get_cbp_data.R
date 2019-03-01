@@ -68,11 +68,13 @@ download_all_cbp <- function(
 #' @param target_year year for which we want to download the data
 #' @param aggregation_level which data cut to download
 #' @param path_data where does the download happen: default current directory
+#' @param download_method use wget or curl (default wget seems to work slightly better)
 #' @return data.table
 download_cbp_data <- function(
   target_year,
   aggregation_level = "county",
-  path_data = "~/Downloads/"
+  path_data = "~/Downloads/",
+  download_method = "wget"
 ){
 
   aggregation_level <- tolower(aggregation_level)
@@ -109,12 +111,14 @@ download_cbp_data <- function(
 
     url <- paste0(partial_url, file_name)
     utils::download.file(url,
-                  paste0(path_data, file_name) )
+                  paste0(path_data, file_name),
+                  method = download_method)
 
   } else{
     url <- paste0(partial_url, zip_file_name)
-    utils::download.file(url,
-                  paste0(path_data, zip_file_name) )           # download file to path_data
+    utils::download.file(url,                                         # download file to path_data
+                  paste0(path_data, zip_file_name),
+                  method = download_method)
     utils::unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
 
   }
