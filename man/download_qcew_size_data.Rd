@@ -4,8 +4,8 @@
 \alias{download_qcew_size_data}
 \title{Download QCEW dataset (size files 1st quarter) directly from the BLS website}
 \usage{
-download_qcew_size_data(target_year, industry = "naics", path_data = "./",
-  url_wayback = "", unzip_dir = T)
+download_qcew_size_data(target_year, industry = "naics",
+  path_data = "./", url_wayback = "", unzip_dir = T)
 }
 \arguments{
 \item{target_year}{year for which we want to download the data}

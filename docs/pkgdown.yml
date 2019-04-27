@@ -1,7 +1,8 @@
-pandoc: 2.1.3
-pkgdown: 1.0.0.9000
-pkgdown_sha: d7c658122bfbd143552cd28585f867dd344302ad
+pandoc: 2.7.2
+pkgdown: 1.3.0.9000
+pkgdown_sha: 04e3f6ee259b17bed7246f237652e4ba7d6742d4
 articles:
+  bartik: bartik.html
   bds: bds.html
   bed: bed.html
   cbp: cbp.html

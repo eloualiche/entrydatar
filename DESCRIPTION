@@ -22,7 +22,7 @@ Imports:
     statar,
     stringr    (>= 1.0.0),
     utils
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.0
 Suggests:
     testthat,
     knitr,
@@ -31,5 +31,3 @@ Suggests:
 VignetteBuilder: knitr
 URL: https://github.com/eloualiche/entrydatar/
 BugReports: https://github.com/eloualiche/entrydatar/issues
-
-

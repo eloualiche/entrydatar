@@ -5,7 +5,7 @@
 \title{Download one year of county business pattern dataset}
 \usage{
 download_cbp_data(target_year, aggregation_level = "county",
-  path_data = "~/Downloads/")
+  path_data = "~/Downloads/", download_method = "wget")
 }
 \arguments{
 \item{target_year}{year for which we want to download the data}
@@ -13,6 +13,8 @@ download_cbp_data(target_year, aggregation_level = "county",
 \item{aggregation_level}{which data cut to download}
 
 \item{path_data}{where does the download happen: default current directory}
+
+\item{download_method}{use wget or curl (default wget seems to work slightly better)}
 }
 \value{
 data.table

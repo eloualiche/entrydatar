@@ -4,8 +4,9 @@
 \alias{download_qcew_sic_data}
 \title{Download QCEW dataset from directly from the BLS website for SIC Industries}
 \usage{
-download_qcew_sic_data(target_year, path_data = "./", frequency = "quarter",
-  url_wayback = "", unzip_dir = T, download = T, verbose = F)
+download_qcew_sic_data(target_year, path_data = "./",
+  frequency = "quarter", url_wayback = "", unzip_dir = T,
+  download = T, verbose = F)
 }
 \arguments{
 \item{target_year}{year for which we want to download the data}

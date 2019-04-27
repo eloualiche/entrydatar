@@ -6,9 +6,9 @@
 \usage{
 get_bed_detail(seasonaladj = "S", msa = "00000", state = "00",
   county = "000", industry = "000000", unitanalysis = 1,
-  dataelement = 2, sizeclass = "00", dataclass = "07", ratelevel = "L",
-  periodicity = "Q", ownership = 5, download = F, read = F,
-  path_data = "./")
+  dataelement = 2, sizeclass = "00", dataclass = "07",
+  ratelevel = "L", periodicity = "Q", ownership = 5, download = F,
+  read = F, path_data = "./")
 }
 \arguments{
 \item{seasonaladj}{seasonality adjustment of the data; S (default) or U}

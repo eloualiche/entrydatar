@@ -4,7 +4,8 @@
 \alias{tidy_qcew_year}
 \title{Tidying the dataset for regression use (or merge): operate year by year to keep memory to manageable levels.}
 \usage{
-tidy_qcew_year(dt, frequency = "all", industry = "naics", verbose = TRUE)
+tidy_qcew_year(dt, frequency = "all", industry = "naics",
+  verbose = TRUE)
 }
 \arguments{
 \item{dt}{input dataset from get_qcew_cut}
