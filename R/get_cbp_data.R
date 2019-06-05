@@ -105,7 +105,7 @@ download_cbp_data <- function(
   url_prefix    <- "http://www2.census.gov/programs-surveys/cbp/datasets/"
   partial_url   <- paste0(url_prefix, target_year, "/")
   zip_file_name <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".zip")
-  file_name     <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".txt")
+  file_name     <- paste0("Cbp", str_sub(target_year, 3, 4), suffix, ".txt")
 
   if (aggregation_level == "us" & target_year <= 2007){    # national case is not zipped before 2007
 
