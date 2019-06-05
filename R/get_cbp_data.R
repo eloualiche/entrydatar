@@ -108,33 +108,29 @@ download_cbp_data <- function(
   file_name     <- paste0("Cbp", str_sub(target_year, 3, 4), suffix, ".txt")
 
   if (aggregation_level == "us" & target_year <= 2007){    # national case is not zipped before 2007
-
     url <- paste0(partial_url, file_name)
     utils::download.file(url,
                   paste0(path_data, file_name),
                   method = download_method)
-
-  } else{
+    dt_res <- fread(paste0(path_data, file_name))
+  } else {
     url <- paste0(partial_url, zip_file_name)
     utils::download.file(url,                                         # download file to path_data
                   paste0(path_data, zip_file_name),
                   method = download_method)
-    utils::unzip(paste0(path_data, zip_file_name), exdir = path_data) # extract the file in path_data
-
+    # Extract directly the zip file from unzip
+    dt_res <- fread(cmd = paste0("unzip -p ", path_data, zip_file_name))
   }
 
-
-  dt_res <- data.table::fread(paste0(path_data, file_name))
   setnames(dt_res, tolower(names(dt_res)) )
 
   if ( (aggregation_level != "us") || (target_year > 2007)){
     file.remove( paste0(path_data, zip_file_name ) )
   }
-  file.remove( paste0(path_data, file_name ) )
 
   return(dt_res)
 
-}
+} # end of download_cbp_data
 
 
 
