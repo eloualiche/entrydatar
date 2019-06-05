@@ -37,13 +37,16 @@ tidy_cbp <- function(
 #' @param year_end year ending data download
 #' @param aggregation_level which data type to download
 #' @param path_data where does the download happen: default current directory
+#' @param download_method use wget or curl (default wget seems to work slightly better)
 #' @return data.table
 #' @export
 download_all_cbp <- function(
   year_start        = 1996,
   year_end          = 2013,
   aggregation_level = "county",
-  path_data         = "~/Downloads/"
+  path_data         = "~/Downloads/",
+  download_method   = "wget"
+
 ){
 
   dt_res <- data.table()
@@ -51,7 +54,10 @@ download_all_cbp <- function(
   for (year in seq(year_start, year_end)){
 
     message(paste0("Downloading and processing year: ", year))
-    dt_year <- download_cbp_data(target_year = year, path_data = path_data, aggregation_level = aggregation_level)
+    dt_year <- download_cbp_data(target_year = year,
+                                 path_data = path_data,
+                                 aggregation_level = aggregation_level,
+                                 download_method = download_method)
     dt_year[, year := year ]
     dt_res  <- rbind(dt_res, dt_year, fill = T)
 
@@ -105,7 +111,7 @@ download_cbp_data <- function(
   url_prefix    <- "http://www2.census.gov/programs-surveys/cbp/datasets/"
   partial_url   <- paste0(url_prefix, target_year, "/")
   zip_file_name <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".zip")
-  file_name     <- paste0("Cbp", str_sub(target_year, 3, 4), suffix, ".txt")
+  file_name     <- paste0("cbp", str_sub(target_year, 3, 4), suffix, ".txt")
 
   if (aggregation_level == "us" & target_year <= 2007){    # national case is not zipped before 2007
     url <- paste0(partial_url, file_name)
