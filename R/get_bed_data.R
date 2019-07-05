@@ -24,11 +24,11 @@ get_bed = function(
   ent_cnt <- ent_emp <-  ent_lvl_cnt <- ent_lvl_emp <- tot_count <- tot_emp <- NULL
 
     if (which_data == "industry"){
-
       url <- "http://www.bls.gov/web/cewbd/bd_data_ind3.txt"
       if (!is.null(path_data)){
         utils::download.file(url,
-                      paste0(path_data, "bed_ind.txt") )
+          paste0(path_data, "bed_ind.txt"),
+          method = "wget")
         dt_ind <- fread(paste0(path_data, "bed_ind.txt"), skip = 1,
                         colClasses = c("character", "integer", "character", "numeric", "character", "character"))
       } else {
@@ -38,13 +38,11 @@ get_bed = function(
 
       setnames(dt_ind, c("series_id", "year", "period", "entry", "note1", "note2") )
       dt_ind <- dt_ind[, !"note2", with=FALSE]
-
       dt_r_ind <- dt_ind[ grepl("BDS0000000000......1[12]000[36]RQ5*", series_id) ]  #use regex to get the 4 series at same time
       dt_r_ind$naics3  <- as.integer( substr( dt_r_ind$series_id, 17, 19) )
       dt_r_ind$emp     <- as.integer( substr( dt_r_ind$series_id, 21, 21) == "1" )
       dt_r_ind$open    <- as.integer( substr( dt_r_ind$series_id, 25, 25) == "3" )
       dt_r_ind$date_ym <- dt_r_ind$year*100 + as.integer(substr(dt_r_ind$period,2,3))*3
-
 
     # GET THE RATES
     dt_r_ind[, series_id:= NULL ]
