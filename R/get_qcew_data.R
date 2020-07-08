@@ -73,14 +73,14 @@ get_qcew_cut <- function(
         if (download == ""){
           message("# Download in progress ... ")
           # read the file directly from the remote url
+          # GET THE REMOTE URL
           file_name <- download_qcew_data(target_year = year_iter,
                                           industry = industry, frequency = frequency,
                                           path_data = paste0(path_data, subdir, "/"),
                                           url_wayback = url_wayback,
                                           download = F, verbose = verbose)
-  # df <- fread(paste0(path_data, subdir, "/", file_name) ) #, colClasses = c(disclosure_code = "character") )
           # read the zip file directly
-          df <- fread.zip.url(file_name)
+          df <- fread.zip.url(url=file_name, path_download=paste0(path_data, subdir, "/"))
 
           } else {
             message("# Read file locally ... ")
@@ -829,11 +829,21 @@ fread.zip.url <-
   function(url,
            filename = NULL,
            FUN = fread,
+           path_download = NULL,
            ...) {
 
-  zipfile <- tempfile()
+  if ( (is.null(path_download)) ){ 
+    zipfile <- tempfile()
+    zipdir <- tempfile()
+  } else if ( !dir.exists(path_download) ) {
+    stop("writing path does not exists: please change path_data variable")
+  } else {
+    zipfile <- tempfile(tmpdir=path_download)
+    zipdir  <- tempfile(tmpdir=path_download)
+  }
+
   download.file(url = url, destfile = zipfile, quiet = TRUE)
-  zipdir <- tempfile()
+  
   dir.create(zipdir)
   unzip(zipfile, exdir = zipdir) # files="" so extract all
   files <- list.files(zipdir)
