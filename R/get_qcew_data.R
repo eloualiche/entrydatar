@@ -58,9 +58,9 @@ get_qcew_cut <- function(
                    "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "),
                    "\n\n")
     dir.create(paste0(path_data, subdir))
-  } else {
+  } else if (subdir==FALSE) {
     subdir <- ""
- }
+  }
 
   # ------------------------------------------------------------------------
   if(industry == "naics"){
