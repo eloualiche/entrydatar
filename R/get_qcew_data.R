@@ -51,14 +51,16 @@ get_qcew_cut <- function(
   # Start of function
   dt_res <- data.table()
 
-  if (subdir == T){
+  if (subdir==T){
     subdir <- random::randomStrings(n=1, len=5, digits=TRUE, upperalpha=TRUE,
                                     loweralpha=TRUE, unique=TRUE, check=TRUE)   # generate a random subdirectory to download the data
     message(paste0("# -----------------------------------------------------\n",
                    "# Creating temporary directory for all the downloads: '", path_data, subdir, "' "),
                    "\n\n")
     dir.create(paste0(path_data, subdir))
-  } else if (subdir==FALSE) {
+  } else if (subdir!=FALSE) { # if the subdir is a string of character
+    dir.create(paste0(path_data, subdir))
+  } else {
     subdir <- ""
   }
 
@@ -832,7 +834,7 @@ fread.zip.url <-
            path_download = NULL,
            ...) {
 
-  if ( (is.null(path_download)) ){ 
+  if ( (is.null(path_download)) ){
     zipfile <- tempfile()
     zipdir <- tempfile()
   } else if ( !dir.exists(path_download) ) {
@@ -843,7 +845,7 @@ fread.zip.url <-
   }
 
   download.file(url = url, destfile = zipfile, quiet = TRUE)
-  
+
   dir.create(zipdir)
   unzip(zipfile, exdir = zipdir) # files="" so extract all
   files <- list.files(zipdir)
